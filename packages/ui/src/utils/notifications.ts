@@ -5,12 +5,12 @@ import { useLocalStorage } from "@vueuse/core";
 import { sleep } from "./utils.ts";
 
 type TemplateInfo = {
-  props: (notif: MCSLNotif) => MessageProps;
-  systemNotif: (notif: MCSLNotif) => { title: string; body: string };
-  template: (notif: MCSLNotif) => VueElement[];
+  props: (notif: RetaNotif) => MessageProps;
+  systemNotif: (notif: RetaNotif) => { title: string; body: string };
+  template: (notif: RetaNotif) => VueElement[];
 };
 
-export type NotificationType = "mcsl" | "system" | "both";
+export type NotificationType = "reta" | "system" | "both";
 
 export type SystemNotifSettings = {
   supported: boolean;
@@ -19,7 +19,7 @@ export type SystemNotifSettings = {
   send: (title: string, body: string) => Notification | undefined;
 };
 
-export type MCSLNotifSettings = {
+export type RetaNotifSettings = {
   template?: string;
   duration?: number;
   type?: NotificationType;
@@ -44,18 +44,18 @@ export function setSystemNotif(notif: SystemNotifSettings) {
   systemNotifSettings = notif;
 }
 
-export class MCSLNotif {
+export class RetaNotif {
   private static idCounter = -1;
 
-  readonly id = ++MCSLNotif.idCounter;
+  readonly id = ++RetaNotif.idCounter;
   readonly opened = ref(false);
   private systemNotif: Notification | undefined;
   private _closed: boolean = false;
 
-  constructor(readonly settings: MCSLNotifSettings) {
+  constructor(readonly settings: RetaNotifSettings) {
     const templateId = settings.template ?? "default";
     if (!templates[templateId]) {
-      console.warn(`[MCSL-UI] Notification template '${templateId}' not found`);
+      console.warn(`[Reta UI] Notification template '${templateId}' not found`);
       throw new Error(`Notification template '${templateId}' not found`);
     }
     addNotif(this);
@@ -87,9 +87,9 @@ export class MCSLNotif {
     }
   }
 
-  get isMcsl() {
+  get isReta() {
     return (
-      (this.settings.type ?? "mcsl") == "mcsl" || this.settings.type == "both"
+      (this.settings.type ?? "reta") == "reta" || this.settings.type == "both"
     );
   }
 
@@ -120,7 +120,7 @@ export async function requestNotifPermission() {
   if (!systemNotifSettings.supported) {
     shouldShowWarning = true;
     if (sysNotifWarning.value)
-      new MCSLNotif({
+      new RetaNotif({
         template: "do-not-show-again",
         data: {
           title: t("ui.notification.title.warning"),
@@ -130,7 +130,7 @@ export async function requestNotifPermission() {
         },
       }).open();
   } else if (systemNotifSettings.isPermissionGranted() == "default") {
-    new MCSLNotif({
+    new RetaNotif({
       data: {
         message: t("ui.notification.message.request"),
       },
@@ -141,7 +141,7 @@ export async function requestNotifPermission() {
   } else if (systemNotifSettings.isPermissionGranted() == "denied") {
     shouldShowWarning = true;
     if (sysNotifWarning.value)
-      new MCSLNotif({
+      new RetaNotif({
         template: "do-not-show-again",
         data: {
           title: t("ui.notification.title.warning"),
@@ -158,9 +158,9 @@ const templates: Record<string, TemplateInfo> = {};
 
 export function addTemplate(
   id: string,
-  props: (notif: MCSLNotif) => MessageProps,
-  systemNotif: (notif: MCSLNotif) => { title: string; body: string },
-  template: (notif: MCSLNotif) => VueElement[],
+  props: (notif: RetaNotif) => MessageProps,
+  systemNotif: (notif: RetaNotif) => { title: string; body: string },
+  template: (notif: RetaNotif) => VueElement[],
 ) {
   templates[id] = {
     props,
@@ -177,9 +177,9 @@ export function getTemplate(id: string) {
   return templates[id];
 }
 
-export const notifications = shallowReactive<Record<number, MCSLNotif>>({});
+export const notifications = shallowReactive<Record<number, RetaNotif>>({});
 
-export function addNotif(notif: MCSLNotif) {
+export function addNotif(notif: RetaNotif) {
   notifications[notif.id] = notif;
 }
 

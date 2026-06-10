@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CodeEditor, CopyableText, Panel } from "@mcsl/ui";
+import { RCodeEditor, RCopyableText, RPanel } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -14,22 +14,22 @@ const value = ref(`{
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="editor-meta">
-          <CopyableText>daemon_instance.json</CopyableText>
-          <CopyableText>UTF-8</CopyableText>
+          <r-copyable-text>daemon_instance.json</r-copyable-text>
+          <r-copyable-text>UTF-8</r-copyable-text>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="editor-wrap">
-          <CodeEditor v-model="value" default-lang="json" />
+          <r-code-editor v-model="value" default-lang="json" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Calendar, DatePicker, Message, Panel, TimePicker } from "@mcsl/ui";
+import { RCalendar, RDatePicker, RMessage, RPanel, RTimePicker } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -12,41 +12,41 @@ const maintenanceTime = ref("");
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
+      <r-panel class="doc-section" shadow="hover">
         <template #header><h2>Date & Time</h2></template>
         <div class="date-grid">
           <label>
             <span>Deployment date</span>
-            <DatePicker v-model="date" min="2026-01-01" max="2026-12-31" />
+            <r-date-picker v-model="date" min="2026-01-01" max="2026-12-31" />
           </label>
           <label>
             <span>Restart time</span>
-            <TimePicker v-model="time" min="00:00" max="23:59" />
+            <r-time-picker v-model="time" min="00:00" max="23:59" />
           </label>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
+      <r-panel class="doc-section" shadow="hover">
         <template #header><h2>Maintenance Window</h2></template>
         <div class="date-stack">
-          <Calendar v-model="maintenanceDate" min="2026-01-01" max="2026-12-31" />
+          <r-calendar v-model="maintenanceDate" min="2026-01-01" max="2026-12-31" />
           <div class="date-grid">
             <label>
               <span>Date</span>
-              <DatePicker v-model="maintenanceDate" placeholder="Pick date" clearable />
+              <r-date-picker v-model="maintenanceDate" placeholder="Pick date" clearable />
             </label>
             <label>
               <span>Time</span>
-              <TimePicker v-model="maintenanceTime" :step="300" clearable />
+              <r-time-picker v-model="maintenanceTime" :step="300" clearable />
             </label>
           </div>
-          <Message color="help" title="Selected window">
+          <r-message color="help" title="Selected window">
             {{ maintenanceDate || "No date" }} {{ maintenanceTime || "No time" }}
-          </Message>
+          </r-message>
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

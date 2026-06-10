@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Panel, Switch } from "@mcsl/ui";
+import { RPanel, RSwitch } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -12,47 +12,47 @@ const locked = ref(false);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="toggle-grid">
           <label class="toggle-row">
-            <Switch v-model="autoStart" size="small" />
+            <r-switch v-model="autoStart" size="small" />
             <span>Small</span>
           </label>
           <label class="toggle-row">
-            <Switch v-model="maintenance" color="warning" />
+            <r-switch v-model="maintenance" color="warning" />
             <span>Warning</span>
           </label>
           <label class="toggle-row">
-            <Switch v-model="metrics" color="success" size="large" />
+            <r-switch v-model="metrics" color="success" size="large" />
             <span>Large</span>
           </label>
           <label class="toggle-row">
-            <Switch v-model="locked" disabled />
+            <r-switch v-model="locked" disabled />
             <span>Disabled</span>
           </label>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="toggle-stack">
           <label class="toggle-row">
-            <Switch v-model="autoStart" />
+            <r-switch v-model="autoStart" />
             <span>Auto-start daemon</span>
           </label>
           <label class="toggle-row">
-            <Switch v-model="maintenance" color="warning" />
+            <r-switch v-model="maintenance" color="warning" />
             <span>Maintenance mode</span>
           </label>
           <label class="toggle-row">
-            <Switch v-model="metrics" color="success" />
+            <r-switch v-model="metrics" color="success" />
             <span>Collect metrics</span>
           </label>
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

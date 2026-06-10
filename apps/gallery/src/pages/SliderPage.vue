@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Panel, Slider } from "@mcsl/ui";
+import { RPanel, RSlider } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -10,23 +10,23 @@ const cpu = ref(72);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="slider-stack">
-          <Slider v-model="memory" :min="0" :max="100" />
-          <Slider v-model="cpu" :min="0" :max="100" :step="4" />
+          <r-slider v-model="memory" :min="0" :max="100" />
+          <r-slider v-model="cpu" :min="0" :max="100" :step="4" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="slider-stack">
-          <Slider v-model="memory" :min="0" :max="100" />
-          <Slider v-model="cpu" :min="0" :max="100" disabled />
+          <r-slider v-model="memory" :min="0" :max="100" />
+          <r-slider v-model="cpu" :min="0" :max="100" disabled />
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

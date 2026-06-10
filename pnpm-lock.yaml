@@ -20,9 +20,6 @@ importers:
 
   apps/gallery:
     dependencies:
-      '@mcsl/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
       '@repo/configs':
         specifier: workspace:*
         version: link:../../packages/configs
@@ -47,6 +44,9 @@ importers:
       pinia:
         specifier: ^3.0.4
         version: 3.0.4(typescript@5.9.3)(vue@3.5.35(typescript@5.9.3))
+      reta-ui:
+        specifier: workspace:*
+        version: link:../../packages/ui
       vue:
         specifier: ^3.5.28
         version: 3.5.35(typescript@5.9.3)

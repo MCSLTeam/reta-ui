@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, DropdownMenu, Panel, Popover, Tooltip } from "@mcsl/ui";
+import { RButton, RDropdownMenu, RPanel, RPopover, RTooltip } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
 const menu = [
@@ -12,46 +12,46 @@ const menu = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="overlay-demo">
-          <DropdownMenu :menu="menu">
+          <r-dropdown-menu :menu="menu">
             <template #triggerer="{ toggle }">
-              <Button @click="toggle">Dropdown</Button>
+              <r-button @click="toggle">Dropdown</r-button>
             </template>
-          </DropdownMenu>
-          <Tooltip content="Fast inline hint.">
+          </r-dropdown-menu>
+          <r-tooltip content="Fast inline hint.">
             <template #triggerer="{ open, close }">
-              <Button @mouseenter="open" @mouseleave="close">Tooltip</Button>
+              <r-button @mouseenter="open" @mouseleave="close">Tooltip</r-button>
             </template>
-          </Tooltip>
-          <Popover title="Inspector">
+          </r-tooltip>
+          <r-popover title="Inspector">
             <template #triggerer="{ toggle }">
-              <Button @click="toggle">Popover</Button>
+              <r-button @click="toggle">Popover</r-button>
             </template>
             <p class="overlay-note">Compact contextual surface.</p>
-          </Popover>
+          </r-popover>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="overlay-demo">
-          <DropdownMenu :menu="menu">
+          <r-dropdown-menu :menu="menu">
             <template #triggerer="{ toggle }">
-              <Button icon="fas fa-ellipsis" @click="toggle">Open Menu</Button>
+              <r-button icon="fas fa-ellipsis" @click="toggle">Open Menu</r-button>
             </template>
-          </DropdownMenu>
-          <Popover title="Instance">
+          </r-dropdown-menu>
+          <r-popover title="Instance">
             <template #triggerer="{ toggle }">
-              <Button icon="fas fa-circle-info" @click="toggle">Inspect</Button>
+              <r-button icon="fas fa-circle-info" @click="toggle">Inspect</r-button>
             </template>
             <p class="overlay-note">Paper EU-1 · Online · 12 players</p>
-          </Popover>
+          </r-popover>
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

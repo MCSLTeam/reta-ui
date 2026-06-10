@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Panel, RadioGroup } from "@mcsl/ui";
+import { RPanel, RRadioGroup } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -22,25 +22,25 @@ const channelOptions = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="radio-stack">
-          <RadioGroup v-model="flavor" :options="flavorOptions" size="small" />
-          <RadioGroup v-model="flavor" :options="flavorOptions" />
-          <RadioGroup v-model="flavor" :options="flavorOptions" size="large" />
+          <r-radio-group v-model="flavor" :options="flavorOptions" size="small" />
+          <r-radio-group v-model="flavor" :options="flavorOptions" />
+          <r-radio-group v-model="flavor" :options="flavorOptions" size="large" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="radio-stack">
-          <RadioGroup v-model="flavor" :options="flavorOptions" />
-          <RadioGroup v-model="channel" :options="channelOptions" />
-          <RadioGroup v-model="channel" :options="channelOptions" disabled />
+          <r-radio-group v-model="flavor" :options="flavorOptions" />
+          <r-radio-group v-model="channel" :options="channelOptions" />
+          <r-radio-group v-model="channel" :options="channelOptions" disabled />
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

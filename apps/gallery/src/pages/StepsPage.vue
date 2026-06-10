@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Message, Panel, Steps } from "@mcsl/ui";
+import { RMessage, RPanel, RSteps } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -23,26 +23,26 @@ const taskSteps = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
+      <r-panel class="doc-section" shadow="hover">
         <template #header><h2>Steps</h2></template>
         <div class="steps-stack">
-          <Steps v-model="current" :items="installSteps" clickable />
-          <Steps :items="installSteps" :model-value="2" size="small" color="success" />
+          <r-steps v-model="current" :items="installSteps" clickable />
+          <r-steps :items="installSteps" :model-value="2" size="small" color="success" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>安装流程</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.installFlow") }}</h2></template>
         <div class="steps-demo">
-          <Steps v-model="current" :items="installSteps" clickable color="primary" />
-          <Message color="help" title="Selected step">
+          <r-steps v-model="current" :items="installSteps" clickable color="primary" />
+          <r-message color="help" title="Selected step">
             {{ installSteps[current]?.title }} - {{ installSteps[current]?.description }}
-          </Message>
-          <Steps :items="taskSteps" :model-value="1" vertical color="warning" />
+          </r-message>
+          <r-steps :items="taskSteps" :model-value="1" vertical color="warning" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

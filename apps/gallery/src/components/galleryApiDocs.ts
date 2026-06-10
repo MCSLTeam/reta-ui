@@ -11,7 +11,7 @@ const colorProp: GalleryApiItem = {
   name: "color",
   type: "ColorType",
   default: '"primary"',
-  description: "Maps to the shared MCSL semantic color tokens.",
+  description: "Maps to the shared Reta semantic color tokens.",
 };
 
 const disabledProp: GalleryApiItem = {
@@ -287,7 +287,7 @@ export const galleryApiDocs: Record<string, GalleryApiItem[]> = {
   ],
   "/components/upload": [
     { name: "files", type: "File[]", default: "[]", description: "v-model selected files." },
-    { name: "accept", type: "string", default: '""', description: "Accepted MIME types or file extensions." },
+    { name: "accept", type: "string", default: '""', description: "Accepted RIME types or file extensions." },
     { name: "multiple", type: "boolean", default: "false", description: "Allows multiple file selection." },
     { name: "maxCount", type: "number", default: "Infinity", description: "Maximum selected file count." },
   ],
@@ -329,7 +329,7 @@ export const galleryApiDocs: Record<string, GalleryApiItem[]> = {
     { name: "readonly", type: "boolean", default: "false", description: "Prevents editing while keeping content selectable." },
   ],
   "/components/compositions": [
-    { name: "composition", type: "VNode", default: "-", description: "Reusable layout made from MCSL UI primitives." },
+    { name: "composition", type: "VNode", default: "-", description: "Reusable layout made from Reta UI primitives." },
     { name: "actions slot", type: "VNode", default: "-", description: "Contextual actions embedded in the composed surface." },
   ],
 };

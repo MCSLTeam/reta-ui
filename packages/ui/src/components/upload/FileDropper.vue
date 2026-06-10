@@ -8,7 +8,7 @@ import {
 } from "../../utils/upload.ts";
 import { humanReadableSize, type Size } from "../../utils/utils.ts";
 import { onMounted, onUnmounted, ref } from "vue";
-import { MCSLNotif } from "../../utils/notifications.ts";
+import { RetaNotif } from "../../utils/notifications.ts";
 import FileInfo from "./FileInfo.vue";
 import mime from "mime";
 
@@ -42,7 +42,7 @@ function setFiles(newValue: File[]) {
   const maxCount = props.config.maxCount ?? 0;
   if (maxCount > 0 && newValue.length > maxCount) {
     files.value = newValue.slice(0, maxCount);
-    new MCSLNotif({
+    new RetaNotif({
       data: {
         title: t("ui.notification.title.warning"),
         message: t("ui.upload.error.count", { maxCount }),

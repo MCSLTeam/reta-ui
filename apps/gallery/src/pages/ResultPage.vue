@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import { Button, Panel, Result } from "@mcsl/ui";
+import { RButton, RPanel, RResult } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="result-grid">
-          <Result title="Completed" description="Deployment image was published." status="success" />
-          <Result title="Needs attention" description="Two plugins need review." status="warning" />
+          <r-result title="Completed" description="Deployment image was published." status="success" />
+          <r-result title="Needs attention" description="Two plugins need review." status="warning" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
-        <Result
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+        <r-result
           title="Deployment completed"
           description="The server image has been rebuilt and published."
           status="success"
         >
           <div class="result-actions">
-            <Button type="primary" color="primary">Open Instance</Button>
-            <Button>View Logs</Button>
+            <r-button type="primary" color="primary">Open Instance</r-button>
+            <r-button>View Logs</r-button>
           </div>
-        </Result>
-      </Panel>
+        </r-result>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

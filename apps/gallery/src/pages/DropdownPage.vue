@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, ButtonGroup, DropdownMenu, Panel } from "@mcsl/ui";
+import { RButton, RButtonGroup, RDropdownMenu, RPanel } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
 const menu = [
@@ -26,35 +26,35 @@ const groupedMenu = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="overlay-row">
-          <DropdownMenu :menu="menu">
+          <r-dropdown-menu :menu="menu">
             <template #triggerer="{ toggle }">
-              <Button icon="fas fa-ellipsis" @click="toggle">Default</Button>
+              <r-button icon="fas fa-ellipsis" @click="toggle">Default</r-button>
             </template>
-          </DropdownMenu>
-          <DropdownMenu :menu="groupedMenu" default-pos="top">
+          </r-dropdown-menu>
+          <r-dropdown-menu :menu="groupedMenu" default-pos="top">
             <template #triggerer="{ toggle }">
-              <Button icon="fas fa-arrow-up" @click="toggle">Top</Button>
+              <r-button icon="fas fa-arrow-up" @click="toggle">Top</r-button>
             </template>
-          </DropdownMenu>
+          </r-dropdown-menu>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
-        <ButtonGroup>
-          <Button type="primary" color="primary">Start</Button>
-          <DropdownMenu :menu="groupedMenu">
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+        <r-button-group>
+          <r-button type="primary" color="primary">Start</r-button>
+          <r-dropdown-menu :menu="groupedMenu">
             <template #triggerer="{ toggle }">
-              <Button icon="fas fa-angle-down" squared @click="toggle" />
+              <r-button icon="fas fa-angle-down" squared @click="toggle" />
             </template>
-          </DropdownMenu>
-        </ButtonGroup>
-      </Panel>
+          </r-dropdown-menu>
+        </r-button-group>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

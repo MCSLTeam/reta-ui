@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Panel, Table } from "@mcsl/ui";
+import { RPanel, RTable } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
 const columns = ["Name", "Status", "Version", "Players"];
@@ -20,20 +20,20 @@ const denseRows = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
-        <Table :columns="columns" :rows="rows" />
-      </Panel>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+        <r-table :columns="columns" :rows="rows" />
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="table-stack">
-          <Table :columns="columns" :rows="rows" />
-          <Table :columns="['Metric', 'Value', 'State']" :rows="denseRows" />
+          <r-table :columns="columns" :rows="rows" />
+          <r-table :columns="['Metric', 'Value', 'State']" :rows="denseRows" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

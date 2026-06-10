@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Panel, Segmented, Select } from "@mcsl/ui";
+import { RPanel, RSegmented, RSelect } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -47,27 +47,27 @@ const featureOptions = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="select-grid">
-          <Select v-model="runtime" :options="runtimeOptions" prefix="Runtime: " />
-          <Select v-model="region" :options="regionOptions" placeholder="Region" />
-          <Segmented v-model="flavor" :options="flavorOptions" />
-          <Segmented v-model="features" :options="featureOptions" multiple />
+          <r-select v-model="runtime" :options="runtimeOptions" prefix="Runtime: " />
+          <r-select v-model="region" :options="regionOptions" placeholder="Region" />
+          <r-segmented v-model="flavor" :options="flavorOptions" />
+          <r-segmented v-model="features" :options="featureOptions" multiple />
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="select-grid">
-          <Select v-model="flavor" :options="flavorOptions" placeholder="Server flavor" />
-          <Select disabled placeholder="Disabled select" :options="runtimeOptions" />
-          <Segmented v-model="flavor" :options="flavorOptions" />
-          <Segmented v-model="features" :options="featureOptions" multiple nullable />
+          <r-select v-model="flavor" :options="flavorOptions" placeholder="Server flavor" />
+          <r-select disabled placeholder="Disabled select" :options="runtimeOptions" />
+          <r-segmented v-model="flavor" :options="flavorOptions" />
+          <r-segmented v-model="features" :options="featureOptions" multiple nullable />
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

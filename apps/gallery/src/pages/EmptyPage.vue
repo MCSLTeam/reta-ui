@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import { Button, Empty, Panel } from "@mcsl/ui";
+import { RButton, REmpty, RPanel } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="empty-grid">
-          <Empty title="No running instances" description="Start or import an instance to continue." />
-          <Empty title="No backups" description="Create a backup schedule before production launch." icon="fas fa-clock-rotate-left" />
+          <r-empty title="No running instances" description="Start or import an instance to continue." />
+          <r-empty title="No backups" description="Create a backup schedule before production launch." icon="fas fa-clock-rotate-left" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
-        <Empty
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+        <r-empty
           title="No running instances"
           description="Create a new instance or import an existing configuration."
         >
-          <Button type="primary" color="primary" icon="fas fa-plus">Create Instance</Button>
-        </Empty>
-      </Panel>
+          <r-button type="primary" color="primary" icon="fas fa-plus">Create Instance</r-button>
+        </r-empty>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

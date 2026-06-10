@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Empty, Message, MeterGroup, Panel, Result, Skeleton } from "@mcsl/ui";
+import { REmpty, RMessage, RMeterGroup, RPanel, RResult, RSkeleton } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
 const healthyMeter = {
@@ -22,36 +22,36 @@ const attentionMeter = {
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="status-grid">
-          <Panel size="small">
+          <r-panel size="small">
             <template #header><h4>Healthy</h4></template>
             <div class="feedback-card">
-              <Message color="success" title="Stable">CPU 18% · Memory 1.2 GB</Message>
-              <MeterGroup :meter="healthyMeter" />
+              <r-message color="success" title="Stable">CPU 18% · Memory 1.2 GB</r-message>
+              <r-meter-group :meter="healthyMeter" />
             </div>
-          </Panel>
-          <Panel size="small">
+          </r-panel>
+          <r-panel size="small">
             <template #header><h4>Attention</h4></template>
             <div class="feedback-card">
-              <Message color="warning" title="Queue rising">Latency increased.</Message>
-              <MeterGroup :meter="attentionMeter" />
+              <r-message color="warning" title="Queue rising">Latency increased.</r-message>
+              <r-meter-group :meter="attentionMeter" />
             </div>
-          </Panel>
+          </r-panel>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="feedback-stack">
-          <Result title="Backup completed" description="Snapshot and metadata have been stored." status="success" />
-          <Empty title="No running instances" description="Use this state to explain the next meaningful action." />
-          <Skeleton :lines="3" height="14px" />
+          <r-result title="Backup completed" description="Snapshot and metadata have been stored." status="success" />
+          <r-empty title="No running instances" description="Use this state to explain the next meaningful action." />
+          <r-skeleton :lines="3" height="14px" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

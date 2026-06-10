@@ -1,18 +1,18 @@
 {
-  "name": "mcsl-ui-workspace",
+  "name": "reta-ui-workspace",
   "private": true,
   "license": "GPL-3.0-only",
   "scripts": {
     "dev": "pnpm --filter gallery dev",
     "build": "pnpm --filter gallery build",
     "preview": "pnpm --filter gallery preview",
-    "test": "pnpm --filter @mcsl/ui test && pnpm --filter gallery test",
+    "test": "pnpm --filter reta-ui test && pnpm --filter gallery test",
     "lint": "turbo run lint",
     "fix": "turbo run fix",
     "gallery:dev": "pnpm --filter gallery dev",
     "gallery:build": "pnpm --filter gallery build",
     "gallery:test": "pnpm --filter gallery test",
-    "ui:test": "pnpm --filter @mcsl/ui test"
+    "ui:test": "pnpm --filter reta-ui test"
   },
   "devDependencies": {
     "prettier": "^3.8.1",

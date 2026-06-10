@@ -1,15 +1,5 @@
 <script setup lang="ts">
-import {
-  Avatar,
-  CopyableText,
-  Empty,
-  Message,
-  Panel,
-  Result,
-  Skeleton,
-  Table,
-  Tag,
-} from "@mcsl/ui";
+import { RAvatar, RCopyableText, REmpty, RMessage, RPanel, RResult, RSkeleton, RTable, RTag } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
 const columns = ["Name", "Status", "Version"];
@@ -22,41 +12,41 @@ const rows = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="display-grid">
-          <Panel size="small">
+          <r-panel size="small">
             <template #header><h4>Identity</h4></template>
             <div class="inline-row">
-              <Avatar text="MF" />
-              <Tag color="primary">Primary Tag</Tag>
-              <Tag color="success">Healthy</Tag>
+              <r-avatar text="RF" />
+              <r-tag color="primary">Primary Tag</r-tag>
+              <r-tag color="success">Healthy</r-tag>
             </div>
-          </Panel>
-          <Panel size="small">
+          </r-panel>
+          <r-panel size="small">
             <template #header><h4>Text</h4></template>
-            <CopyableText>mcsl-ui</CopyableText>
-          </Panel>
-          <Panel size="small" class="display-grid__wide">
+            <r-copyable-text>reta-ui</r-copyable-text>
+          </r-panel>
+          <r-panel size="small" class="display-grid__wide">
             <template #header><h4>Empty</h4></template>
-            <Empty title="No resources yet" description="Display components should communicate state with calm hierarchy." />
-          </Panel>
+            <r-empty title="No resources yet" description="Display components should communicate state with calm hierarchy." />
+          </r-panel>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="display-stack">
-          <Message title="Heads up" color="warning">
+          <r-message title="Heads up" color="warning">
             This is a lightweight message surface for inline guidance.
-          </Message>
-          <Result title="Deployment completed" description="Use result states for larger success or failure summaries." status="success" />
-          <Table :columns="columns" :rows="rows" />
-          <Skeleton :lines="4" height="14px" />
+          </r-message>
+          <r-result title="Deployment completed" description="Use result states for larger success or failure summaries." status="success" />
+          <r-table :columns="columns" :rows="rows" />
+          <r-skeleton :lines="4" height="14px" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

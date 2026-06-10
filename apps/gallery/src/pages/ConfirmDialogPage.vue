@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, ConfirmDialog, Panel } from "@mcsl/ui";
+import { RButton, RConfirmDialog, RPanel } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -10,29 +10,29 @@ const restartVisible = ref(false);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="overlay-row">
-          <Button color="warning" @click="restartVisible = true">Restart</Button>
-          <Button color="danger" type="primary" @click="deleteVisible = true">Delete</Button>
+          <r-button color="warning" @click="restartVisible = true">Restart</r-button>
+          <r-button color="danger" type="primary" @click="deleteVisible = true">Delete</r-button>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
-        <Button color="danger" type="primary" icon="fas fa-trash" @click="deleteVisible = true">
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+        <r-button color="danger" type="primary" icon="fas fa-trash" @click="deleteVisible = true">
           Delete Instance
-        </Button>
-        <ConfirmDialog
+        </r-button>
+        <r-confirm-dialog
           v-model:visible="deleteVisible"
           title="Delete instance?"
           description="This removes the instance record from the launcher. Server files are not deleted automatically."
           confirm-text="Delete"
           cancel-text="Keep"
         />
-        <ConfirmDialog
+        <r-confirm-dialog
           v-model:visible="restartVisible"
           title="Restart instance?"
           description="Players will be disconnected while the process restarts."
@@ -40,7 +40,7 @@ const restartVisible = ref(false);
           confirm-text="Restart"
           cancel-text="Cancel"
         />
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

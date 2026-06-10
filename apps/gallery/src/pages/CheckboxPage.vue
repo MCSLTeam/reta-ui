@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Checkbox, Panel } from "@mcsl/ui";
+import { RCheckbox, RPanel } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -13,28 +13,28 @@ const inherited = ref<boolean | null>(null);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="state-grid">
-          <Checkbox v-model="enabled">Checked</Checkbox>
-          <Checkbox v-model="backups">Unchecked</Checkbox>
-          <Checkbox v-model="mixed" color="help">Mixed</Checkbox>
-          <Checkbox v-model="enabled" disabled>Disabled checked</Checkbox>
-          <Checkbox disabled>Disabled</Checkbox>
-          <Checkbox invalid>Invalid</Checkbox>
+          <r-checkbox v-model="enabled">Checked</r-checkbox>
+          <r-checkbox v-model="backups">Unchecked</r-checkbox>
+          <r-checkbox v-model="mixed" color="help">Mixed</r-checkbox>
+          <r-checkbox v-model="enabled" disabled>Disabled checked</r-checkbox>
+          <r-checkbox disabled>Disabled</r-checkbox>
+          <r-checkbox invalid>Invalid</r-checkbox>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="policy-list">
-          <Checkbox v-model="snapshots">Allow snapshot builds</Checkbox>
-          <Checkbox v-model="backups" color="success">Run scheduled backups</Checkbox>
-          <Checkbox v-model="inherited" color="help">Inherit parent policy</Checkbox>
+          <r-checkbox v-model="snapshots">Allow snapshot builds</r-checkbox>
+          <r-checkbox v-model="backups" color="success">Run scheduled backups</r-checkbox>
+          <r-checkbox v-model="inherited" color="help">Inherit parent policy</r-checkbox>
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

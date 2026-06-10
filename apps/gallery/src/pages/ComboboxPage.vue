@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AutoComplete, Combobox, Message, Panel, Tag } from "@mcsl/ui";
+import { RAutoComplete, RCombobox, RMessage, RPanel, RTag } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -24,33 +24,33 @@ const regions = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
+      <r-panel class="doc-section" shadow="hover">
         <template #header><h2>Autocomplete</h2></template>
         <div class="combo-grid">
           <label>
             <span>Command</span>
-            <AutoComplete v-model="command" :options="commands" placeholder="Type a command" />
+            <r-auto-complete v-model="command" :options="commands" placeholder="Type a command" />
           </label>
           <label>
             <span>Region</span>
-            <Combobox v-model="region" :options="regions" placeholder="Select region" />
+            <r-combobox v-model="region" :options="regions" placeholder="Select region" />
           </label>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>绑定值</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.boundValue") }}</h2></template>
         <div class="combo-stack">
-          <Message color="help" title="Autocomplete keeps custom text">
+          <r-message color="help" title="Autocomplete keeps custom text">
             {{ command }}
-          </Message>
+          </r-message>
           <div class="tag-row">
-            <Tag color="primary">Region: {{ region }}</Tag>
+            <r-tag color="primary">Region: {{ region }}</r-tag>
           </div>
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

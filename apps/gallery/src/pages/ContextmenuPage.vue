@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Contextmenu, Panel, Tag } from "@mcsl/ui";
+import { RContextmenu, RPanel, RTag } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -14,24 +14,24 @@ const menu = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="context-target context-target--small">
-          <Tag color="help">Right click</Tag>
+          <r-tag color="help">Right click</r-tag>
           <span>Scoped menu target</span>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div ref="target" class="context-target">
-          <Tag color="primary">Instance</Tag>
+          <r-tag color="primary">Instance</r-tag>
           <span>Right click this area</span>
         </div>
-        <Contextmenu :parent="target as any" :menu="menu" />
-      </Panel>
+        <r-contextmenu :parent="target as any" :menu="menu" />
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

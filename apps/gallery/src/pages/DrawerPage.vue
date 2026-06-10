@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, Drawer, Message, Panel, Tag } from "@mcsl/ui";
+import { RButton, RDrawer, RMessage, RPanel, RTag } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -10,41 +10,41 @@ const bottomVisible = ref(false);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="overlay-row">
-          <Button type="primary" color="primary" @click="rightVisible = true">Right Drawer</Button>
-          <Button @click="bottomVisible = true">Bottom Drawer</Button>
+          <r-button type="primary" color="primary" @click="rightVisible = true">Right Drawer</r-button>
+          <r-button @click="bottomVisible = true">Bottom Drawer</r-button>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
-        <Button type="primary" color="primary" icon="fas fa-sidebar" @click="rightVisible = true">
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+        <r-button type="primary" color="primary" icon="fas fa-sidebar" @click="rightVisible = true">
           Open Drawer
-        </Button>
-        <Drawer v-model:visible="rightVisible" title="Instance Details">
+        </r-button>
+        <r-drawer v-model:visible="rightVisible" title="Instance Details">
           <div class="drawer-stack">
-            <Message title="Paper EU-1" color="success" variant="outlined">
+            <r-message title="Paper EU-1" color="success" variant="outlined">
               Running on Java 21 with 12 active players.
-            </Message>
+            </r-message>
             <div class="tag-row">
-              <Tag color="primary">Paper</Tag>
-              <Tag color="success">Online</Tag>
-              <Tag color="help">4 GB</Tag>
+              <r-tag color="primary">Paper</r-tag>
+              <r-tag color="success">Online</r-tag>
+              <r-tag color="help">4 GB</r-tag>
             </div>
           </div>
           <template #footer="{ close }">
-            <Button @click="close">Close</Button>
-            <Button type="primary" color="primary">Open Console</Button>
+            <r-button @click="close">Close</r-button>
+            <r-button type="primary" color="primary">Open Console</r-button>
           </template>
-        </Drawer>
-        <Drawer v-model:visible="bottomVisible" title="Task Queue" placement="bottom">
-          <Message title="Backup queued" color="help">The next scheduled backup starts after upload.</Message>
-        </Drawer>
-      </Panel>
+        </r-drawer>
+        <r-drawer v-model:visible="bottomVisible" title="Task Queue" placement="bottom">
+          <r-message title="Backup queued" color="help">The next scheduled backup starts after upload.</r-message>
+        </r-drawer>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

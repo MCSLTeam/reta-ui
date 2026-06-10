@@ -44,7 +44,7 @@ const id = Math.random().toString(36).slice(-8);
 
 if (inject("mcsl-form-field", undefined) != undefined) {
   console.warn(
-    "[MCSL-UI] A <FormEntry> component is nested inside another <FormEntry> component. This might cause unexpected issues.",
+    "[Reta UI] A <FormEntry> component is nested inside another <FormEntry> component. This might cause unexpected issues.",
   );
 }
 
@@ -52,7 +52,7 @@ const form = inject("mcsl-form", undefined) as FormInstance<any> | undefined;
 
 if (form == undefined) {
   console.error(
-    "[MCSL-UI] A <FormEntry> component is not nested inside a <Form> component.",
+    "[Reta UI] A <FormEntry> component is not nested inside a <Form> component.",
   );
   throw new Error(
     "A <FormEntry> component is not nested inside a <Form> component",
@@ -63,7 +63,7 @@ const field = form.__getField__(props.name);
 
 if (field == undefined) {
   console.error(
-    "[MCSL-UI] The name of a <FormEntry> component is not found in the form!",
+    "[Reta UI] The name of a <FormEntry> component is not found in the form!",
   );
   throw new Error(
     "The name of a <FormEntry> component is not found in the form",

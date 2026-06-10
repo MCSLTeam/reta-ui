@@ -1,52 +1,52 @@
 <script setup lang="ts">
-import { Button, Message, Panel } from "@mcsl/ui";
+import { RButton, RMessage, RPanel } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="message-grid">
-          <Message title="Instance ready" color="success" closeable>
+          <r-message title="Instance ready" color="success" closeable>
             Paper EU-1 is online and accepting console commands.
-          </Message>
-          <Message title="Version drift" color="warning" closeable>
+          </r-message>
+          <r-message title="Version drift" color="warning" closeable>
             Three plugins were built against an older server API.
-          </Message>
-          <Message title="Daemon rejected request" color="danger" closeable>
+          </r-message>
+          <r-message title="Daemon rejected request" color="danger" closeable>
             The selected instance is locked by another operation.
-          </Message>
-          <Message title="Queue updated" color="help" closeable>
+          </r-message>
+          <r-message title="Queue updated" color="help" closeable>
             Backup jobs will run after the current upload finishes.
-          </Message>
+          </r-message>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="message-grid">
-          <Message title="Borderless surface" color="primary">
+          <r-message title="Borderless surface" color="primary">
             Status messages use a quiet tinted background and keep the icon aligned to the text rhythm.
-          </Message>
-          <Message title="Outlined surface" color="danger" variant="outlined">
+          </r-message>
+          <r-message title="Outlined surface" color="danger" variant="outlined">
             Use the outlined variant when the message sits on a dense or similarly tinted surface.
-          </Message>
-          <Message color="surface" icon="fas fa-terminal" variant="soft">
+          </r-message>
+          <r-message color="surface" icon="fas fa-terminal" variant="soft">
             Console output paused while the daemon reconnects.
             <template #buttons="{ close }">
-              <Button size="small" type="text" @click="close">Dismiss</Button>
-              <Button size="small" type="primary" color="primary">Reconnect</Button>
+              <r-button size="small" type="text" @click="close">Dismiss</r-button>
+              <r-button size="small" type="primary" color="primary">Reconnect</r-button>
             </template>
-          </Message>
-          <Message color="help" icon="fas fa-circle-info" variant="text">
+          </r-message>
+          <r-message color="help" icon="fas fa-circle-info" variant="text">
             Inline messages keep the same spacing model without drawing a container.
-          </Message>
+          </r-message>
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

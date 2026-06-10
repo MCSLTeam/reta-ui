@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Panel, Sidebar } from "@mcsl/ui";
+import { RPanel, RSidebar } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
 const pages = [
@@ -13,26 +13,26 @@ const pages = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="sidebar-grid">
-          <Panel size="small">
+          <r-panel size="small">
             <template #header><h4>Expanded</h4></template>
-            <Sidebar :pages="pages" />
-          </Panel>
-          <Panel size="small" class="collapsed-card">
+            <r-sidebar :pages="pages" />
+          </r-panel>
+          <r-panel size="small" class="collapsed-card">
             <template #header><h4>Collapsed</h4></template>
-            <Sidebar :pages="pages" collapsed />
-          </Panel>
+            <r-sidebar :pages="pages" collapsed />
+          </r-panel>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
-        <Sidebar :pages="pages" />
-      </Panel>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+        <r-sidebar :pages="pages" />
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

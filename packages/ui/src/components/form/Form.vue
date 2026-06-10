@@ -13,7 +13,7 @@ const emit = defineEmits<(e: "submit") => void>();
 
 if (inject("mcsl-form", undefined) != undefined) {
   console.warn(
-    "[MCSL-UI] A <Form> component is nested inside another <Form> component. This might cause unexpected issues.",
+    "[Reta UI] A <Form> component is nested inside another <Form> component. This might cause unexpected issues.",
   );
 }
 
@@ -26,7 +26,7 @@ async function submit() {
 onMounted(() => {
   if (Object.keys(props.form.data.value).length > props.form.__fieldMap__.size)
     console.warn(
-      "[MCSL-UI] Form fields aren't completely being read by form components. This might cause unexpected issues.",
+      "[Reta UI] Form fields aren't completely being read by form components. This might cause unexpected issues.",
     );
 });
 

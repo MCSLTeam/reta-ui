@@ -1,13 +1,5 @@
 <script setup lang="ts">
-import {
-  Button,
-  Card,
-  Message,
-  MeterGroup,
-  NavTabs,
-  Panel,
-  Tag,
-} from "@mcsl/ui";
+import { RButton, RCard, RMessage, RMeterGroup, RNavTabs, RPanel, RTag } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
 const qualities = [
@@ -36,8 +28,8 @@ const meter = {
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="composition">
           <div class="composition-main">
             <h3>Server Overview</h3>
@@ -46,38 +38,38 @@ const meter = {
             </p>
           </div>
           <div class="composition-rail">
-            <Tag v-for="quality in qualities" :key="quality">{{ quality }}</Tag>
+            <r-tag v-for="quality in qualities" :key="quality">{{ quality }}</r-tag>
           </div>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="instance-shell">
           <div class="instance-header">
             <div>
               <h3>Paper EU-1</h3>
               <div class="tag-row">
-                <Tag color="success">Online</Tag>
-                <Tag color="primary">Java 21</Tag>
-                <Tag color="help">Paper</Tag>
+                <r-tag color="success">Online</r-tag>
+                <r-tag color="primary">Java 21</r-tag>
+                <r-tag color="help">Paper</r-tag>
               </div>
             </div>
-            <Button type="primary" color="primary" icon="fas fa-terminal">Console</Button>
+            <r-button type="primary" color="primary" icon="fas fa-terminal">Console</r-button>
           </div>
-          <NavTabs :tabs="tabs" />
-          <Card title="Runtime" description="Current resource allocation and process health.">
+          <r-nav-tabs :tabs="tabs" />
+          <r-card title="Runtime" description="Current resource allocation and process health.">
             <div class="card-stack">
-              <MeterGroup :meter="meter" />
-              <Message title="Stable" color="success">
+              <r-meter-group :meter="meter" />
+              <r-message title="Stable" color="success">
                 CPU, memory, and disk usage are inside the expected range.
-              </Message>
+              </r-message>
             </div>
-          </Card>
+          </r-card>
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

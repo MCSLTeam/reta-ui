@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {
   addTemplate,
-  MCSLNotif,
+  RetaNotif,
   removeTemplate,
 } from "../../../utils/notifications.ts";
 import { onMounted, onUnmounted, type VueElement } from "vue";
@@ -10,12 +10,12 @@ import type { MessageProps } from "../../misc/Message.vue";
 const props = withDefaults(
   defineProps<{
     id: string;
-    props?: (notif: MCSLNotif) => MessageProps;
-    systemNotif?: (notif: MCSLNotif) => { title: string; body: string };
+    props?: (notif: RetaNotif) => MessageProps;
+    systemNotif?: (notif: RetaNotif) => { title: string; body: string };
   }>(),
   {
-    props: (notif: MCSLNotif) => notif.settings.data,
-    systemNotif: (notif: MCSLNotif) => ({
+    props: (notif: RetaNotif) => notif.settings.data,
+    systemNotif: (notif: RetaNotif) => ({
       title: notif.settings.data.header,
       body: notif.settings.data.message,
     }),
@@ -23,7 +23,7 @@ const props = withDefaults(
 );
 
 const slots = defineSlots<{
-  default(props: MCSLNotif): VueElement[];
+  default(props: RetaNotif): VueElement[];
 }>();
 
 onMounted(() => {

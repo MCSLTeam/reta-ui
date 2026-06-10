@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FileDropper, FileInfo, Message, Panel } from "@mcsl/ui";
+import { RFileDropper, RFileInfo, RMessage, RPanel } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -9,25 +9,25 @@ const files = ref<File[]>([]);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="upload-stack">
-          <Message title="Upload policy" color="help">
+          <r-message title="Upload policy" color="help">
             Up to five files are accepted in this gallery sample.
-          </Message>
-          <FileDropper v-model="files" :config="{ maxCount: 5 }" :file-info="false" />
+          </r-message>
+          <r-file-dropper v-model="files" :config="{ maxCount: 5 }" :file-info="false" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="upload-stack">
-          <FileDropper v-model="files" :config="{ maxCount: 5 }" />
-          <FileInfo v-model="files" />
+          <r-file-dropper v-model="files" :config="{ maxCount: 5 }" />
+          <r-file-info v-model="files" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

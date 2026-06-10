@@ -1,4 +1,4 @@
-import { MCSLNotif } from "./notifications.ts";
+import { RetaNotif } from "./notifications.ts";
 import { useLocale } from "./stores.ts";
 import { ref } from "vue";
 import { humanReadableSize } from "./utils.ts";
@@ -51,7 +51,7 @@ export function handleUpload(
   if (files && files.length > 0)
     for (const file of files) {
       if (maxSize > 0 && file.size > maxSize) {
-        new MCSLNotif({
+        new RetaNotif({
           data: {
             title: t("ui.notification.title.error"),
             message: t("ui.upload.error.size", {
@@ -63,7 +63,7 @@ export function handleUpload(
         continue;
       }
       if (accept.length > 0 && !accept.includes(file.type)) {
-        new MCSLNotif({
+        new RetaNotif({
           data: {
             title: t("ui.notification.title.error"),
             message: t("ui.upload.error.accept", {
@@ -77,7 +77,7 @@ export function handleUpload(
       result.push(file);
     }
   else
-    new MCSLNotif({
+    new RetaNotif({
       data: {
         title: t("ui.notification.title.error"),
         message: t("ui.upload.error.empty"),
@@ -85,7 +85,7 @@ export function handleUpload(
     }).open();
 
   if (maxCount > 0 && result.length > maxCount) {
-    new MCSLNotif({
+    new RetaNotif({
       data: {
         title: t("ui.notification.title.warning"),
         message: t("ui.upload.error.count", { maxCount }),

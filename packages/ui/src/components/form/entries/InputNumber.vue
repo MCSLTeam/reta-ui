@@ -46,7 +46,7 @@ const formField = inject("mcsl-form-field", undefined) as
 if (formField) {
   if (typeof formField.field.data.value != "number") {
     console.error(
-      "[MCSL-UI] The type of the value for a <InputNumber> component is not number.",
+      "[Reta UI] The type of the value for a <InputNumber> component is not number.",
     );
     throw new Error(
       "The type of the value for a <InputNumber> component is not number.",
@@ -206,9 +206,10 @@ onUnmounted(() => {
     $height: utils.get-size-var("height", $size, $vars);
 
     & > input {
-      width: calc(100% - 2 * $spacing - 2px); // 减去border宽度
-      height: calc($height - 2 * $spacing - 2px);
+      width: 100%;
+      height: $height;
       padding: $spacing;
+      box-sizing: border-box;
       border-radius: utils.get-size-var("border-radius", $size, $vars);
     }
 
@@ -230,6 +231,8 @@ onUnmounted(() => {
 .mcsl-input-text {
   flex: 1;
   transform: translate(0);
+  box-sizing: border-box;
+  padding: 2px;
 }
 
 .mcsl-input-text > input {
@@ -286,9 +289,10 @@ onUnmounted(() => {
 
 .mcsl-input-text > div {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 2px;
+  right: 2px;
   width: 4rem;
+  max-height: calc(100% - 4px);
   display: flex;
   justify-content: center;
   align-items: center;

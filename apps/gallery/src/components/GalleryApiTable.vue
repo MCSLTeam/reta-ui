@@ -4,6 +4,10 @@ import type { GalleryApiItem } from "./galleryApiTypes";
 defineProps<{
   items: GalleryApiItem[];
 }>();
+
+function getDefaultValue(item: GalleryApiItem) {
+  return item.default ?? "-";
+}
 </script>
 
 <template>
@@ -22,7 +26,7 @@ defineProps<{
         <code>{{ item.type }}</code>
       </div>
       <div class="gallery-api-cell" role="cell">
-        <code>{{ item.default ?? "-" }}</code>
+        <code>{{ getDefaultValue(item) }}</code>
       </div>
       <div class="gallery-api-cell" role="cell">{{ item.description }}</div>
     </div>

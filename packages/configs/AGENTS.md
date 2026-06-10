@@ -1,12 +1,12 @@
-# MCSL-UI/packages/configs Guide
+# Reta UI/packages/configs Guide
 
-Guide for agents working on the MCSL UI configs package.
+Guide for agents working on the Reta UI configs package.
 
 ## Project Overview
 
-**configs** is a shared package within the MCSL UI workspace. It contains shared configuration files (like ESLint, Prettier, TypeScript configs) used across the entire monorepo to ensure consistency.
+**configs** is a shared package within the Reta UI workspace. It contains shared configuration files (like ESLint, Prettier, TypeScript configs) used across the entire monorepo to ensure consistency.
 
-- **Repository**: MCSL-UI
+- **Repository**: reta-ui
 - **Language**: JSON, JavaScript/TypeScript
 - **Architecture**: Monorepo Package (Turborepo)
 

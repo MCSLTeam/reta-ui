@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { MCSLNotif, notifications } from "../../../utils/notifications.ts";
+import { RetaNotif, notifications } from "../../../utils/notifications.ts";
 import Message from "../../misc/Message.vue";
 </script>
 
 <template>
   <div class="mcsl-notifications">
     <Message
-      v-for="(item, id) in notifications as Record<string, MCSLNotif>"
+      v-for="(item, id) in notifications as Record<string, RetaNotif>"
       :key="id"
       v-bind="{
         closeable: true,
@@ -18,7 +18,7 @@ import Message from "../../misc/Message.vue";
 
         ...item.template.props(item),
       }"
-      :visible="item.isMcsl && item.opened.value"
+      :visible="item.isReta && item.opened.value"
     >
       <component :is="item.element" />
     </Message>

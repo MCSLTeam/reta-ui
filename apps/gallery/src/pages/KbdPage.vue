@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import { Kbd, Panel } from "@mcsl/ui";
+import { RKbd, RPanel } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="kbd-row">
-          <Kbd size="small">Esc</Kbd>
-          <Kbd>Ctrl</Kbd>
-          <Kbd>K</Kbd>
-          <Kbd>Enter</Kbd>
+          <r-kbd size="small">Esc</r-kbd>
+          <r-kbd>Ctrl</r-kbd>
+          <r-kbd>K</r-kbd>
+          <r-kbd>Enter</r-kbd>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="shortcut-list">
-          <span><Kbd>Ctrl</Kbd><Kbd>K</Kbd></span>
+          <span><r-kbd>Ctrl</r-kbd><r-kbd>K</r-kbd></span>
           <span>Command palette</span>
-          <span><Kbd>Esc</Kbd></span>
+          <span><r-kbd>Esc</r-kbd></span>
           <span>Close overlay</span>
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

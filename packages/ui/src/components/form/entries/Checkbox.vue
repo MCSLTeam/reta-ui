@@ -46,7 +46,7 @@ if (formField) {
     formField.field.data.value !== null
   ) {
     console.error(
-      "[MCSL-UI] The type of the value for a <Checkbox> component is not boolean or null.",
+      "[Reta UI] The type of the value for a <Checkbox> component is not boolean or null.",
     );
     throw new Error(
       "The type of the value for a <Checkbox> component is not boolean or null.",

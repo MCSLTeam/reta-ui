@@ -1,39 +1,49 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, provide, ref, watch } from "vue";
 import { usePreferredReducedMotion } from "@vueuse/core";
 import { useI18n } from "vue-i18n";
 import { AnimatePresence, Motion } from "motion-v";
-import { Button } from "@mcsl/ui";
-import { InputText } from "@mcsl/ui";
-import { Sidebar } from "@mcsl/ui";
-import { Switch } from "@mcsl/ui";
-import { Tag } from "@mcsl/ui";
-import { useAppearance } from "@mcsl/ui";
-import { NotificationTemplate } from "@mcsl/ui";
-import { NotificationOverlay } from "@mcsl/ui";
-import { ContextmenuOverlay } from "@mcsl/ui";
+import { RButton } from "reta-ui";
+import { RInputText } from "reta-ui";
+import { RPopover } from "reta-ui";
+import { RSidebar } from "reta-ui";
+import { RSelect } from "reta-ui";
+import { RSwitch } from "reta-ui";
+import { RTag } from "reta-ui";
+import { useAppearance } from "reta-ui";
+import { useLocale } from "reta-ui";
+import { RNotificationTemplate } from "reta-ui";
+import { RNotificationOverlay } from "reta-ui";
+import { RContextmenuOverlay } from "reta-ui";
 import { useRoute, useRouter } from "vue-router";
+import RetaLogo from "./components/RetaLogo.vue";
 
-const showDense = ref(false);
-const showStrongAccent = ref(false);
+type GalleryTocItem = {
+  id: string;
+  label: string;
+  depth: number;
+};
+
 const search = ref("");
-const t = useI18n().t;
+const i18n = useI18n();
+const t = i18n.t;
 const appearance = useAppearance();
+const localeStore = useLocale();
 const route = useRoute();
 const router = useRouter();
 const preferredReducedMotion = usePreferredReducedMotion();
 const galleryVersion = "v0.1.0";
+const currentTocItems = ref<GalleryTocItem[]>([]);
 
-const topNavItems = [
-  { label: "首页", link: "/" },
-  { label: "文档", link: "/docs" },
-  { label: "组件", link: "/components/buttons" },
-];
+provide("gallery-doc-toc", (items: GalleryTocItem[]) => {
+  currentTocItems.value = items;
+});
 
-const pageClass = computed(() => ({
-  "gallery--dense": showDense.value,
-  "gallery--strong-accent": showStrongAccent.value,
-}));
+const topNavItems = computed(() => [
+  { label: t("gallery.nav.home"), link: "/" },
+  { label: t("gallery.nav.docs"), link: "/docs" },
+  { label: t("gallery.nav.components"), link: "/components/buttons" },
+]);
 
 const routeMotionEnabled = computed(
   () => preferredReducedMotion.value !== "reduce",
@@ -69,117 +79,139 @@ const darkTheme = computed({
   },
 });
 
+const languageOptions = [
+  { label: "中文", value: "zh-CN" },
+  { label: "English", value: "en-US" },
+];
+
+const galleryLanguage = computed({
+  get: () => (String(i18n.locale.value).startsWith("zh") ? "zh-CN" : "en-US"),
+  set: (value: string) => {
+    localeStore.setLocale(value as "zh-CN" | "en-US");
+  },
+});
+
 function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-const docsSidebarGroups = [
+const docsSidebarGroups = computed(() => [
   {
-    label: "文档",
+    label: t("gallery.sidebar.docs"),
     pages: [
-      { label: "介绍", description: "Introduction", link: "/docs" },
-      { label: "安装", description: "Installation", onClick: () => scrollToSection("docs-installation") },
-      { label: "使用", description: "Usage", onClick: () => scrollToSection("docs-usage") },
-      { label: "主题", description: "Theme", onClick: () => scrollToSection("docs-theme") },
-      { label: "组件", description: "Components", onClick: () => scrollToSection("docs-components") },
+      { label: t("gallery.docs.nav.quickStart"), onClick: () => scrollToSection("docs-quick-start") },
+      { label: t("gallery.docs.nav.installation"), onClick: () => scrollToSection("docs-installation") },
+      { label: t("gallery.docs.nav.sfc"), onClick: () => scrollToSection("docs-sfc") },
+      { label: t("gallery.docs.nav.onDemand"), onClick: () => scrollToSection("docs-on-demand") },
+      { label: t("gallery.docs.nav.platforms"), onClick: () => scrollToSection("docs-platforms") },
+      { label: t("gallery.docs.nav.controlled"), onClick: () => scrollToSection("docs-controlled") },
+      { label: t("gallery.docs.nav.guides"), onClick: () => scrollToSection("docs-guides") },
+      { label: t("gallery.docs.nav.theme"), onClick: () => scrollToSection("docs-theme") },
+      { label: t("gallery.docs.nav.i18n"), onClick: () => scrollToSection("docs-i18n") },
     ],
   },
-];
+]);
 
-const componentSidebarGroups = [
+const componentSidebarGroups = computed(() => [
   {
-    label: "概览",
+    label: t("gallery.sidebar.overview"),
     pages: [
-      { label: "页头", description: "PageHeader", link: "/components/page-header" },
-      { label: "组合", description: "Compositions", link: "/components/compositions" },
+      { label: t("gallery.sidebar.pageHeader"), description: "PageHeader", link: "/components/page-header" },
+      { label: t("gallery.sidebar.compositions"), description: "Compositions", link: "/components/compositions" },
     ],
   },
   {
-    label: "通用",
+    label: t("gallery.sidebar.general"),
     pages: [
-      { label: "按钮", description: "Buttons", link: "/components/buttons" },
-      { label: "头像", description: "Avatar", link: "/components/avatar" },
-      { label: "标签", description: "Tag", link: "/components/tag" },
-      { label: "键盘键", description: "Kbd", link: "/components/kbd" },
+      { label: t("gallery.sidebar.buttons"), description: "Buttons", link: "/components/buttons" },
+      { label: t("gallery.sidebar.avatar"), description: "Avatar", link: "/components/avatar" },
+      { label: t("gallery.sidebar.tag"), description: "Tag", link: "/components/tag" },
+      { label: t("gallery.sidebar.kbd"), description: "Kbd", link: "/components/kbd" },
     ],
   },
   {
-    label: "表单",
+    label: t("gallery.sidebar.form"),
     pages: [
-      { label: "输入框", description: "Input", link: "/components/input" },
-      { label: "数字输入", description: "NumberBox", link: "/components/number-box" },
-      { label: "选择器", description: "Select", link: "/components/select" },
-      { label: "自动完成", description: "Combobox", link: "/components/combobox" },
-      { label: "日期时间", description: "Date & Time", link: "/components/date-time" },
-      { label: "滑块", description: "Slider", link: "/components/slider" },
-      { label: "单选框", description: "Radio", link: "/components/radio" },
-      { label: "复选框", description: "Checkbox", link: "/components/checkbox" },
-      { label: "开关", description: "Toggle", link: "/components/toggle" },
+      { label: t("gallery.sidebar.input"), description: "Input", link: "/components/input" },
+      { label: t("gallery.sidebar.numberBox"), description: "NumberBox", link: "/components/number-box" },
+      { label: t("gallery.sidebar.select"), description: "Select", link: "/components/select" },
+      { label: t("gallery.sidebar.combobox"), description: "Combobox", link: "/components/combobox" },
+      { label: t("gallery.sidebar.dateTime"), description: "Date & Time", link: "/components/date-time" },
+      { label: t("gallery.sidebar.slider"), description: "Slider", link: "/components/slider" },
+      { label: t("gallery.sidebar.radio"), description: "Radio", link: "/components/radio" },
+      { label: t("gallery.sidebar.checkbox"), description: "Checkbox", link: "/components/checkbox" },
+      { label: t("gallery.sidebar.toggle"), description: "Toggle", link: "/components/toggle" },
     ],
   },
   {
-    label: "展示",
+    label: t("gallery.sidebar.display"),
     pages: [
-      { label: "表格", description: "Table", link: "/components/table" },
-      { label: "数据表格", description: "DataTable", link: "/components/data-table" },
-      { label: "分割线", description: "Divider", link: "/components/divider" },
-      { label: "折叠面板", description: "Accordion", link: "/components/accordion" },
-      { label: "可复制文本", description: "CopyableText", link: "/components/copyable-text" },
-      { label: "代码", description: "Code", link: "/components/code" },
-      { label: "展示", description: "Display", link: "/components/display" },
-      { label: "编辑器", description: "Editor", link: "/components/editor" },
+      { label: t("gallery.sidebar.table"), description: "Table", link: "/components/table" },
+      { label: t("gallery.sidebar.dataTable"), description: "DataTable", link: "/components/data-table" },
+      { label: t("gallery.sidebar.divider"), description: "Divider", link: "/components/divider" },
+      { label: t("gallery.sidebar.accordion"), description: "Accordion", link: "/components/accordion" },
+      { label: t("gallery.sidebar.copyableText"), description: "CopyableText", link: "/components/copyable-text" },
+      { label: t("gallery.sidebar.code"), description: "Code", link: "/components/code" },
+      { label: t("gallery.sidebar.displayPage"), description: "Display", link: "/components/display" },
+      { label: t("gallery.sidebar.editor"), description: "Editor", link: "/components/editor" },
     ],
   },
   {
-    label: "反馈",
+    label: t("gallery.sidebar.feedback"),
     pages: [
-      { label: "消息", description: "Message", link: "/components/message" },
-      { label: "结果", description: "Result", link: "/components/result" },
-      { label: "空状态", description: "Empty", link: "/components/empty" },
-      { label: "骨架屏", description: "Skeleton", link: "/components/skeleton" },
-      { label: "反馈", description: "Feedback", link: "/components/feedback" },
-      { label: "进度", description: "Progress", link: "/components/progress" },
-      { label: "上传", description: "Upload", link: "/components/upload" },
+      { label: t("gallery.sidebar.message"), description: "Message", link: "/components/message" },
+      { label: t("gallery.sidebar.result"), description: "Result", link: "/components/result" },
+      { label: t("gallery.sidebar.empty"), description: "Empty", link: "/components/empty" },
+      { label: t("gallery.sidebar.skeleton"), description: "Skeleton", link: "/components/skeleton" },
+      { label: t("gallery.sidebar.feedback"), description: "Feedback", link: "/components/feedback" },
+      { label: t("gallery.sidebar.progress"), description: "Progress", link: "/components/progress" },
+      { label: t("gallery.sidebar.upload"), description: "Upload", link: "/components/upload" },
     ],
   },
   {
-    label: "导航",
+    label: t("gallery.sidebar.navigation"),
     pages: [
-      { label: "面包屑", description: "Breadcrumbs", link: "/components/breadcrumbs" },
-      { label: "侧边栏", description: "Sidebar", link: "/components/sidebar" },
-      { label: "树", description: "Tree", link: "/components/tree" },
-      { label: "导航标签", description: "NavTabs", link: "/components/nav-tabs" },
-      { label: "步骤条", description: "Steps", link: "/components/steps" },
-      { label: "分页", description: "Pagination", link: "/components/pagination" },
-      { label: "导航", description: "Navigation", link: "/components/navigation" },
+      { label: t("gallery.sidebar.breadcrumbs"), description: "Breadcrumbs", link: "/components/breadcrumbs" },
+      { label: t("gallery.sidebar.sidebar"), description: "Sidebar", link: "/components/sidebar" },
+      { label: t("gallery.sidebar.tree"), description: "Tree", link: "/components/tree" },
+      { label: t("gallery.sidebar.navTabs"), description: "NavTabs", link: "/components/nav-tabs" },
+      { label: t("gallery.sidebar.steps"), description: "Steps", link: "/components/steps" },
+      { label: t("gallery.sidebar.pagination"), description: "Pagination", link: "/components/pagination" },
+      { label: t("gallery.sidebar.navigation"), description: "Navigation", link: "/components/navigation" },
     ],
   },
   {
-    label: "浮层",
+    label: t("gallery.sidebar.overlay"),
     pages: [
-      { label: "下拉菜单", description: "Dropdown", link: "/components/dropdown" },
-      { label: "抽屉", description: "Drawer", link: "/components/drawer" },
-      { label: "确认对话框", description: "ConfirmDialog", link: "/components/confirm-dialog" },
-      { label: "文字提示", description: "Tooltip", link: "/components/tooltip" },
-      { label: "气泡卡片", description: "Popover", link: "/components/popover" },
-      { label: "模态框", description: "Modal", link: "/components/modal" },
-      { label: "右键菜单", description: "Contextmenu", link: "/components/contextmenu" },
-      { label: "浮层", description: "Overlays", link: "/components/overlays" },
+      { label: t("gallery.sidebar.dropdown"), description: "Dropdown", link: "/components/dropdown" },
+      { label: t("gallery.sidebar.drawer"), description: "Drawer", link: "/components/drawer" },
+      { label: t("gallery.sidebar.confirmDialog"), description: "ConfirmDialog", link: "/components/confirm-dialog" },
+      { label: t("gallery.sidebar.tooltip"), description: "Tooltip", link: "/components/tooltip" },
+      { label: t("gallery.sidebar.popover"), description: "Popover", link: "/components/popover" },
+      { label: t("gallery.sidebar.modal"), description: "Modal", link: "/components/modal" },
+      { label: t("gallery.sidebar.contextmenu"), description: "Contextmenu", link: "/components/contextmenu" },
+      { label: t("gallery.sidebar.overlays"), description: "Overlays", link: "/components/overlays" },
     ],
   },
-];
+]);
 
 const activeSidebarGroups = computed(() => {
-  if (route.path.startsWith("/components")) return componentSidebarGroups;
-  if (route.path === "/docs") return docsSidebarGroups;
+  if (route.path.startsWith("/components")) return componentSidebarGroups.value;
+  if (route.path === "/docs") return docsSidebarGroups.value;
   return [];
 });
 
 const hasSidebar = computed(() => activeSidebarGroups.value.length > 0);
 
+const shellClass = computed(() => ({
+  "gallery-shell--home": route.path === "/",
+  "gallery-shell--docs": route.path === "/docs",
+  "gallery-shell--components": route.path.startsWith("/components"),
+}));
+
 const searchPlaceholder = computed(() => {
-  if (route.path.startsWith("/components")) return "搜索组件";
-  return "搜索文档导航";
+  if (route.path.startsWith("/components")) return t("gallery.controls.searchComponents");
+  return t("gallery.controls.searchDocs");
 });
 
 const filteredSidebarGroups = computed(() => {
@@ -190,7 +222,11 @@ const filteredSidebarGroups = computed(() => {
     .map((group) => ({
       ...group,
       pages: group.pages.filter((page) =>
-        [page.label, page.description, page.link]
+        [
+          page.label,
+          "description" in page ? page.description : "",
+          "link" in page ? page.link : "",
+        ]
           .join(" ")
           .toLowerCase()
           .includes(keyword),
@@ -198,6 +234,10 @@ const filteredSidebarGroups = computed(() => {
     }))
     .filter((group) => group.pages.length > 0);
 });
+
+const visibleMobileSidebarGroups = computed(() =>
+  filteredSidebarGroups.value.filter((group) => group.pages.length > 0),
+);
 
 function isTopNavActive(link: string) {
   if (link === "/components/buttons") return route.path.startsWith("/components");
@@ -208,32 +248,59 @@ function navigateTopbar(link: string) {
   if (route.path !== link) router.push(link);
 }
 
+function activateSidebarPage(page: { link?: string; onClick?: () => void }) {
+  if (page.link) navigateTopbar(page.link);
+  page.onClick?.();
+}
+
+function isSidebarPageActive(page: unknown) {
+  return (
+    typeof page === "object" &&
+    page !== null &&
+    "link" in page &&
+    typeof page.link === "string" &&
+    route.path === page.link
+  );
+}
+
+function scrollToTocItem(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 watch(
   () => route.path,
   () => {
     search.value = "";
+    currentTocItems.value = [];
   },
 );
 </script>
 
 <template>
-  <div :class="pageClass" class="gallery-page">
+  <div class="gallery-page">
     <header class="gallery-topbar">
       <div
         class="gallery-topbar__inner"
         :class="{ 'gallery-topbar__inner--no-search': !hasSidebar }"
       >
-        <div class="gallery-brand">
-          <img
-            class="gallery-brand__mark"
-            src="https://images.mcsl.com.cn/new/MCSLTeam.webp"
-            alt="MCSLTeam"
-          />
-          <strong>MCSL UI</strong>
-        </div>
+        <r-button
+          class="gallery-brand"
+          type="text"
+          aria-label="Reta UI"
+          @click="navigateTopbar('/')"
+        >
+          <div class="gallery-brand__content">
+            <span class="gallery-brand__mark" aria-hidden="true">
+              <RetaLogo />
+            </span>
+            <span class="gallery-brand__copy">
+              <strong>Reta UI</strong>
+            </span>
+          </div>
+        </r-button>
 
-        <nav class="gallery-topnav" aria-label="Primary">
-          <Button
+        <nav class="gallery-topnav" :aria-label="t('gallery.nav.primary')">
+          <r-button
             v-for="item in topNavItems"
             :key="item.link"
             :class="{ 'is-active': isTopNavActive(item.link) }"
@@ -242,46 +309,198 @@ watch(
             @click="navigateTopbar(item.link)"
           >
             {{ item.label }}
-          </Button>
+          </r-button>
         </nav>
 
-        <InputText
+        <r-input-text
           v-if="hasSidebar"
           v-model="search"
-          class="gallery-search-input"
+          class="gallery-search-input gallery-search-input--desktop"
           clearable
           :placeholder="searchPlaceholder"
           size="medium"
         />
 
-        <div class="gallery-controls">
-          <label class="gallery-toggle">
-            <Switch v-model="showDense" size="small" />
-            <span>Dense</span>
+        <div class="gallery-controls gallery-controls--desktop">
+          <label class="gallery-language">
+            <span>{{ t("gallery.controls.language") }}</span>
+            <r-select
+              v-model="galleryLanguage"
+              :options="languageOptions"
+              class="gallery-language__select"
+              size="small"
+            />
           </label>
           <label class="gallery-toggle">
-            <Switch v-model="showStrongAccent" size="small" color="help" />
-            <span>Accent</span>
+            <r-switch v-model="darkTheme" size="small" color="primary" />
+            <span>{{
+              darkTheme
+                ? t("gallery.controls.themeDark")
+                : t("gallery.controls.themeLight")
+            }}</span>
           </label>
-          <label class="gallery-toggle">
-            <Switch v-model="darkTheme" size="small" color="primary" />
-            <span>{{ darkTheme ? "深色" : "浅色" }}</span>
-          </label>
-          <Button
+          <r-button
             icon="fab fa-github"
-            link="https://github.com/MCSLTeam/MCSL-UI"
+            link="https://github.com/MCSLTeam/reta-ui"
             :router-link="false"
             size="small"
             type="text"
           >
             GitHub
-          </Button>
-          <Tag size="small">{{ galleryVersion }}</Tag>
+          </r-button>
+          <r-tag size="small">{{ galleryVersion }}</r-tag>
         </div>
+
+        <r-popover class="gallery-mobile-menu" :title="t('gallery.controls.more')">
+          <template #triggerer="{ toggle }">
+            <r-button
+              :aria-label="t('gallery.controls.more')"
+              icon="fas fa-ellipsis"
+              squared
+              type="text"
+              @click="toggle"
+            />
+          </template>
+
+          <div class="gallery-mobile-menu__body">
+            <section class="gallery-mobile-menu__section">
+              <h3>{{ t("gallery.nav.primary") }}</h3>
+              <div class="gallery-mobile-menu__nav">
+                <r-button
+                  v-for="item in topNavItems"
+                  :key="item.link"
+                  :class="{ 'is-active': isTopNavActive(item.link) }"
+                  align="left"
+                  type="text"
+                  @click="navigateTopbar(item.link)"
+                >
+                  {{ item.label }}
+                </r-button>
+              </div>
+            </section>
+
+            <r-input-text
+              v-if="hasSidebar"
+              v-model="search"
+              clearable
+              :placeholder="searchPlaceholder"
+              size="medium"
+            />
+
+            <section
+              v-if="hasSidebar && visibleMobileSidebarGroups.length"
+              class="gallery-mobile-menu__section"
+            >
+              <div class="gallery-mobile-sidebar-groups">
+                <section
+                  v-for="group in visibleMobileSidebarGroups"
+                  :key="group.label"
+                  class="gallery-mobile-sidebar-group"
+                >
+                  <h3>{{ group.label }}</h3>
+                  <div class="gallery-mobile-menu__nav">
+                    <r-button
+                      v-for="page in group.pages"
+                      :key="page.label"
+                      :class="{ 'is-active': isSidebarPageActive(page) }"
+                      align="left"
+                      type="text"
+                      @click="activateSidebarPage(page)"
+                    >
+                      <span>{{ page.label }}</span>
+                      <small v-if="'description' in page">{{ page.description }}</small>
+                    </r-button>
+                  </div>
+                </section>
+              </div>
+            </section>
+
+            <section
+              v-if="currentTocItems.length"
+              class="gallery-mobile-menu__section"
+            >
+              <h3>{{ t("gallery.sections.onThisPage") }}</h3>
+              <div class="gallery-mobile-menu__nav">
+                <r-button
+                  v-for="item in currentTocItems"
+                  :key="item.id"
+                  :class="{ 'gallery-mobile-menu__toc-sub': item.depth === 3 }"
+                  align="left"
+                  type="text"
+                  @click="scrollToTocItem(item.id)"
+                >
+                  {{ item.label }}
+                </r-button>
+              </div>
+            </section>
+
+            <label class="gallery-language gallery-mobile-menu__row">
+              <span>{{ t("gallery.controls.language") }}</span>
+              <r-select
+                v-model="galleryLanguage"
+                :options="languageOptions"
+                class="gallery-language__select"
+                size="small"
+              />
+            </label>
+
+            <label class="gallery-toggle gallery-mobile-menu__row">
+              <r-switch v-model="darkTheme" size="small" color="primary" />
+              <span>{{
+                darkTheme
+                  ? t("gallery.controls.themeDark")
+                  : t("gallery.controls.themeLight")
+              }}</span>
+            </label>
+
+            <div class="gallery-mobile-menu__actions">
+              <r-button
+                icon="fab fa-github"
+                link="https://github.com/MCSLTeam/reta-ui"
+                :router-link="false"
+                size="small"
+                type="text"
+              >
+                GitHub
+              </r-button>
+              <r-tag size="small">{{ galleryVersion }}</r-tag>
+            </div>
+          </div>
+        </r-popover>
       </div>
     </header>
 
-    <main class="gallery-shell">
+    <div v-if="currentTocItems.length" class="gallery-mobile-toc-bar">
+      <r-popover class="gallery-mobile-toc" :title="t('gallery.sections.onThisPage')">
+        <template #triggerer="{ toggle }">
+          <r-button
+            align="left"
+            class="gallery-mobile-toc__trigger"
+            icon="fas fa-list-ul"
+            type="text"
+            @click="toggle"
+          >
+            {{ t("gallery.sections.onThisPage") }}
+          </r-button>
+        </template>
+
+        <div class="gallery-mobile-toc__body">
+          <r-button
+            v-for="item in currentTocItems"
+            :key="item.id"
+            :class="{ 'gallery-mobile-toc__item--sub': item.depth === 3 }"
+            align="left"
+            class="gallery-mobile-toc__item"
+            type="text"
+            @click="scrollToTocItem(item.id)"
+          >
+            {{ item.label }}
+          </r-button>
+        </div>
+      </r-popover>
+    </div>
+
+    <main class="gallery-shell" :class="shellClass">
       <section class="gallery-docs" :class="{ 'gallery-docs--full': !hasSidebar }">
         <aside v-if="hasSidebar" class="gallery-docs__sidebar">
           <div class="gallery-sidebar-groups">
@@ -291,7 +510,7 @@ watch(
               class="gallery-sidebar-group"
             >
               <h4>{{ group.label }}</h4>
-              <Sidebar :pages="group.pages" size="small" />
+              <r-sidebar :pages="group.pages" size="small" />
             </section>
           </div>
         </aside>
@@ -316,7 +535,7 @@ watch(
       </section>
     </main>
 
-    <NotificationTemplate
+    <r-notification-template
       id="default"
       :props="
         (notif) => ({
@@ -329,12 +548,12 @@ watch(
       <template v-slot="notif">
         <p>{{ notif.settings.data.message }}</p>
       </template>
-    </NotificationTemplate>
-    <NotificationTemplate id="do-not-show-again">
+    </r-notification-template>
+    <r-notification-template id="do-not-show-again">
       <template v-slot="notif">
         <div>
           <p>{{ notif.settings.data.message }}</p>
-          <Button
+          <r-button
             class="gallery-notif-btn"
             type="primary"
             :color="notif.settings.data.color"
@@ -347,12 +566,12 @@ watch(
             size="small"
           >
             {{ t("ui.common.do-not-show-again") }}
-          </Button>
+          </r-button>
         </div>
       </template>
-    </NotificationTemplate>
-    <NotificationOverlay />
-    <ContextmenuOverlay />
+    </r-notification-template>
+    <r-notification-overlay />
+    <r-contextmenu-overlay />
   </div>
 </template>
 
@@ -394,7 +613,7 @@ watch(
   width: min(1500px, 100%);
   height: 100%;
   margin: 0 auto;
-  padding: 0 18px;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -405,28 +624,72 @@ watch(
 .gallery-brand,
 .gallery-topnav,
 .gallery-controls,
-.gallery-toggle {
+.gallery-toggle,
+.gallery-language {
   display: flex;
   align-items: center;
 }
 
 .gallery-brand {
-  gap: 10px;
-  min-width: 168px;
+  min-width: 0;
+  white-space: nowrap;
+  padding: 0 2px 0 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.gallery-brand__content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 11px;
+  flex-wrap: nowrap;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.gallery-brand:hover strong {
+  color: var(--mcsl-color-primary);
 }
 
 .gallery-brand__mark {
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
   display: block;
-  border-radius: 7px;
-  object-fit: cover;
+  border-radius: 9px;
+  box-shadow:
+    0 8px 18px color-mix(in srgb, var(--mcsl-color-primary) 20%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--mcsl-border-color-base) 42%, transparent);
+}
+
+.gallery-brand__copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+  gap: 1px;
+  line-height: 1.05;
 }
 
 .gallery-brand strong {
   color: var(--mcsl-text-color-primary);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 650;
+  white-space: nowrap;
+}
+
+.gallery-brand small {
+  color: var(--mcsl-text-color-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .gallery-topnav {
@@ -442,6 +705,105 @@ watch(
   width: 100%;
 }
 
+.gallery-mobile-menu {
+  display: none;
+}
+
+.gallery-mobile-menu__body {
+  display: grid;
+  gap: 16px;
+  width: min(82vw, 22rem);
+  max-height: min(70vh, 38rem);
+  min-width: 0;
+  overflow: auto;
+}
+
+.gallery-mobile-menu__row {
+  justify-content: space-between;
+  width: 100%;
+}
+
+.gallery-mobile-menu__section,
+.gallery-mobile-sidebar-groups,
+.gallery-mobile-sidebar-group,
+.gallery-mobile-menu__nav {
+  display: grid;
+  min-width: 0;
+}
+
+.gallery-mobile-menu__section,
+.gallery-mobile-sidebar-groups {
+  gap: 12px;
+}
+
+.gallery-mobile-sidebar-group,
+.gallery-mobile-menu__nav {
+  gap: 3px;
+}
+
+.gallery-mobile-menu__section h3,
+.gallery-mobile-sidebar-group h3 {
+  margin: 0;
+  color: var(--mcsl-text-color-secondary);
+  font-size: var(--mcsl-font-size-sm);
+  font-weight: 680;
+  line-height: 1.35;
+}
+
+.gallery-mobile-menu__nav :deep(.mcsl-button) {
+  justify-content: flex-start;
+  min-width: 0;
+  width: 100%;
+}
+
+.gallery-mobile-menu__nav :deep(.mcsl-button.is-active) {
+  color: var(--mcsl-color-primary);
+}
+
+.gallery-mobile-menu__nav :deep(.mcsl-button__label) {
+  display: grid;
+  min-width: 0;
+  text-align: left;
+}
+
+.gallery-mobile-menu__nav small {
+  color: var(--mcsl-text-color-secondary);
+  font-size: var(--mcsl-font-size-xs);
+  line-height: 1.35;
+}
+
+.gallery-mobile-menu__toc-sub {
+  padding-left: 14px;
+}
+
+.gallery-mobile-menu__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.gallery-mobile-toc-bar {
+  display: none;
+}
+
+.gallery-mobile-toc__body {
+  display: grid;
+  gap: 3px;
+  width: min(82vw, 22rem);
+  max-height: min(60vh, 32rem);
+  overflow: auto;
+}
+
+.gallery-mobile-toc__trigger,
+.gallery-mobile-toc__item {
+  width: 100%;
+}
+
+.gallery-mobile-toc__item--sub {
+  padding-left: 14px;
+}
+
 .gallery-controls {
   justify-content: flex-end;
   gap: 18px;
@@ -455,26 +817,49 @@ watch(
   white-space: nowrap;
 }
 
+.gallery-language {
+  gap: 8px;
+  color: var(--mcsl-text-color-regular);
+  font-size: var(--mcsl-font-size-sm);
+  white-space: nowrap;
+}
+
+.gallery-language__select {
+  width: 116px;
+  flex: none;
+}
+
 .gallery-shell {
-  width: min(1500px, 100%);
   height: calc(100vh - 56px);
-  margin: 0 auto;
+  padding: 0;
   box-sizing: border-box;
+}
+
+.gallery-shell--home {
+  padding: 28px;
+}
+
+.gallery-shell--docs,
+.gallery-shell--components {
+  padding: 0 0 0 18px;
 }
 
 .gallery-docs {
   display: grid;
   grid-template-columns: 260px minmax(0, 1fr);
+  column-gap: 30px;
   height: 100%;
   min-height: 0;
 }
 
 .gallery-docs--full {
   grid-template-columns: minmax(0, 1fr);
+  column-gap: 0;
 }
 
 .gallery-docs__sidebar {
   min-height: 0;
+  overflow-x: hidden;
   overflow-y: auto;
   border-right: 1px solid var(--mcsl-border-color-base);
   background: var(--mcsl-bg-color-main);
@@ -483,7 +868,7 @@ watch(
 .gallery-sidebar-groups {
   display: grid;
   gap: 18px;
-  padding: 20px 18px 32px;
+  padding: 20px 0 32px;
 }
 
 .gallery-sidebar-group {
@@ -511,8 +896,9 @@ watch(
 .gallery-docs__content {
   min-width: 0;
   min-height: 0;
+  margin-top: 28px;
   overflow-y: auto;
-  padding: 28px 34px 56px;
+  padding: 0 0 56px;
 }
 
 .gallery-route-motion {
@@ -521,50 +907,71 @@ watch(
   will-change: opacity, transform, filter;
 }
 
-.gallery--dense .gallery-topbar__inner,
-.gallery--dense .gallery-shell {
-  width: min(1360px, 100%);
-}
-
-.gallery--dense .gallery-docs {
-  grid-template-columns: 230px minmax(0, 1fr);
-}
-
-.gallery--dense .gallery-docs--full {
-  grid-template-columns: minmax(0, 1fr);
-}
-
 .gallery-notif-btn {
   margin: var(--mcsl-spacing-4xs) var(--mcsl-spacing-2xs) 0 auto;
 }
 
-@media (max-width: 1080px) {
-  .gallery-topbar {
-    height: auto;
-  }
-
+@media (max-width: 1180px) {
   .gallery-topbar__inner {
-    grid-template-columns: auto minmax(180px, 1fr);
-    gap: 10px 18px;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 14px;
     min-height: 56px;
-    padding: 10px 14px;
   }
 
   .gallery-topbar__inner--no-search {
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-columns: auto minmax(0, 1fr) auto;
   }
 
   .gallery-topnav {
-    order: 3;
-    grid-column: 1 / -1;
+    grid-column: 2;
+    justify-content: center;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
 
-  .gallery-controls {
-    gap: 12px;
+  .gallery-topnav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .gallery-mobile-menu {
+    grid-column: 3;
+    justify-self: end;
+    display: flex;
+    justify-content: flex-end;
+    width: auto;
+    min-width: 0;
+  }
+
+  .gallery-search-input--desktop,
+  .gallery-controls--desktop {
+    display: none;
   }
 
   .gallery-shell {
-    height: calc(100vh - 104px);
+    height: calc(100vh - 56px);
+  }
+}
+
+@media (max-width: 1080px) {
+  .gallery-mobile-toc-bar {
+    position: sticky;
+    top: 56px;
+    z-index: 19;
+    display: block;
+    border-bottom: 1px solid var(--mcsl-border-color-base);
+    background: color-mix(in srgb, var(--mcsl-bg-color-main) 96%, transparent);
+    backdrop-filter: blur(12px);
+  }
+
+  .gallery-mobile-toc {
+    display: block;
+    width: 100%;
+  }
+
+  .gallery-mobile-toc__trigger {
+    min-height: 38px;
+    padding-left: 18px;
   }
 }
 
@@ -577,64 +984,92 @@ watch(
 
   .gallery-topbar {
     position: relative;
+    height: auto;
   }
 
   .gallery-topbar__inner {
-    grid-template-columns: 1fr;
-    align-items: stretch;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "brand menu";
+    gap: 10px 14px;
+    align-items: center;
+    min-height: 56px;
+    padding: 10px 0;
   }
 
   .gallery-brand {
+    grid-area: brand;
     min-width: 0;
+    justify-self: start;
   }
 
-  .gallery-topnav,
-  .gallery-controls {
+  .gallery-topnav {
+    grid-area: nav;
+    grid-column: auto;
+    display: none;
     justify-content: flex-start;
     overflow-x: auto;
     padding-bottom: 2px;
   }
 
-  .gallery-search-input {
-    width: 100%;
-    box-sizing: border-box;
+  .gallery-mobile-menu {
+    grid-area: menu;
+    grid-column: auto;
+    justify-self: end;
+    align-self: center;
   }
 
   .gallery-shell {
     height: auto;
-    min-height: calc(100vh - 170px);
+    min-height: calc(100vh - 112px);
+  }
+
+  .gallery-shell--home {
+    padding: 18px;
+  }
+
+  .gallery-shell--docs,
+  .gallery-shell--components {
+    padding: 0 0 0 14px;
+  }
+
+  .gallery-mobile-toc-bar {
+    position: relative;
+    top: auto;
+  }
+
+  .gallery-mobile-toc__trigger {
+    min-height: 36px;
+    padding-left: 14px;
   }
 
   .gallery-docs {
     grid-template-columns: 1fr;
+    column-gap: 0;
     height: auto;
   }
 
   .gallery-docs__sidebar {
-    position: sticky;
-    top: 0;
-    z-index: 5;
-    overflow-x: auto;
-    overflow-y: hidden;
-    border-right: 0;
-    border-bottom: 1px solid var(--mcsl-border-color-base);
+    display: none;
   }
 
   .gallery-sidebar-groups {
-    display: flex;
+    display: grid;
     gap: 16px;
-    width: max-content;
-    min-width: 100%;
-    padding: 12px 14px;
+    width: 100%;
+    min-width: 0;
+    padding: 12px 0;
   }
 
   .gallery-sidebar-group {
-    min-width: 190px;
+    min-width: 0;
+    width: 100%;
   }
 
   .gallery-docs__content {
+    margin-top: 18px;
     overflow-y: visible;
-    padding: 18px 14px 32px;
+    padding: 0 0 32px;
   }
 }
 

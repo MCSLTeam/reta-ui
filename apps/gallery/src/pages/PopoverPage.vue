@@ -1,43 +1,43 @@
 <script setup lang="ts">
-import { Button, Message, Panel, Popover, Tag } from "@mcsl/ui";
+import { RButton, RMessage, RPanel, RPopover, RTag } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="overlay-row">
-          <Popover title="Inspector">
+          <r-popover title="Inspector">
             <template #triggerer="{ toggle }">
-              <Button @click="toggle">Bottom</Button>
+              <r-button @click="toggle">Bottom</r-button>
             </template>
-            <Message color="help" variant="text">Compact contextual content.</Message>
-          </Popover>
-          <Popover title="Status" default-pos="right">
+            <r-message color="help" variant="text">Compact contextual content.</r-message>
+          </r-popover>
+          <r-popover title="Status" default-pos="right">
             <template #triggerer="{ toggle }">
-              <Button @click="toggle">Right</Button>
+              <r-button @click="toggle">Right</r-button>
             </template>
-            <Tag color="success">Online</Tag>
-          </Popover>
+            <r-tag color="success">Online</r-tag>
+          </r-popover>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
-        <Popover title="Inspector">
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+        <r-popover title="Inspector">
           <template #triggerer="{ toggle }">
-            <Button icon="fas fa-magnifying-glass-chart" @click="toggle">Open Popover</Button>
+            <r-button icon="fas fa-magnifying-glass-chart" @click="toggle">Open Popover</r-button>
           </template>
           <div class="popover-body">
-            <Tag color="success">Running</Tag>
+            <r-tag color="success">Running</r-tag>
             <span>12 players · 41 ms latency</span>
           </div>
-        </Popover>
-      </Panel>
+        </r-popover>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

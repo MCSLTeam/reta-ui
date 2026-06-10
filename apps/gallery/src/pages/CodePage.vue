@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { Code, Message, Panel } from "@mcsl/ui";
+import { RCode, RMessage, RPanel } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 import { galleryCodeHighlighter } from "../components/galleryCodeHighlighter";
 
 const vueExample = `<script setup lang="ts">
-import { Button, Code } from "@mcsl/ui";
+import { RButton, RCode } from "reta-ui";
 
 const snippet = "const status = 'running';";
 ` + "</scr" + `ipt>
 
 <template>
-  <Code :code="snippet" language="typescript" />
-  <Button type="primary">Deploy</Button>
+  <r-code :code="snippet" language="typescript" />
+  <r-button type="primary">Deploy</r-button>
 </template>`;
 
 const tsExample = `type InstanceStatus = "running" | "stopped";
@@ -20,7 +20,7 @@ export function formatStatus(status: InstanceStatus) {
   return status === "running" ? "Online" : "Offline";
 }`;
 
-const plainExample = `MCSL UI Code component
+const plainExample = `Reta UI Code component
 - Does not bundle highlight.js
 - Accepts an external hljs-compatible highlighter
 - Falls back to escaped plain text`;
@@ -29,35 +29,35 @@ const plainExample = `MCSL UI Code component
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
+      <r-panel class="doc-section" shadow="hover">
         <template #header><h2>Code</h2></template>
         <div class="code-stack">
-          <Code
+          <r-code
             :code="vueExample"
             language="xml"
             :hljs="galleryCodeHighlighter"
             line-numbers
           />
-          <Code :code="plainExample" language="plaintext" max-height="12rem" />
+          <r-code :code="plainExample" language="plaintext" max-height="12rem" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>外部高亮器</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.externalHighlighter") }}</h2></template>
         <div class="code-stack">
-          <Message color="help" title="No bundled highlighter">
+          <r-message color="help" title="No bundled highlighter">
             Code only receives an hljs-compatible object from the application.
-          </Message>
-          <Code
+          </r-message>
+          <r-code
             :code="tsExample"
             language="typescript"
             :hljs="galleryCodeHighlighter"
             line-numbers
           />
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

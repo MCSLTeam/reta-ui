@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, DataTable, Panel, Tag } from "@mcsl/ui";
+import { RButton, RDataTable, RPanel, RTag } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -31,9 +31,9 @@ function statusColor(status: unknown) {
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
+      <r-panel class="doc-section" shadow="hover">
         <template #header><h2>Data Table</h2></template>
-        <DataTable
+        <r-data-table
           v-model:selected-keys="selectedKeys"
           v-model:sort-by="sortBy"
           v-model:sort-order="sortOrder"
@@ -42,23 +42,23 @@ function statusColor(status: unknown) {
           selectable
         >
           <template #cell-status="{ value }">
-            <Tag :color="statusColor(value)" size="small">{{ value }}</Tag>
+            <r-tag :color="statusColor(value)" size="small">{{ value }}</r-tag>
           </template>
           <template #actions>
-            <Button size="small" type="text">Open</Button>
+            <r-button size="small" type="text">Open</r-button>
           </template>
-        </DataTable>
-      </Panel>
+        </r-data-table>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
+      <r-panel class="doc-section" shadow="hover">
         <template #header><h2>States</h2></template>
         <div class="datatable-stack">
-          <DataTable :columns="columns" :rows="[]" />
-          <DataTable :columns="columns" :rows="rows.slice(0, 2)" loading />
+          <r-data-table :columns="columns" :rows="[]" />
+          <r-data-table :columns="columns" :rows="rows.slice(0, 2)" loading />
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

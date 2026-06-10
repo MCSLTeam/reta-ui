@@ -37,7 +37,7 @@ const formField = inject("mcsl-form-field", undefined) as
 if (formField) {
   if (typeof formField.field.data.value != "boolean") {
     console.error(
-      "[MCSL-UI] The type of the value for a <Switch> component is not boolean.",
+      "[Reta UI] The type of the value for a <Switch> component is not boolean.",
     );
     throw new Error(
       "The type of the value for a <Switch> component is not boolean.",

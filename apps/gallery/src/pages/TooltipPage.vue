@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import { Button, Panel, Tooltip } from "@mcsl/ui";
+import { RButton, RPanel, RTooltip } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="overlay-row">
-          <Tooltip content="Start the selected instance.">
+          <r-tooltip content="Start the selected instance.">
             <template #triggerer="{ open, close }">
-              <Button @mouseenter="open" @mouseleave="close">Top</Button>
+              <r-button @mouseenter="open" @mouseleave="close">Top</r-button>
             </template>
-          </Tooltip>
-          <Tooltip content="Opens in a side panel." default-pos="right">
+          </r-tooltip>
+          <r-tooltip content="Opens in a side panel." default-pos="right">
             <template #triggerer="{ open, close }">
-              <Button @mouseenter="open" @mouseleave="close">Right</Button>
+              <r-button @mouseenter="open" @mouseleave="close">Right</r-button>
             </template>
-          </Tooltip>
+          </r-tooltip>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
-        <Tooltip content="Helpful detail for this action.">
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+        <r-tooltip content="Helpful detail for this action.">
           <template #triggerer="{ open, close }">
-            <Button icon="fas fa-circle-info" @mouseenter="open" @mouseleave="close">
+            <r-button icon="fas fa-circle-info" @mouseenter="open" @mouseleave="close">
               Hover me
-            </Button>
+            </r-button>
           </template>
-        </Tooltip>
-      </Panel>
+        </r-tooltip>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

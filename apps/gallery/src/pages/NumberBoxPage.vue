@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { InputNumber, Panel } from "@mcsl/ui";
+import { RInputNumber, RPanel } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -11,31 +11,31 @@ const players = ref(20);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="number-grid">
-          <InputNumber v-model="port" :min="1" :max="65535" />
-          <InputNumber v-model="memory" :step="512" :min="1024" />
-          <InputNumber v-model="players" size="small" :min="1" :max="200" />
-          <InputNumber v-model="players" disabled />
+          <r-input-number v-model="port" :min="1" :max="65535" />
+          <r-input-number v-model="memory" :step="512" :min="1024" />
+          <r-input-number v-model="players" size="small" :min="1" :max="200" />
+          <r-input-number v-model="players" disabled />
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="number-grid">
           <label class="field">
             <span>Port</span>
-            <InputNumber v-model="port" :min="1" :max="65535" />
+            <r-input-number v-model="port" :min="1" :max="65535" />
           </label>
           <label class="field">
             <span>Memory</span>
-            <InputNumber v-model="memory" :step="512" :min="1024" />
+            <r-input-number v-model="memory" :step="512" :min="1024" />
           </label>
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

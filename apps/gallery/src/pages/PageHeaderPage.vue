@@ -1,36 +1,36 @@
 <script setup lang="ts">
-import { Button, ButtonGroup, PageHeader, Panel } from "@mcsl/ui";
+import { RButton, RButtonGroup, RPageHeader, RPanel } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
-        <PageHeader
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+        <r-page-header
           title="Instances"
           subtitle="Manage server lifecycle, runtime policy, and operational state."
         >
           <template #actions>
-            <Button type="primary" color="primary" icon="fas fa-plus">Create</Button>
+            <r-button type="primary" color="primary" icon="fas fa-plus">Create</r-button>
           </template>
-        </PageHeader>
-      </Panel>
+        </r-page-header>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
-        <PageHeader title="Paper EU-1" subtitle="Online · Java 21 · 4 GB memory">
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+        <r-page-header title="Paper EU-1" subtitle="Online · Java 21 · 4 GB memory">
           <template #actions>
-            <ButtonGroup>
-              <Button icon="fas fa-rotate-right">Restart</Button>
-              <Button type="primary" color="danger" icon="fas fa-stop">Stop</Button>
-            </ButtonGroup>
+            <r-button-group>
+              <r-button icon="fas fa-rotate-right">Restart</r-button>
+              <r-button type="primary" color="danger" icon="fas fa-stop">Stop</r-button>
+            </r-button-group>
           </template>
-        </PageHeader>
-      </Panel>
+        </r-page-header>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

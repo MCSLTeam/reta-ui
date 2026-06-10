@@ -1,83 +1,126 @@
 <script setup lang="ts">
-import {
-  Button,
-  ButtonGroup,
-  Card,
-  Message,
-  MeterGroup,
-  NavTabs,
-  Panel,
-  ProgressBar,
-  Tag,
-} from "@mcsl/ui";
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
+import { RBadge, RButton, RButtonGroup, RCard, RMessage, RMeterGroup, RNavTabs, RPanel, RProgressBar, RTag } from "reta-ui";
 
-const stats = [
-  { label: "组件体系", value: "40+" },
-  { label: "文档规范", value: "API" },
-  { label: "主题能力", value: "2" },
-];
+const { t } = useI18n();
+
+const stats = computed(() => [
+  { label: t("gallery.home.stats.components"), value: "40+" },
+  { label: t("gallery.home.stats.docs"), value: "API" },
+  { label: t("gallery.home.stats.themes"), value: "2" },
+]);
 
 const previewTabs = [
-  { label: "Overview", icon: "fas fa-gauge" },
-  { label: "Console", icon: "fas fa-terminal" },
-  { label: "Backups", icon: "fas fa-clock-rotate-left" },
+  { label: "Runtime", icon: "fas fa-gauge" },
+  { label: "Tasks", icon: "fas fa-list-check" },
+  { label: "Network", icon: "fas fa-diagram-project" },
 ];
 
 const meter = {
   length: 100,
   values: [
-    { label: "CPU", length: 18, type: "success" },
-    { label: "RAM", length: 42, type: "primary" },
-    { label: "Disk", length: 64, type: "warning" },
+    { label: "CPU", length: 22, type: "success" },
+    { label: "RAM", length: 46, type: "primary" },
+    { label: "Disk", length: 68, type: "warning" },
   ],
 };
 
-const routes = [
-  { title: "组件", description: "从基础控件、表单到浮层和数据展示，查看完整可交互示例。", link: "/components/buttons", icon: "fas fa-cubes" },
-  { title: "文档", description: "安装、使用、主题和组件约定集中在同一份产品文档里。", link: "/docs", icon: "fas fa-book-open" },
-  { title: "样式系统", description: "围绕控制台、运维面板和复杂工作流建立一致的视觉语言。", link: "/components/page-header", icon: "fas fa-palette" },
-];
+const previewJobs = computed(() => [
+  { label: t("gallery.home.preview.jobs.backup"), value: "02:18", color: "primary" },
+  { label: t("gallery.home.preview.jobs.sync"), value: "64%", color: "success" },
+  { label: t("gallery.home.preview.jobs.alert"), value: "1", color: "warning" },
+]);
+
+const routes = computed(() => [
+  {
+    title: t("gallery.home.routes.components.title"),
+    description: t("gallery.home.routes.components.description"),
+    link: "/components/buttons",
+    icon: "fas fa-cubes",
+  },
+  {
+    title: t("gallery.home.routes.docs.title"),
+    description: t("gallery.home.routes.docs.description"),
+    link: "/docs",
+    icon: "fas fa-book-open",
+  },
+  {
+    title: t("gallery.home.routes.system.title"),
+    description: t("gallery.home.routes.system.description"),
+    link: "/components/page-header",
+    icon: "fas fa-palette",
+  },
+]);
 </script>
 
 <template>
   <div class="home-page">
     <section class="home-hero">
       <div class="home-hero__copy">
-        <Tag color="primary" size="small">Vue Component System</Tag>
-        <h1>MCSL UI</h1>
-        <p>
-          面向复杂控制台、运维面板和生产工具的 Vue 组件系统。
-          MCSL UI 是一个独立产品，专注把高密度信息、稳定交互和统一主题整理成可复用的界面基础设施。
-        </p>
-        <ButtonGroup>
-          <Button link="/components/buttons" type="primary" color="primary" icon="fas fa-arrow-right">
-            浏览组件
-          </Button>
-          <Button link="/docs" icon="fas fa-book">阅读文档</Button>
-        </ButtonGroup>
+        <r-tag color="primary" size="small">{{ t("gallery.home.eyebrow") }}</r-tag>
+        <h1>Reta UI</h1>
+        <p>{{ t("gallery.home.description") }}</p>
+        <r-button-group>
+          <r-button link="/components/buttons" type="primary" color="primary" icon="fas fa-arrow-right">
+            {{ t("gallery.home.browseComponents") }}
+          </r-button>
+          <r-button link="/docs" icon="fas fa-book">
+            {{ t("gallery.home.readDocs") }}
+          </r-button>
+        </r-button-group>
       </div>
 
-      <Panel class="home-preview" shadow="hover">
-        <div class="preview-header">
-          <div>
-            <h2>Paper EU-1</h2>
-            <div class="preview-tags">
-              <Tag color="success" size="small">Online</Tag>
-              <Tag color="primary" size="small">Java 21</Tag>
-              <Tag color="help" size="small">Paper</Tag>
-            </div>
+      <section class="home-preview" aria-label="Reta UI example">
+        <div class="preview-window">
+          <div class="preview-window__bar">
+            <span />
+            <span />
+            <span />
           </div>
-          <Button squared icon="fas fa-terminal" type="primary" color="primary" />
+          <div class="preview-header">
+            <div>
+              <h2>{{ t("gallery.home.preview.title") }}</h2>
+              <p>{{ t("gallery.home.preview.subtitle") }}</p>
+            </div>
+            <r-badge value="3" color="success">
+              <r-button squared icon="fas fa-terminal" type="primary" color="primary" />
+            </r-badge>
+          </div>
+
+          <r-nav-tabs :tabs="previewTabs" />
+
+          <div class="preview-grid">
+            <r-panel size="small">
+              <template #header><h3>{{ t("gallery.home.preview.health") }}</h3></template>
+              <div class="preview-health">
+                <div class="preview-health__status">
+                  <strong>99.98%</strong>
+                  <r-tag color="success" size="small">{{ t("gallery.home.preview.online") }}</r-tag>
+                </div>
+                <r-meter-group :meter="meter" />
+              </div>
+            </r-panel>
+
+            <r-panel size="small">
+              <template #header><h3>{{ t("gallery.home.preview.queue") }}</h3></template>
+              <div class="preview-jobs">
+                <div v-for="job in previewJobs" :key="job.label" class="preview-job">
+                  <span>{{ job.label }}</span>
+                  <r-tag :color="job.color as any" size="small">{{ job.value }}</r-tag>
+                </div>
+              </div>
+            </r-panel>
+          </div>
+
+          <div class="preview-footer">
+            <r-message :title="t('gallery.home.preview.messageTitle')" color="success" variant="soft">
+              {{ t("gallery.home.preview.message") }}
+            </r-message>
+            <r-progress-bar :value="64" color="primary" />
+          </div>
         </div>
-        <NavTabs :tabs="previewTabs" />
-        <div class="preview-body">
-          <MeterGroup :meter="meter" />
-          <ProgressBar :value="64" color="primary" />
-          <Message title="Runtime stable" color="success" variant="soft">
-            Dense data, clear status, and quiet controls share the same visual rhythm.
-          </Message>
-        </div>
-      </Panel>
+      </section>
     </section>
 
     <section class="home-stats" aria-label="Gallery stats">
@@ -88,17 +131,17 @@ const routes = [
     </section>
 
     <section class="home-routes">
-      <Card
+      <r-card
         v-for="item in routes"
         :key="item.link"
         :title="item.title"
         :description="item.description"
         shadow="hover"
       >
-        <Button :icon="item.icon" :link="item.link" type="text" color="primary">
-          打开
-        </Button>
-      </Card>
+        <r-button :icon="item.icon" :link="item.link" type="text" color="primary">
+          {{ t("gallery.home.routes.open") }}
+        </r-button>
+      </r-card>
     </section>
   </div>
 </template>
@@ -106,6 +149,7 @@ const routes = [
 <style scoped lang="scss">
 .home-page {
   display: grid;
+  min-width: 0;
   gap: 22px;
 }
 
@@ -114,12 +158,14 @@ const routes = [
   grid-template-columns: minmax(0, 0.95fr) minmax(420px, 0.75fr);
   gap: 34px;
   align-items: center;
+  min-width: 0;
   min-height: min(520px, calc(100vh - 150px));
 }
 
 .home-hero__copy {
   display: grid;
   justify-items: start;
+  min-width: 0;
   gap: 20px;
 }
 
@@ -130,6 +176,7 @@ const routes = [
   font-size: clamp(46px, 7.2vw, 96px);
   font-weight: 760;
   line-height: 0.95;
+  overflow-wrap: anywhere;
 }
 
 .home-hero__copy p {
@@ -137,34 +184,95 @@ const routes = [
   color: var(--mcsl-text-color-regular);
   font-size: var(--mcsl-font-size-lg);
   line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.home-hero__copy :deep(.mcsl-button-group) {
+  flex-wrap: wrap;
 }
 
 .home-preview {
-  align-self: stretch;
+  align-self: center;
+  min-width: 0;
+}
+
+.preview-window {
+  display: grid;
+  min-width: 0;
+  gap: 18px;
+  padding: 16px;
+  border: 1px solid var(--mcsl-border-color-base);
+  border-radius: var(--mcsl-border-radius-md);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--mcsl-bg-color-overlay) 94%, transparent), var(--mcsl-bg-color-main)),
+    var(--mcsl-bg-color-overlay);
+  box-shadow: 0 18px 60px color-mix(in srgb, var(--mcsl-color-primary) 12%, transparent);
+}
+
+.preview-window__bar {
+  display: flex;
+  gap: 7px;
+}
+
+.preview-window__bar span {
+  width: 9px;
+  height: 9px;
+  border-radius: 99px;
+  background: var(--mcsl-border-color-dark);
 }
 
 .preview-header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 18px;
   align-items: start;
+  min-width: 0;
 }
 
 .preview-header h2 {
-  margin: 0 0 10px;
+  margin: 0 0 6px;
   font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
-.preview-tags {
+.preview-header p {
+  margin: 0;
+  color: var(--mcsl-text-color-secondary);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.8fr;
+  gap: 12px;
+}
+
+.preview-health,
+.preview-jobs,
+.preview-footer {
+  display: grid;
+  gap: 14px;
+}
+
+.preview-health__status,
+.preview-job {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
-.preview-body {
-  display: grid;
-  gap: 16px;
-  margin-top: 18px;
+.preview-health__status strong {
+  color: var(--mcsl-text-color-primary);
+  font-size: var(--mcsl-font-size-3xl);
+}
+
+.preview-job span {
+  color: var(--mcsl-text-color-regular);
+  font-size: var(--mcsl-font-size-sm);
 }
 
 .home-stats {
@@ -205,7 +313,8 @@ const routes = [
 
 @media (max-width: 1080px) {
   .home-hero,
-  .home-routes {
+  .home-routes,
+  .preview-grid {
     grid-template-columns: 1fr;
   }
 
@@ -215,6 +324,26 @@ const routes = [
 }
 
 @media (max-width: 620px) {
+  .home-page {
+    gap: 18px;
+  }
+
+  .home-hero {
+    gap: 24px;
+  }
+
+  .home-hero__copy h1 {
+    font-size: clamp(42px, 18vw, 72px);
+  }
+
+  .home-hero__copy p {
+    font-size: var(--mcsl-font-size-md);
+  }
+
+  .preview-window {
+    padding: 12px;
+  }
+
   .home-stats {
     grid-template-columns: 1fr;
   }

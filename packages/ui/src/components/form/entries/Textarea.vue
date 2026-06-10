@@ -63,7 +63,7 @@ const formField = inject("mcsl-form-field", undefined) as
 if (formField) {
   if (typeof formField.field.data.value != "string") {
     console.error(
-      "[MCSL-UI] The type of the value for a <Textarea> component is not string.",
+      "[Reta UI] The type of the value for a <Textarea> component is not string.",
     );
     throw new Error(
       "The type of the value for a <Textarea> component is not string.",
@@ -148,7 +148,9 @@ if (formField) {
 }
 
 .mcsl-textarea {
-  margin: 0;
+  box-sizing: border-box;
+  margin: 0 0 0 2px;
+  width: calc(100% - 2px);
   background: var(--mcsl-bg-color-overlay);
   border: 1px solid var(--mcsl-border-color-base);
   outline: 0 solid transparent;

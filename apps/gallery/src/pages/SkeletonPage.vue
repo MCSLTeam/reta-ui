@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import { Avatar, Panel, Skeleton } from "@mcsl/ui";
+import { RAvatar, RPanel, RSkeleton } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="skeleton-stack">
-          <Skeleton :lines="3" height="14px" />
-          <Skeleton width="64%" height="16px" />
-          <Skeleton width="36%" height="28px" :rounded="false" />
+          <r-skeleton :lines="3" height="14px" />
+          <r-skeleton width="64%" height="16px" />
+          <r-skeleton width="36%" height="28px" :rounded="false" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="skeleton-card">
-          <Avatar text="LD" />
+          <r-avatar text="LD" />
           <div>
-            <Skeleton width="44%" height="15px" />
-            <Skeleton :lines="3" height="12px" />
+            <r-skeleton width="44%" height="15px" />
+            <r-skeleton :lines="3" height="12px" />
           </div>
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, Message, Modal, Panel } from "@mcsl/ui";
+import { RButton, RMessage, RModal, RPanel } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -10,30 +10,30 @@ const formVisible = ref(false);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="overlay-row">
-          <Button @click="previewVisible = true">Preview</Button>
-          <Button type="primary" color="primary" @click="formVisible = true">Create</Button>
+          <r-button @click="previewVisible = true">Preview</r-button>
+          <r-button type="primary" color="primary" @click="formVisible = true">Create</r-button>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
-        <Button icon="fas fa-window-restore" @click="previewVisible = true">Open Modal</Button>
-        <Modal v-model:visible="previewVisible" header="Modal Preview" max-width="520px">
-          <Message title="Paper EU-1" color="help">
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+        <r-button icon="fas fa-window-restore" @click="previewVisible = true">Open Modal</r-button>
+        <r-modal v-model:visible="previewVisible" header="Modal Preview" max-width="520px">
+          <r-message title="Paper EU-1" color="help">
             Modal surfaces stay focused and short.
-          </Message>
-        </Modal>
-        <Modal v-model:visible="formVisible" header="Create Instance" max-width="560px">
-          <Message title="Template selected" color="success">
+          </r-message>
+        </r-modal>
+        <r-modal v-model:visible="formVisible" header="Create Instance" max-width="560px">
+          <r-message title="Template selected" color="success">
             Paper 1.21.1 with Java 21 runtime.
-          </Message>
-        </Modal>
-      </Panel>
+          </r-message>
+        </r-modal>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

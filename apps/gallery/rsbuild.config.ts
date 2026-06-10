@@ -23,7 +23,7 @@ export default defineConfig({
     }),
   ],
   html: {
-    title: "MCSL UI Gallery",
+    title: "Reta UI Gallery",
     mountId: "app",
     tags: [
       {
@@ -40,18 +40,11 @@ export default defineConfig({
         children:
           "(()=>{try{const t=localStorage.getItem('theme')||'system';const d=window.matchMedia('(prefers-color-scheme: dark)').matches;const isDark=t==='dark'||t==='\"dark\"'||((t==='system'||t==='\"system\"')&&d);const c=isDark?'dark':'light';document.documentElement.classList.remove(isDark?'light':'dark');document.documentElement.classList.add(c);document.documentElement.style.colorScheme=c;}catch(e){}})();",
       },
-      {
-        tag: "link",
-        attrs: {
-          rel: "stylesheet",
-          href: "https://cdn-font.hyperos.mi.com/font/css?family=MiSans_VF:VF:Latin,Chinese_Simplify,Chinese_Traditional_TW&display=swap",
-        },
-      },
     ],
   },
   source: {
     define: {
-      "import.meta.env.APP_VERSION_NAME": JSON.stringify("MCSL UI"),
+      "import.meta.env.APP_VERSION_NAME": JSON.stringify("Reta UI"),
       "import.meta.env.APP_VERSION": JSON.stringify("0.1.0"),
       "import.meta.env.APP_VERSION_APP": JSON.stringify("ui"),
       "import.meta.env.APP_VERSION_WEB": JSON.stringify("gallery"),

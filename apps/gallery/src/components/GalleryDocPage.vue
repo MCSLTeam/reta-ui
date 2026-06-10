@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from "vue";
+import { computed, inject, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import { Code } from "@mcsl/ui";
+import { useI18n } from "vue-i18n";
+import { RButton, RCode } from "reta-ui";
 import GalleryApiTable from "./GalleryApiTable.vue";
 import { galleryCodeHighlighter } from "./galleryCodeHighlighter";
 import { defaultGalleryApiDocs, galleryApiDocs } from "./galleryApiDocs";
 import { galleryPageSources } from "./galleryPageSources";
 
 type PageMeta = {
-  title: string;
+  titleKey: string;
   name: string;
-  description: string;
+  descriptionKey: string;
 };
 
 type TocItem = {
@@ -29,261 +30,269 @@ const props = withDefaults(
   {
     title: "",
     description: "",
-    apiTitle: "API / Props",
+    apiTitle: "",
     apiDescription: "",
   },
 );
 
 const route = useRoute();
+const i18n = useI18n();
+const t = i18n.t;
 const apiItems = computed(() => galleryApiDocs[route.path] ?? defaultGalleryApiDocs);
 const pageSource = computed(() => galleryPageSources[route.path]?.trim() ?? "");
 const exampleCode = computed(() => extractComponentExample(pageSource.value));
 const pageRoot = ref<HTMLElement>();
 const tocItems = ref<TocItem[]>([]);
+const syncAppToc = inject<((items: TocItem[]) => void) | undefined>(
+  "gallery-doc-toc",
+  undefined,
+);
 
 const pageMeta: Record<string, PageMeta> = {
   "/components/page-header": {
-    title: "页头",
+    titleKey: "gallery.sidebar.pageHeader",
     name: "PageHeader",
-    description: "承载页面标题、说明和主要操作，适合详情页与工作台顶部区域。",
+    descriptionKey: "gallery.componentMeta.pageHeader",
   },
   "/components/buttons": {
-    title: "按钮",
+    titleKey: "gallery.sidebar.buttons",
     name: "Button",
-    description: "按钮用于触发操作，支持语义颜色、图标、加载和组合使用。",
+    descriptionKey: "gallery.componentMeta.buttons",
   },
   "/components/input": {
-    title: "输入框",
-    name: "Input",
-    description: "用于录入文本、密码、多行内容和可调整尺寸的编辑区域。",
+    titleKey: "gallery.sidebar.input",
+    name: "InputText",
+    descriptionKey: "gallery.componentMeta.input",
   },
   "/components/number-box": {
-    title: "数字输入",
-    name: "NumberBox",
-    description: "用于录入带上下限和步进控制的数值。",
+    titleKey: "gallery.sidebar.numberBox",
+    name: "InputNumber",
+    descriptionKey: "gallery.componentMeta.numberBox",
   },
   "/components/select": {
-    title: "选择器",
+    titleKey: "gallery.sidebar.select",
     name: "Select",
-    description: "从一组明确选项中选择值，适合表单和筛选场景。",
+    descriptionKey: "gallery.componentMeta.select",
   },
   "/components/combobox": {
-    title: "组合框",
+    titleKey: "gallery.sidebar.combobox",
     name: "Combobox",
-    description: "组合输入与选择能力，支持搜索、补全和自定义筛选。",
+    descriptionKey: "gallery.componentMeta.combobox",
   },
   "/components/date-time": {
-    title: "日期时间",
-    name: "Date & Time",
-    description: "处理日期、时间和时间窗口选择。",
+    titleKey: "gallery.sidebar.dateTime",
+    name: "DatePicker / TimePicker",
+    descriptionKey: "gallery.componentMeta.dateTime",
   },
   "/components/slider": {
-    title: "滑块",
+    titleKey: "gallery.sidebar.slider",
     name: "Slider",
-    description: "在连续或离散范围内调整数值。",
+    descriptionKey: "gallery.componentMeta.slider",
   },
   "/components/radio": {
-    title: "单选框",
-    name: "Radio",
-    description: "在互斥选项中选择一个值。",
+    titleKey: "gallery.sidebar.radio",
+    name: "RadioGroup",
+    descriptionKey: "gallery.componentMeta.radio",
   },
   "/components/checkbox": {
-    title: "复选框",
+    titleKey: "gallery.sidebar.checkbox",
     name: "Checkbox",
-    description: "表示独立布尔状态，也支持三态选择。",
+    descriptionKey: "gallery.componentMeta.checkbox",
   },
   "/components/toggle": {
-    title: "开关",
-    name: "Toggle",
-    description: "用于立即启用或关闭一个设置。",
+    titleKey: "gallery.sidebar.toggle",
+    name: "Switch",
+    descriptionKey: "gallery.componentMeta.toggle",
   },
   "/components/result": {
-    title: "结果",
+    titleKey: "gallery.sidebar.result",
     name: "Result",
-    description: "展示操作完成、失败或需要关注后的总结状态。",
+    descriptionKey: "gallery.componentMeta.result",
   },
   "/components/empty": {
-    title: "空状态",
+    titleKey: "gallery.sidebar.empty",
     name: "Empty",
-    description: "在没有数据或没有可操作对象时提供清晰反馈。",
+    descriptionKey: "gallery.componentMeta.empty",
   },
   "/components/divider": {
-    title: "分割线",
+    titleKey: "gallery.sidebar.divider",
     name: "Divider",
-    description: "分隔内容区域，建立轻量的视觉层级。",
+    descriptionKey: "gallery.componentMeta.divider",
   },
   "/components/copyable-text": {
-    title: "可复制文本",
+    titleKey: "gallery.sidebar.copyableText",
     name: "CopyableText",
-    description: "展示短文本并提供复制反馈。",
+    descriptionKey: "gallery.componentMeta.copyableText",
   },
   "/components/code": {
-    title: "代码",
+    titleKey: "gallery.sidebar.code",
     name: "Code",
-    description: "展示源码片段。组件接收外部 hljs 实例，不内置高亮包。",
+    descriptionKey: "gallery.componentMeta.code",
   },
   "/components/skeleton": {
-    title: "骨架屏",
+    titleKey: "gallery.sidebar.skeleton",
     name: "Skeleton",
-    description: "在内容加载前占位，降低布局跳动和等待感。",
+    descriptionKey: "gallery.componentMeta.skeleton",
   },
   "/components/display": {
-    title: "展示",
+    titleKey: "gallery.sidebar.displayPage",
     name: "Display",
-    description: "用于信息展示、空状态和结果状态的基础组合。",
+    descriptionKey: "gallery.componentMeta.displayPage",
   },
   "/components/feedback": {
-    title: "反馈",
+    titleKey: "gallery.sidebar.feedback",
     name: "Feedback",
-    description: "组织消息、结果、空状态和进度反馈。",
+    descriptionKey: "gallery.componentMeta.feedback",
   },
   "/components/navigation": {
-    title: "导航",
+    titleKey: "gallery.sidebar.navigation",
     name: "Navigation",
-    description: "帮助用户在页面、模块和层级之间移动。",
+    descriptionKey: "gallery.componentMeta.navigation",
   },
   "/components/breadcrumbs": {
-    title: "面包屑",
+    titleKey: "gallery.sidebar.breadcrumbs",
     name: "Breadcrumbs",
-    description: "展示当前位置的层级路径。",
+    descriptionKey: "gallery.componentMeta.breadcrumbs",
   },
   "/components/sidebar": {
-    title: "侧边栏",
+    titleKey: "gallery.sidebar.sidebar",
     name: "Sidebar",
-    description: "用于承载页面级或模块级导航。",
+    descriptionKey: "gallery.componentMeta.sidebar",
   },
   "/components/nav-tabs": {
-    title: "导航标签",
+    titleKey: "gallery.sidebar.navTabs",
     name: "NavTabs",
-    description: "在同一上下文内切换平级视图。",
+    descriptionKey: "gallery.componentMeta.navTabs",
   },
   "/components/steps": {
-    title: "步骤条",
+    titleKey: "gallery.sidebar.steps",
     name: "Steps",
-    description: "表达流程进度和当前步骤。",
+    descriptionKey: "gallery.componentMeta.steps",
   },
   "/components/dropdown": {
-    title: "下拉菜单",
-    name: "Dropdown",
-    description: "在触发器附近展示一组可选操作。",
+    titleKey: "gallery.sidebar.dropdown",
+    name: "DropdownMenu",
+    descriptionKey: "gallery.componentMeta.dropdown",
   },
   "/components/drawer": {
-    title: "抽屉",
+    titleKey: "gallery.sidebar.drawer",
     name: "Drawer",
-    description: "从屏幕边缘展开补充内容或表单。",
+    descriptionKey: "gallery.componentMeta.drawer",
   },
   "/components/confirm-dialog": {
-    title: "确认对话框",
+    titleKey: "gallery.sidebar.confirmDialog",
     name: "ConfirmDialog",
-    description: "在高影响操作前请求用户确认。",
+    descriptionKey: "gallery.componentMeta.confirmDialog",
   },
   "/components/tooltip": {
-    title: "文字提示",
+    titleKey: "gallery.sidebar.tooltip",
     name: "Tooltip",
-    description: "为控件提供短提示或补充说明。",
+    descriptionKey: "gallery.componentMeta.tooltip",
   },
   "/components/popover": {
-    title: "气泡卡片",
+    titleKey: "gallery.sidebar.popover",
     name: "Popover",
-    description: "在触发器附近展示轻量内容。",
+    descriptionKey: "gallery.componentMeta.popover",
   },
   "/components/modal": {
-    title: "模态框",
+    titleKey: "gallery.sidebar.modal",
     name: "Modal",
-    description: "聚焦展示需要立即处理的内容。",
+    descriptionKey: "gallery.componentMeta.modal",
   },
   "/components/contextmenu": {
-    title: "右键菜单",
+    titleKey: "gallery.sidebar.contextmenu",
     name: "Contextmenu",
-    description: "在上下文位置展示相关操作。",
+    descriptionKey: "gallery.componentMeta.contextmenu",
   },
   "/components/overlays": {
-    title: "浮层",
+    titleKey: "gallery.sidebar.overlays",
     name: "Overlays",
-    description: "组合展示弹出层、提示层和确认层。",
+    descriptionKey: "gallery.componentMeta.overlays",
   },
   "/components/progress": {
-    title: "进度",
-    name: "Progress",
-    description: "展示确定或不确定任务的推进状态。",
+    titleKey: "gallery.sidebar.progress",
+    name: "ProgressBar / RSpinner",
+    descriptionKey: "gallery.componentMeta.progress",
   },
   "/components/pagination": {
-    title: "分页",
+    titleKey: "gallery.sidebar.pagination",
     name: "Pagination",
-    description: "在大量数据中分页导航。",
+    descriptionKey: "gallery.componentMeta.pagination",
   },
   "/components/upload": {
-    title: "上传",
-    name: "Upload",
-    description: "选择、拖放和展示待上传文件。",
+    titleKey: "gallery.sidebar.upload",
+    name: "FileDropper / RFileInfo",
+    descriptionKey: "gallery.componentMeta.upload",
   },
   "/components/avatar": {
-    title: "头像",
+    titleKey: "gallery.sidebar.avatar",
     name: "Avatar",
-    description: "表示用户、实例或实体身份。",
+    descriptionKey: "gallery.componentMeta.avatar",
   },
   "/components/tag": {
-    title: "标签",
+    titleKey: "gallery.sidebar.tag",
     name: "Tag",
-    description: "展示短状态、分类或属性。",
+    descriptionKey: "gallery.componentMeta.tag",
   },
   "/components/table": {
-    title: "表格",
+    titleKey: "gallery.sidebar.table",
     name: "Table",
-    description: "展示结构化数据和基础列表信息。",
+    descriptionKey: "gallery.componentMeta.table",
   },
   "/components/data-table": {
-    title: "数据表格",
+    titleKey: "gallery.sidebar.dataTable",
     name: "DataTable",
-    description: "展示可排序、可组织的大量行列数据。",
+    descriptionKey: "gallery.componentMeta.dataTable",
   },
   "/components/message": {
-    title: "消息",
+    titleKey: "gallery.sidebar.message",
     name: "Message",
-    description: "展示状态提示、说明和可关闭反馈。",
+    descriptionKey: "gallery.componentMeta.message",
   },
   "/components/kbd": {
-    title: "键盘键",
+    titleKey: "gallery.sidebar.kbd",
     name: "Kbd",
-    description: "表示快捷键或键盘输入。",
+    descriptionKey: "gallery.componentMeta.kbd",
   },
   "/components/editor": {
-    title: "编辑器",
-    name: "Editor",
-    description: "承载配置、脚本或大段文本编辑。",
+    titleKey: "gallery.sidebar.editor",
+    name: "CodeEditor",
+    descriptionKey: "gallery.componentMeta.editor",
   },
   "/components/accordion": {
-    title: "折叠面板",
+    titleKey: "gallery.sidebar.accordion",
     name: "Accordion",
-    description: "组织可展开和收起的内容组。",
+    descriptionKey: "gallery.componentMeta.accordion",
   },
   "/components/tree": {
-    title: "树",
+    titleKey: "gallery.sidebar.tree",
     name: "Tree",
-    description: "展示文件、配置或实体的层级结构。",
+    descriptionKey: "gallery.componentMeta.tree",
   },
   "/components/compositions": {
-    title: "组合示例",
+    titleKey: "gallery.sidebar.compositions",
     name: "Compositions",
-    description: "展示多个组件在真实界面中的组合方式。",
+    descriptionKey: "gallery.componentMeta.compositions",
   },
 };
 
 const fallbackMeta = computed<PageMeta>(() => ({
-  title: route.path
+  titleKey: "",
+  name: route.path
     .split("/")
     .filter(Boolean)
     .pop()
-    ?.replaceAll("-", " ") ?? "组件",
-  name: "",
-  description: "MCSL UI 组件示例与 API 文档。",
+    ?.replaceAll("-", " ") ?? "",
+  descriptionKey: "gallery.componentMeta.fallbackDescription",
 }));
 
 const resolvedMeta = computed(() => pageMeta[route.path] ?? fallbackMeta.value);
-const resolvedTitle = computed(() => props.title || resolvedMeta.value.title);
+const resolvedTitle = computed(() =>
+  props.title || (resolvedMeta.value.titleKey ? t(resolvedMeta.value.titleKey) : t("gallery.componentMeta.fallbackTitle")),
+);
 const resolvedName = computed(() => resolvedMeta.value.name);
 const resolvedDescription = computed(
-  () => props.description || resolvedMeta.value.description,
+  () => props.description || t(resolvedMeta.value.descriptionKey),
 );
 
 function scrollToHeading(id: string) {
@@ -347,7 +356,7 @@ function extractComponentTemplate(template: string) {
       continue;
     }
 
-    if (/^ {6}<Panel\b[^>]*class="doc-section"/.test(line) || /^ {6}<\/Panel>$/.test(line)) {
+    if (/^ {6}<r-panel\b[^>]*class="doc-section"/.test(line) || /^ {6}<\/r-panel>$/.test(line)) {
       continue;
     }
 
@@ -363,7 +372,7 @@ function cleanScriptSetup(script: string, componentTemplate: string) {
     .filter((line) => !/from "\.\.\/components\/GalleryDocPage\.vue";/.test(line))
     .join("\n")
     .replace(
-      /import\s+\{([^}]+)\}\s+from\s+"@repo\/ui";/g,
+      /import\s+\{([^}]+)\}\s+from\s+"(?:@(repo|mcsl)\/ui|reta-ui)";/g,
       (_, imports: string) => {
         const usedImports = imports
           .split(",")
@@ -371,11 +380,12 @@ function cleanScriptSetup(script: string, componentTemplate: string) {
           .filter(Boolean)
           .filter((item: string) => {
             const localName = item.split(/\s+as\s+/).pop()?.trim() ?? item;
+            const kebabName = toKebabCase(localName);
 
-            return new RegExp(`<${escapeRegExp(localName)}(?:\\s|>|/)`).test(componentTemplate);
+            return new RegExp(`<(${escapeRegExp(localName)}|${escapeRegExp(kebabName)})(?:\\s|>|/)`).test(componentTemplate);
           });
 
-        return usedImports.length ? `import { ${usedImports.join(", ")} } from "@mcsl/ui";` : "";
+        return usedImports.length ? `import { ${usedImports.join(", ")} } from "reta-ui";` : "";
       },
     );
 
@@ -409,6 +419,13 @@ function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function toKebabCase(value: string) {
+  return value
+    .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
+    .replace(/([A-Z])([A-Z][a-z])/g, "$1-$2")
+    .toLowerCase();
+}
+
 async function collectToc() {
   await nextTick();
 
@@ -416,7 +433,7 @@ async function collectToc() {
     pageRoot.value?.querySelectorAll<HTMLElement>(".gallery-doc-main h2, .gallery-doc-main h3") ?? [],
   ).filter((heading) => heading.textContent?.trim());
 
-  tocItems.value = headings.map((heading, index) => {
+  const items = headings.map((heading, index) => {
     if (!heading.id) heading.id = headingId(heading.textContent ?? "", index);
 
     return {
@@ -425,10 +442,14 @@ async function collectToc() {
       depth: heading.tagName === "H3" ? 3 : 2,
     };
   });
+
+  tocItems.value = items;
+  syncAppToc?.(items);
 }
 
-watch(() => route.path, collectToc);
+watch(() => [route.path, i18n.locale.value], collectToc);
 onMounted(collectToc);
+onUnmounted(() => syncAppToc?.([]));
 </script>
 
 <template>
@@ -443,22 +464,22 @@ onMounted(collectToc);
       </header>
 
       <section class="gallery-doc-chapter">
-        <h2>演示</h2>
+        <h2>{{ t("gallery.sections.demo") }}</h2>
 
         <div class="page-shell">
           <slot name="effects">
-            <div class="doc-section__fallback">No effects preview.</div>
+            <div class="doc-section__fallback">{{ t("gallery.sections.noEffects") }}</div>
           </slot>
 
           <slot name="demo">
-            <div class="doc-section__fallback">No live demo.</div>
+            <div class="doc-section__fallback">{{ t("gallery.sections.noDemo") }}</div>
           </slot>
         </div>
       </section>
 
       <section v-if="exampleCode" class="gallery-doc-chapter gallery-code-section">
-        <h2>示例代码</h2>
-        <Code
+        <h2>{{ t("gallery.sections.exampleCode") }}</h2>
+        <r-code
           :code="exampleCode"
           language="xml"
           :hljs="galleryCodeHighlighter"
@@ -468,7 +489,7 @@ onMounted(collectToc);
 
       <slot name="api">
         <section class="gallery-doc-chapter">
-          <h2>API</h2>
+          <h2>{{ apiTitle || t("gallery.sections.api") }}</h2>
           <p v-if="apiDescription" class="gallery-doc-chapter__description">
             {{ apiDescription }}
           </p>
@@ -477,18 +498,23 @@ onMounted(collectToc);
       </slot>
     </article>
 
-    <aside v-if="tocItems.length" class="gallery-doc-toc" aria-label="On this page">
+    <aside
+      v-if="tocItems.length"
+      class="gallery-doc-toc"
+      :aria-label="t('gallery.sections.onThisPage')"
+    >
       <nav>
-        <button
+        <RButton
           v-for="item in tocItems"
           :key="item.id"
           :class="{ 'gallery-doc-toc__item--sub': item.depth === 3 }"
           class="gallery-doc-toc__item"
-          type="button"
+          align="left"
+          type="text"
           @click="scrollToHeading(item.id)"
         >
           {{ item.label }}
-        </button>
+        </RButton>
       </nav>
     </aside>
   </div>
@@ -500,7 +526,6 @@ onMounted(collectToc);
   grid-template-columns: minmax(0, 1fr) 180px;
   gap: 44px;
   align-items: start;
-  max-width: 1180px;
 }
 
 .gallery-doc-main {
@@ -537,7 +562,6 @@ onMounted(collectToc);
 }
 
 .gallery-doc-hero p {
-  max-width: 680px;
   margin: 26px 0 0;
   color: var(--mcsl-text-color-regular);
   font-size: var(--mcsl-font-size-md);
@@ -659,18 +683,26 @@ onMounted(collectToc);
   position: sticky;
   top: 88px;
   align-self: start;
+  width: 100%;
+  min-width: 0;
   max-height: calc(100vh - 112px);
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   padding: 1px 0 8px;
+  box-sizing: border-box;
 }
 
 .gallery-doc-toc nav {
   display: grid;
+  min-width: 0;
   gap: 2px;
 }
 
 .gallery-doc-toc__item {
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 5px 0;
   border: 0;
   background: transparent;
@@ -679,10 +711,20 @@ onMounted(collectToc);
   font-size: var(--mcsl-font-size-sm);
   line-height: 1.35;
   text-align: left;
+  overflow-wrap: anywhere;
   cursor: pointer;
   transition:
     color var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-standard),
     transform var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-standard);
+}
+
+:deep(.gallery-doc-toc__item .mcsl-button__label) {
+  justify-content: flex-start;
+  width: 100%;
+  min-width: 0;
+  text-align: left;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .gallery-doc-toc__item:hover,
@@ -700,7 +742,7 @@ onMounted(collectToc);
   color: var(--mcsl-text-color-secondary);
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1080px) {
   .gallery-doc-layout {
     grid-template-columns: 1fr;
     gap: 0;
@@ -721,6 +763,9 @@ onMounted(collectToc);
   .gallery-doc-toc {
     display: none;
   }
+}
+
+@media (max-width: 720px) {
 
   .page-shell {
     gap: 18px;

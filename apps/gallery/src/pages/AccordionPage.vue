@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Accordion, AccordionPanel, CollapsablePanel, Message, Panel } from "@mcsl/ui";
+import { RAccordion, RAccordionPanel, RCollapsablePanel, RMessage, RPanel } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -11,45 +11,45 @@ const collapsed = ref(false);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
+      <r-panel class="doc-section" shadow="hover">
         <template #header><h2>Accordion</h2></template>
-        <Accordion v-model="activeSingle" class="accordion-surface">
-          <AccordionPanel name="runtime" header="Runtime">
+        <r-accordion v-model="activeSingle" class="accordion-surface">
+          <r-accordion-panel name="runtime" header="Runtime">
             Java path, launch arguments, and environment variables.
-          </AccordionPanel>
-          <AccordionPanel name="network" header="Network">
+          </r-accordion-panel>
+          <r-accordion-panel name="network" header="Network">
             Ports, address binding, proxy, and query visibility.
-          </AccordionPanel>
-          <AccordionPanel name="danger" header="Danger Zone" disabled>
+          </r-accordion-panel>
+          <r-accordion-panel name="danger" header="Danger Zone" disabled>
             Disabled panels keep their context without accepting input.
-          </AccordionPanel>
-        </Accordion>
-      </Panel>
+          </r-accordion-panel>
+        </r-accordion>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>多面板</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.multiplePanels") }}</h2></template>
         <div class="accordion-stack">
-          <Accordion v-model="activeMultiple" multiple class="accordion-surface">
-            <AccordionPanel name="memory" header="Memory">
+          <r-accordion v-model="activeMultiple" multiple class="accordion-surface">
+            <r-accordion-panel name="memory" header="Memory">
               Allocate a predictable heap range for the selected server profile.
-            </AccordionPanel>
-            <AccordionPanel name="network" header="Network">
+            </r-accordion-panel>
+            <r-accordion-panel name="network" header="Network">
               Keep public and daemon-only ports visually separated.
-            </AccordionPanel>
-            <AccordionPanel name="backup" header="Backup">
+            </r-accordion-panel>
+            <r-accordion-panel name="backup" header="Backup">
               Scheduled snapshots can be opened together with runtime settings.
-            </AccordionPanel>
-          </Accordion>
+            </r-accordion-panel>
+          </r-accordion>
 
-          <CollapsablePanel v-model:collapsed="collapsed" header="Standalone Collapsible" shadow="never">
-            <Message color="help" title="Composable primitive">
+          <r-collapsable-panel v-model:collapsed="collapsed" header="Standalone Collapsible" shadow="never">
+            <r-message color="help" title="Composable primitive">
               Use CollapsablePanel when a single area needs disclosure without group state.
-            </Message>
-          </CollapsablePanel>
+            </r-message>
+          </r-collapsable-panel>
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

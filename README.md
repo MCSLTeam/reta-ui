@@ -1,6 +1,6 @@
-# MCSL UI
+# Reta UI
 
-MCSL UI is the standalone workspace for the MCSL component library and its gallery.
+Reta UI is the standalone workspace for the Reta component library and its gallery.
 
 ## Packages
 

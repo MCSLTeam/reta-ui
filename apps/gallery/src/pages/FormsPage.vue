@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import {
-  Button,
-  Checkbox,
-  InputNumber,
-  InputText,
-  Panel,
-  Select,
-  Textarea,
-} from "@mcsl/ui";
+import { RButton, RCheckbox, RInputNumber, RInputText, RPanel, RSelect, RTextarea } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
 const instanceName = ref("Future Paper EU-1");
@@ -35,54 +27,54 @@ const coreOptions = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="form-grid">
           <label class="field">
             <span>Instance Name</span>
-            <InputText v-model="instanceName" placeholder="Future Paper EU-1" />
+            <r-input-text v-model="instanceName" placeholder="Future Paper EU-1" />
           </label>
           <label class="field">
             <span>Runtime</span>
-            <Select v-model="runtime" :options="runtimeOptions" />
+            <r-select v-model="runtime" :options="runtimeOptions" />
           </label>
           <label class="field">
             <span>Port</span>
-            <InputNumber v-model="port" :min="1" :max="65535" />
+            <r-input-number v-model="port" :min="1" :max="65535" />
           </label>
           <label class="field">
             <span>Memory</span>
-            <InputNumber v-model="memory" :step="512" :min="1024" />
+            <r-input-number v-model="memory" :step="512" :min="1024" />
           </label>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="form-grid form-grid--wide">
           <label class="field">
             <span>Server Core</span>
-            <Select v-model="core" :options="coreOptions" />
+            <r-select v-model="core" :options="coreOptions" />
           </label>
           <label class="field">
             <span>Runtime</span>
-            <Select v-model="runtime" :options="runtimeOptions" />
+            <r-select v-model="runtime" :options="runtimeOptions" />
           </label>
           <label class="field field--full">
             <span>Notes</span>
-            <Textarea v-model="note" resizeable />
+            <r-textarea v-model="note" resizeable />
           </label>
-          <Checkbox v-model="backups">Enable scheduled backups</Checkbox>
+          <r-checkbox v-model="backups">Enable scheduled backups</r-checkbox>
           <div class="actions">
-            <Button type="primary" color="primary" icon="fas fa-floppy-disk">
+            <r-button type="primary" color="primary" icon="fas fa-floppy-disk">
               Save
-            </Button>
-            <Button icon="fas fa-eye">Preview</Button>
+            </r-button>
+            <r-button icon="fas fa-eye">Preview</r-button>
           </div>
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

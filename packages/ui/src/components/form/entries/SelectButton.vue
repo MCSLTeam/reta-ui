@@ -44,7 +44,7 @@ const formField = inject("mcsl-form-field", undefined) as
 if (formField) {
   if (props.multiple && !Array.isArray(formField.field.data.value)) {
     console.error(
-      '[MCSL-UI] The type of the value for a <SelectButton> component with `:multiple="true"` is not array.',
+      '[Reta UI] The type of the value for a <SelectButton> component with `:multiple="true"` is not array.',
     );
     throw new Error(
       'The type of the value for a <SelectButton> component with `:multiple="true"` is not array.',

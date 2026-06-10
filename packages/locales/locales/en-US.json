@@ -113,6 +113,7 @@
             "confirm": "Confirm",
             "continue": "Continue",
             "copy": "copy",
+            "do-not-show-again": "Do not show again",
             "done": "Completed",
             "next-step": "Next",
             "prev-step": "Back"
@@ -133,6 +134,11 @@
             "unallocated": "Calculating"
         },
         "notification": {
+            "message": {
+                "not-allowed": "System notifications are disabled. Allow them in your browser settings.",
+                "not-supported": "This browser does not support system notifications.",
+                "request": "Click Allow in the popup to enable system notifications."
+            },
             "title": {
                 "error": "Error",
                 "success": "success",

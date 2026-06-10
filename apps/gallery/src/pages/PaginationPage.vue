@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ItemsPagination, Pagination, Panel } from "@mcsl/ui";
+import { RItemsPagination, RPagination, RPanel } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -11,24 +11,24 @@ const itemPage = ref(3);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="pagination-stack">
-          <Pagination v-model:page="shortPage" :length="5" size="small" />
-          <Pagination v-model:page="longPage" :length="16" />
-          <Pagination v-model:page="longPage" :length="128" size="large" />
+          <r-pagination v-model:page="shortPage" :length="5" size="small" />
+          <r-pagination v-model:page="longPage" :length="16" />
+          <r-pagination v-model:page="longPage" :length="128" size="large" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="pagination-stack">
-          <Pagination v-model:page="longPage" :length="16" />
-          <ItemsPagination v-model:page="itemPage" :item-per-page="20" :total="240" />
+          <r-pagination v-model:page="longPage" :length="16" />
+          <r-items-pagination v-model:page="itemPage" :item-per-page="20" :total="240" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

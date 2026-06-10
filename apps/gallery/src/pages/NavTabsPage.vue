@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NavTabs, Panel } from "@mcsl/ui";
+import { RNavTabs, RPanel } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
 const tabs = [
@@ -13,21 +13,21 @@ const tabs = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="tabs-stack">
-          <NavTabs :tabs="tabs" size="small" />
-          <NavTabs :tabs="tabs" />
-          <NavTabs :tabs="tabs" size="large" color="help" />
+          <r-nav-tabs :tabs="tabs" size="small" />
+          <r-nav-tabs :tabs="tabs" />
+          <r-nav-tabs :tabs="tabs" size="large" color="help" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
-        <NavTabs :tabs="tabs" shadow="hover" />
-      </Panel>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+        <r-nav-tabs :tabs="tabs" shadow="hover" />
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

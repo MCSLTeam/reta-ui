@@ -1,36 +1,36 @@
 <script setup lang="ts">
-import { Badge, Button, Panel, Tag } from "@mcsl/ui";
+import { RBadge, RButton, RPanel, RTag } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="tag-row">
-          <Tag color="surface">Surface</Tag>
-          <Tag color="primary">Primary</Tag>
-          <Tag color="success">Healthy</Tag>
-          <Tag color="warning">Warning</Tag>
-          <Tag color="danger">Danger</Tag>
-          <Tag color="help">Help</Tag>
+          <r-tag color="surface">Surface</r-tag>
+          <r-tag color="primary">Primary</r-tag>
+          <r-tag color="success">Healthy</r-tag>
+          <r-tag color="warning">Warning</r-tag>
+          <r-tag color="danger">Danger</r-tag>
+          <r-tag color="help">Help</r-tag>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="tag-row">
-          <Badge value="8" color="danger">
-            <Button icon="fas fa-bell">Notifications</Button>
-          </Badge>
-          <Tag color="success">Running</Tag>
-          <Tag color="primary">Java 21</Tag>
-          <Tag color="help">Paper</Tag>
+          <r-badge value="8" color="danger">
+            <r-button icon="fas fa-bell">Notifications</r-button>
+          </r-badge>
+          <r-tag color="success">Running</r-tag>
+          <r-tag color="primary">Java 21</r-tag>
+          <r-tag color="help">Paper</r-tag>
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

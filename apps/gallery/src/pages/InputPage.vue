@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { InputNumber, InputText, Panel, Textarea } from "@mcsl/ui";
+import { RInputNumber, RInputText, RPanel, RTextarea } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
@@ -16,69 +16,69 @@ const port = ref(25565);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
+      <r-panel class="doc-section" shadow="hover">
         <template #header><h2>Inputs</h2></template>
         <div class="input-layout">
           <label class="input-field">
             <span>Instance</span>
-            <InputText v-model="name" clearable placeholder="Instance name" />
+            <r-input-text v-model="name" clearable placeholder="Instance name" />
           </label>
           <label class="input-field">
             <span>Password</span>
-            <InputText v-model="password" password placeholder="Password" />
+            <r-input-text v-model="password" password placeholder="Password" />
           </label>
           <label class="input-field">
             <span>Port</span>
-            <InputNumber v-model="port" :min="1" :max="65535" />
+            <r-input-number v-model="port" :min="1" :max="65535" />
           </label>
           <label class="input-field input-field--wide">
             <span>Notes</span>
-            <Textarea v-model="note" placeholder="Server notes" />
+            <r-textarea v-model="note" placeholder="Server notes" />
           </label>
         </div>
-      </Panel>
+      </r-panel>
 
-      <Panel class="doc-section" shadow="hover">
+      <r-panel class="doc-section" shadow="hover">
         <template #header><h2>Sizes</h2></template>
         <div class="sizes-layout">
           <label class="input-field">
             <span>Small</span>
-            <InputText v-model="smallName" size="small" clearable />
+            <r-input-text v-model="smallName" size="small" clearable />
           </label>
           <label class="input-field">
             <span>Medium</span>
-            <InputText v-model="mediumName" size="medium" clearable />
+            <r-input-text v-model="mediumName" size="medium" clearable />
           </label>
           <label class="input-field">
             <span>Large</span>
-            <InputText v-model="largeName" size="large" clearable />
+            <r-input-text v-model="largeName" size="large" clearable />
           </label>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
+      <r-panel class="doc-section" shadow="hover">
         <template #header><h2>Resize Control</h2></template>
         <div class="resize-layout">
           <label class="input-field">
             <span>Resize X</span>
-            <InputText v-model="name" resize-x clearable />
+            <r-input-text v-model="name" resize-x clearable />
           </label>
           <label class="input-field">
             <span>Resize Y</span>
-            <Textarea v-model="command" resize-y />
+            <r-textarea v-model="command" resize-y />
           </label>
           <label class="input-field">
             <span>Resize X + Y</span>
-            <Textarea v-model="note" resize-x resize-y />
+            <r-textarea v-model="note" resize-x resize-y />
           </label>
           <label class="input-field">
             <span>Locked</span>
-            <Textarea v-model="note" />
+            <r-textarea v-model="note" />
           </label>
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

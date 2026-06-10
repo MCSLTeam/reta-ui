@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Breadcrumbs, Panel } from "@mcsl/ui";
+import { RBreadcrumbs, RPanel } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
 const baseCrumbs = [
-  { label: "MCSL Future", icon: "fas fa-cube" },
+  { label: "Reta Future", icon: "fas fa-cube" },
   { label: "Instances" },
   { label: "Paper EU-1" },
 ];
@@ -18,21 +18,21 @@ const linkedCrumbs = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="crumb-stack">
-          <Breadcrumbs :items="baseCrumbs" />
-          <Breadcrumbs :items="linkedCrumbs" seperator=">" />
-          <Breadcrumbs :items="baseCrumbs" seperator="·" />
+          <r-breadcrumbs :items="baseCrumbs" />
+          <r-breadcrumbs :items="linkedCrumbs" seperator=">" />
+          <r-breadcrumbs :items="baseCrumbs" seperator="·" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
-        <Breadcrumbs :items="linkedCrumbs" />
-      </Panel>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+        <r-breadcrumbs :items="linkedCrumbs" />
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Badge, Button, ButtonGroup, Panel, SplitButton } from "@mcsl/ui";
+import { RBadge, RButton, RButtonGroup, RPanel, RSplitButton } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 
 const menu = [
@@ -12,76 +12,76 @@ const menu = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
+      <r-panel class="doc-section" shadow="hover">
         <template #header>
           <div class="doc-heading">
-            <h2>基础</h2>
+            <h2>{{ $t("gallery.sections.basic") }}</h2>
           </div>
         </template>
 
         <div class="button-layout">
           <div class="button-row">
-            <Button type="primary" color="primary" icon="fas fa-check">
+            <r-button type="primary" color="primary" icon="fas fa-check">
               Primary
-            </Button>
-            <Button icon="fas fa-sliders">Default</Button>
-            <Button type="dashed" icon="fas fa-plus">Dashed</Button>
-            <Button type="text" icon="fas fa-ellipsis">Text</Button>
+            </r-button>
+            <r-button icon="fas fa-sliders">Default</r-button>
+            <r-button type="dashed" icon="fas fa-plus">Dashed</r-button>
+            <r-button type="text" icon="fas fa-ellipsis">Text</r-button>
           </div>
 
           <div class="button-row">
-            <Button color="success" icon="fas fa-circle-check">Success</Button>
-            <Button color="warning" icon="fas fa-triangle-exclamation">
+            <r-button color="success" icon="fas fa-circle-check">Success</r-button>
+            <r-button color="warning" icon="fas fa-triangle-exclamation">
               Warning
-            </Button>
-            <Button color="danger" icon="fas fa-trash">Danger</Button>
-            <Button disabled icon="fas fa-ban">Disabled</Button>
+            </r-button>
+            <r-button color="danger" icon="fas fa-trash">Danger</r-button>
+            <r-button disabled icon="fas fa-ban">Disabled</r-button>
           </div>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
 
         <div class="button-layout">
           <section class="button-demo-block">
-            <h3>按钮组</h3>
-            <ButtonGroup>
-              <Button type="primary" color="primary">Start</Button>
-              <Button>Restart</Button>
-              <Button>Stop</Button>
-              <Button type="text" icon="fas fa-gear" squared />
-            </ButtonGroup>
+            <h3>{{ $t("gallery.sections.buttonGroup") }}</h3>
+            <r-button-group>
+              <r-button type="primary" color="primary">Start</r-button>
+              <r-button>Restart</r-button>
+              <r-button>Stop</r-button>
+              <r-button type="text" icon="fas fa-gear" squared />
+            </r-button-group>
           </section>
 
           <section class="button-demo-block">
-            <h3>分裂按钮</h3>
-            <SplitButton color="primary" type="primary" :dropdown-menu="menu">
+            <h3>{{ $t("gallery.sections.splitButton") }}</h3>
+            <r-split-button color="primary" type="primary" :dropdown-menu="menu">
               Deploy
-            </SplitButton>
+            </r-split-button>
           </section>
 
           <section class="button-demo-block">
-            <h3>图标按钮</h3>
+            <h3>{{ $t("gallery.sections.iconButton") }}</h3>
             <div class="button-row button-row--compact">
-              <Button icon="fas fa-rotate-right" squared />
-              <Button icon="fas fa-download" squared />
-              <Button icon="fas fa-arrow-up-right-from-square" squared />
-              <Button icon="fas fa-xmark" color="danger" squared />
+              <r-button icon="fas fa-rotate-right" squared />
+              <r-button icon="fas fa-download" squared />
+              <r-button icon="fas fa-arrow-up-right-from-square" squared />
+              <r-button icon="fas fa-xmark" color="danger" squared />
             </div>
           </section>
 
           <section class="button-demo-block">
-            <h3>加载中</h3>
+            <h3>{{ $t("gallery.sections.loading") }}</h3>
             <div class="button-row">
-              <Button loading type="primary" color="primary">Saving</Button>
-              <Button loading loading-icon-pos="left">Checking</Button>
+              <r-button loading type="primary" color="primary">Saving</r-button>
+              <r-button loading loading-icon-pos="left">Checking</r-button>
             </div>
           </section>
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

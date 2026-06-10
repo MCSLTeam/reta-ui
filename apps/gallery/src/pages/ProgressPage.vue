@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import { Panel, ProgressBar, Spinner } from "@mcsl/ui";
+import { RPanel, RProgressBar, RSpinner } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="progress-stack">
-          <ProgressBar :progress="64" status="loading" />
-          <ProgressBar :progress="100" status="success" />
-          <ProgressBar :progress="42" status="warning" />
+          <r-progress-bar :progress="64" status="loading" />
+          <r-progress-bar :progress="100" status="success" />
+          <r-progress-bar :progress="42" status="warning" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="progress-stack">
-          <ProgressBar variant="indeterminate" status="loading" />
-          <ProgressBar variant="circle" :progress="72" status="loading" />
-          <Spinner label="Syncing" />
+          <r-progress-bar variant="indeterminate" status="loading" />
+          <r-progress-bar variant="circle" :progress="72" status="loading" />
+          <r-spinner label="Syncing" />
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import { Divider, Panel } from "@mcsl/ui";
+import { RDivider, RPanel } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>基础</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
         <div class="divider-stack">
-          <Divider spacing="xs" />
-          <Divider spacing="sm" variant="dashed">Runtime</Divider>
-          <Divider spacing="sm" variant="dotted" text-pos="start">Advanced</Divider>
+          <r-divider spacing="xs" />
+          <r-divider spacing="sm" variant="dashed">Runtime</r-divider>
+          <r-divider spacing="sm" variant="dotted" text-pos="start">Advanced</r-divider>
         </div>
-      </Panel>
+      </r-panel>
     </template>
 
     <template #demo>
-      <Panel class="doc-section" shadow="hover">
-        <template #header><h2>示例</h2></template>
+      <r-panel class="doc-section" shadow="hover">
+        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
         <div class="divider-demo">
           <p>Instance settings</p>
-          <Divider spacing="md">Network</Divider>
+          <r-divider spacing="md">Network</r-divider>
           <p>Port, address, and proxy configuration</p>
-          <Divider spacing="md" text-pos="end">Danger Zone</Divider>
+          <r-divider spacing="md" text-pos="end">Danger Zone</r-divider>
           <p>Destructive operations stay visually separated.</p>
         </div>
-      </Panel>
+      </r-panel>
     </template>
   </GalleryDocPage>
 </template>

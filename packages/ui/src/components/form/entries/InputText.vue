@@ -71,7 +71,7 @@ const formField = inject("mcsl-form-field", undefined) as
 if (formField) {
   if (typeof formField.field.data.value != "string") {
     console.error(
-      "[MCSL-UI] The type of the value for a <InputText> component is not string.",
+      "[Reta UI] The type of the value for a <InputText> component is not string.",
     );
     throw new Error(
       "The type of the value for a <InputText> component is not string.",
@@ -207,6 +207,8 @@ if (formField) {
   flex: 1;
   transform: translate(0);
   min-width: 8rem;
+  box-sizing: border-box;
+  padding: 2px;
 }
 
 .mcsl-input-text__resize-horizontal,
@@ -301,9 +303,10 @@ if (formField) {
 
 .mcsl-input-text > div {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 2px;
+  right: 2px;
   width: 2.25rem;
+  max-height: calc(100% - 4px);
   display: flex;
   justify-content: center;
   align-items: center;
