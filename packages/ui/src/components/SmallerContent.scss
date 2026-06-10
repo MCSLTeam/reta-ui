@@ -1,0 +1,13 @@
+@use "sass:map";
+@use "Content";
+
+$vars: map.merge(
+  Content.$vars,
+  (
+    "font-size": (
+      "small": var(--mcsl-font-size-xs),
+      "medium": var(--mcsl-font-size-sm),
+      "large": var(--mcsl-font-size-md),
+    ),
+  )
+);

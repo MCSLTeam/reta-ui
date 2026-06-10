@@ -1,0 +1,37 @@
+{
+  "name": "gallery",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "rsbuild dev",
+    "build": "vue-tsc --noEmit && rsbuild build",
+    "preview": "rsbuild preview",
+    "lint": "eslint; prettier --check .",
+    "fix": "eslint --fix; prettier --write --list-different .",
+    "test": "vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@mcsl/ui": "workspace:*",
+    "@repo/configs": "workspace:*",
+    "@repo/locales": "workspace:*",
+    "@vueuse/core": "^14.2.1",
+    "eslint": "^10.0.0",
+    "floating-vue": "^5.2.2",
+    "highlight.js": "^11.11.1",
+    "motion-v": "^2.3.0",
+    "pinia": "^3.0.4",
+    "vue": "^3.5.28",
+    "vue-i18n": "^11.2.8",
+    "vue-router": "^5.0.2"
+  },
+  "devDependencies": {
+    "@rsbuild/core": "^1.7.3",
+    "@rsbuild/plugin-sass": "^1.4.0",
+    "@rsbuild/plugin-vue": "^1.1.2",
+    "@types/node": "^24.10.3",
+    "rsbuild-plugin-svg": "^0.0.2",
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.2.4"
+  }
+}

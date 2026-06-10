@@ -1,0 +1,30 @@
+{
+  "name": "mcsl-ui-workspace",
+  "private": true,
+  "license": "GPL-3.0-only",
+  "scripts": {
+    "dev": "pnpm --filter gallery dev",
+    "build": "pnpm --filter gallery build",
+    "preview": "pnpm --filter gallery preview",
+    "test": "pnpm --filter @mcsl/ui test && pnpm --filter gallery test",
+    "lint": "turbo run lint",
+    "fix": "turbo run fix",
+    "gallery:dev": "pnpm --filter gallery dev",
+    "gallery:build": "pnpm --filter gallery build",
+    "gallery:test": "pnpm --filter gallery test",
+    "ui:test": "pnpm --filter @mcsl/ui test"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.1",
+    "turbo": "^2.8.10",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "pnpm@11.1.2",
+  "engines": {
+    "node": ">=18"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
