@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { RAutoComplete, RCombobox, RMessage, RTag } from "reta-ui";
+import { RCombobox, RMessage, RTag } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 import GalleryExample from "../components/GalleryExample.vue";
 
 const command = ref("restart");
+const customCommand = ref("");
 const region = ref("sg");
 const readonlyRegion = ref("jp");
 const selectedCommands = ref(["restart", "backup"]);
@@ -27,18 +28,27 @@ const regions = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <GalleryExample title="Autocomplete">
+      <GalleryExample title="Combobox">
         <div class="combo-grid">
           <label>
-            <span>Command</span>
-            <r-auto-complete v-model="command" :options="commands" placeholder="Type a command" />
+            <span>Editable with search</span>
+            <r-combobox
+              v-model="command"
+              :options="commands"
+              placeholder="Type or choose a command"
+            />
           </label>
           <label>
-            <span>Region</span>
-            <r-combobox v-model="region" :options="regions" placeholder="Select region" />
+            <span>Editable without autocomplete</span>
+            <r-combobox
+              v-model:query="customCommand"
+              :options="commands"
+              :autocomplete="false"
+              placeholder="Keep all options visible"
+            />
           </label>
           <label>
-            <span>Readonly Select</span>
+            <span>Non-editable</span>
             <r-combobox
               v-model="readonlyRegion"
               :options="regions"
@@ -63,8 +73,8 @@ const regions = [
     <template #demo>
       <GalleryExample :title="$t('gallery.sections.boundValue')">
         <div class="combo-stack">
-          <r-message color="help" title="Autocomplete keeps custom text">
-            {{ command }}
+          <r-message color="help" title="Editable query">
+            {{ customCommand || command }}
           </r-message>
           <div class="tag-row">
             <r-tag color="primary">Region: {{ region }}</r-tag>

@@ -16,6 +16,7 @@ const zh = {
     themeLight: "浅色",
     searchComponents: "搜索组件",
     searchDocs: "搜索文档导航",
+    noSearchResults: "没有匹配结果",
     showCode: "显示代码",
     hideCode: "隐藏代码",
   },
@@ -54,8 +55,7 @@ const zh = {
     kbd: "键盘键",
     input: "输入框",
     numberBox: "数字输入",
-    select: "选择器",
-    combobox: "自动完成",
+    combobox: "组合框",
     dateTime: "日期时间",
     slider: "滑块",
     radio: "单选框",
@@ -128,7 +128,6 @@ const zh = {
     },
   },
   docs: {
-    eyebrow: "Documentation",
     title: "Reta UI 文档",
     intro:
       "这份文档面向正在接入 Reta UI 的应用。它覆盖安装、基础使用、主题系统和组件索引，让组件库可以作为独立产品被理解和维护。",
@@ -159,8 +158,7 @@ const zh = {
     installation: {
       title: "安装",
       description:
-        "在独立项目中安装组件包；在 monorepo 内也可以通过 workspace 依赖引用。全局样式只需要在应用入口加载一次。",
-      columns: ["项目", "值"],
+        "使用以下命令安装组件包，需要 Vue.js 3.5+。",
     },
     sfc: {
       title: "在 SFC 中使用",
@@ -281,8 +279,7 @@ const zh = {
     buttons: "按钮用于触发操作，支持语义颜色、图标、加载和组合使用。",
     input: "用于录入文本、密码、多行内容和可调整尺寸的编辑区域。",
     numberBox: "用于录入带上下限和步进控制的数值。",
-    select: "从一组明确选项中选择值，适合表单和筛选场景。",
-    combobox: "组合输入与选择能力，支持搜索、补全和自定义筛选。",
+    combobox: "统一输入与选择能力，支持可编辑、不可编辑、多选、搜索和自定义筛选。",
     dateTime: "处理日期、时间和时间窗口选择。",
     slider: "在连续或离散范围内调整数值。",
     radio: "在互斥选项中选择一个值。",
@@ -340,6 +337,7 @@ const en: typeof zh = {
     themeLight: "Light",
     searchComponents: "Search components",
     searchDocs: "Search docs",
+    noSearchResults: "No matches",
     showCode: "Show code",
     hideCode: "Hide code",
   },
@@ -378,7 +376,6 @@ const en: typeof zh = {
     kbd: "Kbd",
     input: "Input",
     numberBox: "NumberBox",
-    select: "Select",
     combobox: "Combobox",
     dateTime: "Date & Time",
     slider: "Slider",
@@ -455,7 +452,6 @@ const en: typeof zh = {
     },
   },
   docs: {
-    eyebrow: "Documentation",
     title: "Reta UI Docs",
     intro:
       "This documentation is for applications integrating Reta UI. It covers installation, usage, theming, and component indexing so the library can be understood and maintained as an independent product.",
@@ -486,8 +482,7 @@ const en: typeof zh = {
     installation: {
       title: "Installation",
       description:
-        "Install the component package in independent projects, or consume it through a workspace dependency inside a monorepo. Load the global style entry once at the application boundary.",
-      columns: ["Item", "Value"],
+        "Install the component package by the following command. Requires Vue.js 3.5+.",
     },
     sfc: {
       title: "Use in SFC",
@@ -608,8 +603,7 @@ const en: typeof zh = {
     buttons: "Triggers actions with semantic colors, icons, loading states, and grouped layouts.",
     input: "Captures text, passwords, multiline content, and resizable editing areas.",
     numberBox: "Captures numeric values with limits and step controls.",
-    select: "Chooses values from explicit options for forms and filtering.",
-    combobox: "Combines input and selection with search, completion, and custom filtering.",
+    combobox: "Unifies editable and non-editable selection with multiple values, search, and custom filtering.",
     dateTime: "Handles date, time, and maintenance-window selection.",
     slider: "Adjusts values across continuous or stepped ranges.",
     radio: "Selects one value from mutually exclusive options.",

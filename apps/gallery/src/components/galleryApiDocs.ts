@@ -92,14 +92,6 @@ export const galleryApiDocs: Record<string, GalleryApiItem[]> = {
     disabledProp,
     invalidProp,
   ],
-  "/components/select": [
-    { name: "modelValue", type: "unknown", default: "undefined", description: "Selected option value." },
-    { name: "options", type: "SelectOption[]", default: "[]", description: "Option labels, values, and disabled states." },
-    { name: "placeholder", type: "string", default: '""', description: "Hint text shown before selection." },
-    sizeProp,
-    disabledProp,
-    invalidProp,
-  ],
   "/components/combobox": [
     { name: "modelValue", type: "string | unknown", default: '"" | undefined', description: "AutoComplete binds text; Combobox binds the selected option value." },
     { name: "options", type: "SelectionItem[]", default: "[]", description: "Suggestion or selectable option list." },

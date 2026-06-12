@@ -6,7 +6,6 @@ import PanelPage from "./pages/PanelPage.vue";
 import ButtonsPage from "./pages/ButtonsPage.vue";
 import InputPage from "./pages/InputPage.vue";
 import NumberBoxPage from "./pages/NumberBoxPage.vue";
-import SelectPage from "./pages/SelectPage.vue";
 import ComboboxPage from "./pages/ComboboxPage.vue";
 import DateTimePage from "./pages/DateTimePage.vue";
 import SliderPage from "./pages/SliderPage.vue";
@@ -59,7 +58,7 @@ export default createRouter({
     { path: "/components/buttons", component: ButtonsPage },
     { path: "/components/input", component: InputPage },
     { path: "/components/number-box", component: NumberBoxPage },
-    { path: "/components/select", component: SelectPage },
+    { path: "/components/select", redirect: "/components/combobox" },
     { path: "/components/combobox", component: ComboboxPage },
     { path: "/components/date-time", component: DateTimePage },
     { path: "/components/slider", component: SliderPage },

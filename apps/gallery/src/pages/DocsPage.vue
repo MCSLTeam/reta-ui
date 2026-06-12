@@ -6,12 +6,6 @@ import { galleryCodeHighlighter } from "../components/galleryCodeHighlighter";
 
 const { t, tm } = useI18n();
 
-const installRows = [
-  ["package", "reta-ui"],
-  ["peer", "vue >= 3.5"],
-  ["style", "reta-ui/style.css"],
-];
-
 const platformRows = computed(() => [
   tm("gallery.docs.platformRows.vue") as string[],
   tm("gallery.docs.platformRows.browser") as string[],
@@ -32,7 +26,7 @@ const guideItems = computed(() => [
   tm("gallery.docs.guides.items.viteSsg") as string[],
 ]);
 
-const quickCode = `pnpm add reta-ui vue`;
+const quickCode = `pnpm add reta-ui`;
 
 const sfcCode = `<script setup lang="ts">
 import { RButton, RMessage } from "reta-ui";
@@ -94,30 +88,15 @@ locale.setLocale("en-US");`;
 
 <template>
   <div class="docs-page">
-    <section class="docs-hero" id="docs-quick-start">
-      <r-tag color="primary" size="small">{{ t("gallery.docs.eyebrow") }}</r-tag>
-      <h1>{{ t("gallery.docs.title") }}</h1>
-      <p>{{ t("gallery.docs.intro") }}</p>
-      <r-button-group>
-        <r-button link="/components/buttons" type="primary" color="primary" icon="fas fa-cubes">
-          {{ t("gallery.docs.viewComponents") }}
-        </r-button>
-        <r-button link="/" icon="fas fa-house">
-          {{ t("gallery.docs.backHome") }}
-        </r-button>
-      </r-button-group>
-    </section>
-
     <section class="docs-section">
       <h2>{{ t("gallery.docs.quickStart.title") }}</h2>
       <p>{{ t("gallery.docs.quickStart.description") }}</p>
-      <r-code :code="quickCode" language="bash" :hljs="galleryCodeHighlighter" />
     </section>
 
     <section id="docs-installation" class="docs-section">
       <h2>{{ t("gallery.docs.installation.title") }}</h2>
       <p>{{ t("gallery.docs.installation.description") }}</p>
-      <r-table :columns="tm('gallery.docs.installation.columns') as string[]" :rows="installRows" />
+      <r-code :code="quickCode" language="bash" :hljs="galleryCodeHighlighter" />
     </section>
 
     <section id="docs-sfc" class="docs-section">
@@ -197,6 +176,7 @@ locale.setLocale("en-US");`;
   display: grid;
   gap: 36px;
   max-width: 860px;
+  padding: 28px 0;
 }
 
 .docs-hero,

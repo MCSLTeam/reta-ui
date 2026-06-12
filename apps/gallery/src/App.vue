@@ -7,7 +7,7 @@ import { RButton } from "reta-ui";
 import { RInputText } from "reta-ui";
 import { RPopover } from "reta-ui";
 import { RSidebar } from "reta-ui";
-import { RSelect } from "reta-ui";
+import { RCombobox } from "reta-ui";
 import { RSwitch } from "reta-ui";
 import { RTag } from "reta-ui";
 import { useAppearance } from "reta-ui";
@@ -25,6 +25,8 @@ type GalleryTocItem = {
 };
 
 const search = ref("");
+const desktopSearch = ref("");
+const desktopSearchFocused = ref(false);
 const i18n = useI18n();
 const t = i18n.t;
 const appearance = useAppearance();
@@ -142,7 +144,6 @@ const componentSidebarGroups = computed(() => [
       { label: t("gallery.sidebar.input"), description: "Input", link: "/components/input" },
       { label: t("gallery.sidebar.numberBox"), description: "NumberBox", link: "/components/number-box" },
       { label: t("gallery.sidebar.combobox"), description: "Combobox", link: "/components/combobox" },
-      { label: t("gallery.sidebar.select"), description: "Select", link: "/components/select" },
       { label: t("gallery.sidebar.dateTime"), description: "Date & Time", link: "/components/date-time" },
       { label: t("gallery.sidebar.slider"), description: "Slider", link: "/components/slider" },
       { label: t("gallery.sidebar.radio"), description: "Radio", link: "/components/radio" },
@@ -243,6 +244,30 @@ const filteredSidebarGroups = computed(() => {
 
 const visibleMobileSidebarGroups = computed(() =>
   filteredSidebarGroups.value.filter((group) => group.pages.length > 0),
+);
+
+const desktopSearchResults = computed(() => {
+  const keyword = desktopSearch.value.trim().toLowerCase();
+  if (!keyword || !hasSidebar.value) return [];
+
+  return activeSidebarGroups.value.flatMap((group) =>
+    group.pages
+      .filter((page) =>
+        [
+          page.label,
+          "description" in page ? page.description : "",
+          "link" in page ? page.link : "",
+        ]
+          .join(" ")
+          .toLowerCase()
+          .includes(keyword),
+      )
+      .map((page) => ({ ...page, groupLabel: group.label })),
+  );
+});
+
+const showDesktopSearchResults = computed(
+  () => desktopSearchFocused.value && desktopSearch.value.trim().length > 0,
 );
 
 const activeMobileSidebarGroupLabel = computed(() => {
@@ -379,6 +404,12 @@ function activateSidebarPage(page: { link?: string; onClick?: () => void }) {
   page.onClick?.();
 }
 
+function activateDesktopSearchResult(page: { link?: string; onClick?: () => void }) {
+  activateSidebarPage(page);
+  desktopSearch.value = "";
+  desktopSearchFocused.value = false;
+}
+
 function isSidebarPageActive(page: unknown) {
   return (
     typeof page === "object" &&
@@ -397,6 +428,8 @@ watch(
   () => route.path,
   () => {
     search.value = "";
+    desktopSearch.value = "";
+    desktopSearchFocused.value = false;
     currentTocItems.value = [];
     syncMobileMenuSectionsForRoute();
     syncSidebarGroupsForRoute();
@@ -446,22 +479,56 @@ watch(search, () => {
           </r-button>
         </nav>
 
-        <r-input-text
+        <div
           v-if="hasSidebar"
-          v-model="search"
-          class="gallery-search-input gallery-search-input--desktop"
-          clearable
-          search
-          :placeholder="searchPlaceholder"
-          size="medium"
-        />
+          class="gallery-search gallery-search-input--desktop"
+          @focusin="desktopSearchFocused = true"
+          @focusout="desktopSearchFocused = false"
+        >
+          <r-input-text
+            v-model="desktopSearch"
+            class="gallery-search-input"
+            clearable
+            search
+            :placeholder="searchPlaceholder"
+            size="medium"
+          />
+          <Transition name="gallery-search-popover">
+            <div
+              v-if="showDesktopSearchResults"
+              class="gallery-search__popover"
+            >
+              <button
+                v-for="page in desktopSearchResults"
+                :key="`${page.groupLabel}:${page.label}`"
+                class="gallery-search__result"
+                type="button"
+                @mousedown.prevent="activateDesktopSearchResult(page)"
+              >
+                <span>{{ page.label }}</span>
+                <small>
+                  {{ page.groupLabel }}
+                  <template v-if="'description' in page"> · {{ page.description }}</template>
+                </small>
+              </button>
+              <div
+                v-if="desktopSearchResults.length === 0"
+                class="gallery-search__empty"
+              >
+                {{ t("gallery.controls.noSearchResults") }}
+              </div>
+            </div>
+          </Transition>
+        </div>
 
         <div class="gallery-controls gallery-controls--desktop">
           <label class="gallery-language">
             <span>{{ t("gallery.controls.language") }}</span>
-            <r-select
+            <r-combobox
               v-model="galleryLanguage"
               :options="languageOptions"
+              :editable="false"
+              :autocomplete="false"
               class="gallery-language__select"
               size="small"
             />
@@ -501,9 +568,11 @@ watch(search, () => {
             <section class="gallery-mobile-menu__section gallery-mobile-menu__settings">
               <label class="gallery-language gallery-mobile-menu__row">
                 <span>{{ t("gallery.controls.language") }}</span>
-                <r-select
+                <r-combobox
                   v-model="galleryLanguage"
                   :options="languageOptions"
+                  :editable="false"
+                  :autocomplete="false"
                   class="gallery-language__select"
                   size="small"
                 />
@@ -863,6 +932,93 @@ watch(search, () => {
 .gallery-search-input {
   min-width: 0;
   width: 100%;
+}
+
+.gallery-search {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+}
+
+.gallery-search__popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 40;
+  display: grid;
+  box-sizing: border-box;
+  width: min(24rem, calc(100vw - 24px));
+  max-height: min(58vh, 24rem);
+  overflow: auto;
+  gap: 2px;
+  padding: 6px;
+  border: 1px solid var(--mcsl-border-color-base);
+  border-radius: var(--mcsl-border-radius-sm);
+  background: var(--mcsl-bg-color-overlay);
+  box-shadow: var(--mcsl-box-shadow-base);
+}
+
+.gallery-search__result {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+  min-height: 40px;
+  padding: 7px 9px;
+  border: 0;
+  border-radius: var(--mcsl-border-radius-sm);
+  background: transparent;
+  color: var(--mcsl-text-color-primary);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  transition:
+    background-color var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-standard),
+    color var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-standard);
+}
+
+.gallery-search__result:hover,
+.gallery-search__result:focus-visible {
+  background: color-mix(in srgb, var(--mcsl-color-primary) 9%, var(--mcsl-bg-color-overlay));
+  color: var(--mcsl-color-primary);
+  outline: none;
+}
+
+.gallery-search__result span,
+.gallery-search__result small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gallery-search__result span {
+  font-size: var(--mcsl-font-size-sm);
+  font-weight: 650;
+}
+
+.gallery-search__result small,
+.gallery-search__empty {
+  color: var(--mcsl-text-color-secondary);
+  font-size: var(--mcsl-font-size-xs);
+  line-height: 1.45;
+}
+
+.gallery-search__empty {
+  padding: 12px 10px;
+  text-align: center;
+}
+
+.gallery-search-popover-enter-active,
+.gallery-search-popover-leave-active {
+  transition:
+    opacity var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-standard),
+    transform var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-standard);
+}
+
+.gallery-search-popover-enter-from,
+.gallery-search-popover-leave-to {
+  opacity: 0;
+  transform: translateY(-4px) scale(0.985);
 }
 
 .gallery-mobile-menu {

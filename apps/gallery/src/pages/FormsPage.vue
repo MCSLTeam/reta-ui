@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { RButton, RCheckbox, RInputNumber, RInputText, RSelect, RTextarea } from "reta-ui";
+import { RButton, RCheckbox, RCombobox, RInputNumber, RInputText, RTextarea } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 import GalleryExample from "../components/GalleryExample.vue";
 
@@ -36,7 +36,7 @@ const coreOptions = [
           </label>
           <label class="field">
             <span>Runtime</span>
-            <r-select v-model="runtime" :options="runtimeOptions" />
+            <r-combobox v-model="runtime" :options="runtimeOptions" :editable="false" :autocomplete="false" />
           </label>
           <label class="field">
             <span>Port</span>
@@ -55,11 +55,11 @@ const coreOptions = [
         <div class="form-grid form-grid--wide">
           <label class="field">
             <span>Server Core</span>
-            <r-select v-model="core" :options="coreOptions" />
+            <r-combobox v-model="core" :options="coreOptions" :editable="false" :autocomplete="false" />
           </label>
           <label class="field">
             <span>Runtime</span>
-            <r-select v-model="runtime" :options="runtimeOptions" />
+            <r-combobox v-model="runtime" :options="runtimeOptions" :editable="false" :autocomplete="false" />
           </label>
           <label class="field field--full">
             <span>Notes</span>

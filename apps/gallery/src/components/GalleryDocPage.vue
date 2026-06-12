@@ -82,11 +82,6 @@ const pageMeta: Record<string, PageMeta> = {
     name: "InputNumber",
     descriptionKey: "gallery.componentMeta.numberBox",
   },
-  "/components/select": {
-    titleKey: "gallery.sidebar.select",
-    name: "Select",
-    descriptionKey: "gallery.componentMeta.select",
-  },
   "/components/combobox": {
     titleKey: "gallery.sidebar.combobox",
     name: "Combobox",
@@ -577,7 +572,7 @@ onUnmounted(() => {
 
 .gallery-doc-main {
   min-width: 0;
-  padding-top: 28px;
+  padding: 28px 0;
 }
 
 .gallery-doc-hero {

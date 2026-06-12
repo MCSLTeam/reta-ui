@@ -20,7 +20,6 @@ export { default as InputNumber } from "./components/form/entries/InputNumber.vu
 export { default as InputText } from "./components/form/entries/InputText.vue";
 export { default as RadioGroup } from "./components/form/entries/RadioGroup.vue";
 export { default as Segmented } from "./components/form/entries/Segmented.vue";
-export { default as Select } from "./components/form/entries/Select.vue";
 export { default as Slider } from "./components/form/entries/Slider.vue";
 export { default as Switch } from "./components/form/entries/Switch.vue";
 export { default as Textarea } from "./components/form/entries/Textarea.vue";
@@ -83,7 +82,6 @@ export { default as RInputNumber } from "./components/form/entries/InputNumber.v
 export { default as RInputText } from "./components/form/entries/InputText.vue";
 export { default as RRadioGroup } from "./components/form/entries/RadioGroup.vue";
 export { default as RSegmented } from "./components/form/entries/Segmented.vue";
-export { default as RSelect } from "./components/form/entries/Select.vue";
 export { default as RSlider } from "./components/form/entries/Slider.vue";
 export { default as RSwitch } from "./components/form/entries/Switch.vue";
 export { default as RTextarea } from "./components/form/entries/Textarea.vue";
@@ -147,7 +145,6 @@ export { default as MInputNumber } from "./components/form/entries/InputNumber.v
 export { default as MInputText } from "./components/form/entries/InputText.vue";
 export { default as MRadioGroup } from "./components/form/entries/RadioGroup.vue";
 export { default as MSegmented } from "./components/form/entries/Segmented.vue";
-export { default as MSelect } from "./components/form/entries/Select.vue";
 export { default as MSlider } from "./components/form/entries/Slider.vue";
 export { default as MSwitch } from "./components/form/entries/Switch.vue";
 export { default as MTextarea } from "./components/form/entries/Textarea.vue";
