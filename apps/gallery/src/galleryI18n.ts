@@ -19,6 +19,16 @@ const zh = {
     showCode: "显示代码",
     hideCode: "隐藏代码",
   },
+  footer: {
+    copyright: "Copyright 2026 云上极致（深圳）互联网有限公司",
+    product:
+      "Reta UI 由云上极致（深圳）互联网有限公司旗下 MCSL 开发组维护，是面向复杂控制台、运维面板和生产工具的 Vue 组件系统。",
+    company: "云上极致（深圳）互联网有限公司",
+    team: "MCSL 开发组",
+    docs: "文档",
+    components: "组件",
+    source: "GitHub",
+  },
   sidebar: {
     docs: "文档",
     introduction: "介绍",
@@ -333,6 +343,16 @@ const en: typeof zh = {
     searchDocs: "Search docs",
     showCode: "Show code",
     hideCode: "Hide code",
+  },
+  footer: {
+    copyright: "Copyright 2026 云上极致（深圳）互联网有限公司",
+    product:
+      "Reta UI is maintained by the MCSL Development Group under 云上极致（深圳）互联网有限公司 for complex consoles, operations panels, and production tools.",
+    company: "云上极致（深圳）互联网有限公司",
+    team: "MCSL Development Group",
+    docs: "Docs",
+    components: "Components",
+    source: "GitHub",
   },
   sidebar: {
     docs: "Docs",
