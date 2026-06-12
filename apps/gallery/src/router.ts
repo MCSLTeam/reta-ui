@@ -52,7 +52,8 @@ export default createRouter({
   history: createWebHistory(),
   routes: [
     { path: "/", component: HomePage },
-    { path: "/docs", component: DocsPage },
+    { path: "/docs", redirect: "/docs/quick-start" },
+    { path: "/docs/:article", component: DocsPage },
     { path: "/components/page-header", component: PageHeaderPage },
     { path: "/components/panel", component: PanelPage },
     { path: "/components/buttons", component: ButtonsPage },

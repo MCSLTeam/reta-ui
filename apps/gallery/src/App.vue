@@ -97,23 +97,19 @@ const galleryLanguage = computed({
   },
 });
 
-function scrollToSection(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
 const docsSidebarGroups = computed(() => [
   {
     label: t("gallery.sidebar.docs"),
     pages: [
-      { label: t("gallery.docs.nav.quickStart"), onClick: () => scrollToSection("docs-quick-start") },
-      { label: t("gallery.docs.nav.installation"), onClick: () => scrollToSection("docs-installation") },
-      { label: t("gallery.docs.nav.sfc"), onClick: () => scrollToSection("docs-sfc") },
-      { label: t("gallery.docs.nav.onDemand"), onClick: () => scrollToSection("docs-on-demand") },
-      { label: t("gallery.docs.nav.platforms"), onClick: () => scrollToSection("docs-platforms") },
-      { label: t("gallery.docs.nav.controlled"), onClick: () => scrollToSection("docs-controlled") },
-      { label: t("gallery.docs.nav.guides"), onClick: () => scrollToSection("docs-guides") },
-      { label: t("gallery.docs.nav.theme"), onClick: () => scrollToSection("docs-theme") },
-      { label: t("gallery.docs.nav.i18n"), onClick: () => scrollToSection("docs-i18n") },
+      { label: t("gallery.docs.nav.quickStart"), link: "/docs/quick-start" },
+      { label: t("gallery.docs.nav.installation"), link: "/docs/installation" },
+      { label: t("gallery.docs.nav.sfc"), link: "/docs/sfc" },
+      { label: t("gallery.docs.nav.onDemand"), link: "/docs/on-demand" },
+      { label: t("gallery.docs.nav.platforms"), link: "/docs/platforms" },
+      { label: t("gallery.docs.nav.controlled"), link: "/docs/controlled" },
+      { label: t("gallery.docs.nav.guides"), link: "/docs/guides" },
+      { label: t("gallery.docs.nav.theme"), link: "/docs/theme" },
+      { label: t("gallery.docs.nav.i18n"), link: "/docs/i18n" },
     ],
   },
 ]);
@@ -204,7 +200,7 @@ const componentSidebarGroups = computed(() => [
 
 const activeSidebarGroups = computed(() => {
   if (route.path.startsWith("/components")) return componentSidebarGroups.value;
-  if (route.path === "/docs") return docsSidebarGroups.value;
+  if (route.path.startsWith("/docs")) return docsSidebarGroups.value;
   return [];
 });
 
@@ -212,7 +208,7 @@ const hasSidebar = computed(() => activeSidebarGroups.value.length > 0);
 
 const shellClass = computed(() => ({
   "gallery-shell--home": route.path === "/",
-  "gallery-shell--docs": route.path === "/docs",
+  "gallery-shell--docs": route.path.startsWith("/docs"),
   "gallery-shell--components": route.path.startsWith("/components"),
 }));
 
@@ -335,7 +331,7 @@ function toggleSidebarGroup(label: string) {
 }
 
 function resetSidebarGroups() {
-  if (route.path === "/docs") {
+  if (route.path.startsWith("/docs")) {
     collapsedSidebarGroups.value = new Set();
     return;
   }
@@ -391,6 +387,7 @@ function expandActiveSidebarGroup() {
 }
 
 function isTopNavActive(link: string) {
+  if (link === "/docs") return route.path.startsWith("/docs");
   if (link === "/components/buttons") return route.path.startsWith("/components");
   return route.path === link;
 }
@@ -408,6 +405,9 @@ function activateDesktopSearchResult(page: { link?: string; onClick?: () => void
   activateSidebarPage(page);
   desktopSearch.value = "";
   desktopSearchFocused.value = false;
+  if (document.activeElement instanceof HTMLElement) {
+    document.activeElement.blur();
+  }
 }
 
 function isSidebarPageActive(page: unknown) {
@@ -529,6 +529,7 @@ watch(search, () => {
               :options="languageOptions"
               :editable="false"
               :autocomplete="false"
+              :clearable="false"
               class="gallery-language__select"
               size="small"
             />
@@ -573,6 +574,7 @@ watch(search, () => {
                   :options="languageOptions"
                   :editable="false"
                   :autocomplete="false"
+                  :clearable="false"
                   class="gallery-language__select"
                   size="small"
                 />

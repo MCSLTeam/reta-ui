@@ -22,6 +22,7 @@
       "import": "./src/index.ts"
     },
     "./src/*": "./src/*",
+    "./style": "./src/assets/css/style.scss",
     "./package.json": "./package.json"
   },
   "files": [

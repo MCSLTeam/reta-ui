@@ -96,7 +96,7 @@ export const galleryApiDocs: Record<string, GalleryApiItem[]> = {
     { name: "modelValue", type: "string | unknown", default: '"" | undefined', description: "AutoComplete binds text; Combobox binds the selected option value." },
     { name: "options", type: "SelectionItem[]", default: "[]", description: "Suggestion or selectable option list." },
     { name: "placeholder", type: "string", default: '""', description: "Hint shown before text or selection." },
-    { name: "clearable", type: "boolean", default: "true", description: "Shows a clear action from the dropdown button area when a value exists." },
+    { name: "clearable", type: "boolean", default: "false", description: "Shows a clear action from the dropdown button area when a value exists." },
     { name: "editable", type: "boolean", default: "true", description: "Uses an editable input trigger. False renders a select-style trigger." },
     { name: "autocomplete", type: "boolean", default: "true", description: "Filters options by query when editable." },
     { name: "multiple", type: "boolean", default: "false", description: "Binds an array and allows choosing multiple options." },

@@ -763,7 +763,7 @@ onUnmounted(() => {
   }
 
   .gallery-doc-main {
-    padding-top: 18px;
+    padding: 28px 0;
   }
 
   .gallery-doc-hero {

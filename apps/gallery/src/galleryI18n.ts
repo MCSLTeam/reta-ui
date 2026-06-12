@@ -153,28 +153,92 @@ const zh = {
     quickStart: {
       title: "快速上手",
       description:
-        "Reta UI 面向 Vue 3 应用。先安装组件包和样式入口，再在业务页面中按需组合 RButton、RMessage、RTable 等基础件。",
+        "Reta UI 面向 Vue 3 应用。安装组件包后，从主入口导入组件即可自动加载全局样式，再在业务页面中按需组合 RButton、RMessage、RTable 等基础件。",
+      summary: [
+        "从主入口导入组件即可获得组件和基础样式。",
+        "页面优先组合 Reta UI 自有组件，再写少量局部布局。",
+        "主题、语言和浮层服务建议放在应用入口统一初始化。",
+      ],
+      detailsTitle: "接入方式",
+      paragraphs: [
+        "Reta UI 的目标不是提供一组零散控件，而是给控制台、工具型应用和运维面板提供一套稳定的界面底座。第一次接入时，建议先从按钮、输入框、面板、消息和表格这些高频组件开始，把页面里的基础交互统一起来。",
+        "组件命名使用 R 前缀，例如 RButton、RPanel、RCombobox；模板中对应 kebab-case 名称为 r-button、r-panel、r-combobox。这样可以把 Reta UI 组件和业务组件、第三方组件明确区分开。",
+        "如果你的应用已经有主题、语言或通知系统，可以先只接入基础组件。等基础视觉稳定后，再把 useAppearance、useLocale 和通知浮层逐步接入到应用级布局里。",
+      ],
+      flowTitle: "推荐流程",
     },
     installation: {
       title: "安装",
       description:
-        "使用以下命令安装组件包，需要 Vue.js 3.5+。",
+        "使用以下命令安装组件包，需要 Vue.js 3.5+。主入口会自动导入 Reta UI 的全局样式，通常不需要额外写 CSS import。",
+      summary: [
+        "包名为 reta-ui，面向 Vue 3.5+ 项目。",
+        "主入口会自动加载组件库全局样式。",
+        "需要特殊样式顺序时才显式导入 reta-ui/style。",
+      ],
+      detailsTitle: "安装前提",
+      paragraphs: [
+        "Reta UI 以 ESM 和 TypeScript 源码入口发布，适合 Vite、Rsbuild、Nuxt 等现代 Vue 构建链。项目需要能处理 Vue 单文件组件、TypeScript 和 SCSS 样式。",
+        "默认情况下，业务代码只需要从 reta-ui 导入组件或 composable。组件库入口会带入基础样式，避免每个应用都手动维护一行 CSS import。",
+        "如果你的项目有严格的样式层级顺序、微前端隔离、或者只使用深层导入，可以显式导入 reta-ui/style。这个入口用于控制样式顺序，不是常规接入的必选步骤。",
+      ],
+      commandTitle: "安装命令",
+      styleNote:
+        "主入口自动加载样式；reta-ui/style 只是给深层导入或显式样式顺序使用的补充入口。",
     },
     sfc: {
       title: "在 SFC 中使用",
       description:
         "组件以 Vue 单文件组件为主要使用方式。脚本中导入需要的组件，模板里直接组合，局部样式只负责页面布局。",
+      summary: [
+        "在 script setup 中导入组件，模板中直接使用。",
+        "业务页面只处理布局，不重新定义组件内部状态。",
+        "复杂区域优先拆成自有业务组件，再组合 Reta UI 基础件。",
+      ],
+      detailsTitle: "页面组织",
+      paragraphs: [
+        "Reta UI 的组件尽量保持可组合：按钮、表单项、消息、表格和浮层都可以独立使用，也可以在业务组件里组合成更复杂的工作流。",
+        "页面级样式建议只处理间距、网格、响应式和业务区域布局。组件的 hover、focus、disabled、loading、浮层层级和动效应交给组件库维护，避免不同页面出现互相打架的交互细节。",
+        "如果一个页面反复出现相同的操作区、筛选区或详情块，建议封装成业务组件。Reta UI 负责低层体验，业务组件负责领域语义。",
+      ],
+      exampleTitle: "单文件组件示例",
+      styleNote:
+        "只要从 reta-ui 主入口导入组件，样式会随组件库入口一起加载。需要控制样式顺序或使用深层导入时，可以额外导入 reta-ui/style。",
     },
     onDemand: {
       title: "按需引入",
       description:
-        "Reta UI 的导出入口按组件组织。业务页面应显式导入自己使用的组件和 composable，让依赖关系保持清晰。",
+        "Reta UI 的主入口按组件和 composable 组织导出。业务页面显式导入自己使用的能力即可；样式由主入口自动带入。深层导入或特殊构建场景可以使用 reta-ui/style 作为显式样式入口。",
+      summary: [
+        "组件、组合式函数和工具从同一个主入口导出。",
+        "主入口适合绝大多数业务页面，依赖关系最清楚。",
+        "深层导入是高级场景，使用时需要自己确认样式入口。",
+      ],
+      detailsTitle: "导入约定",
+      paragraphs: [
+        "推荐业务页面始终显式导入自己使用的组件，例如 RButton、RTable、useAppearance。这样代码审阅时能直接看出页面依赖，也方便后续拆分。",
+        "构建工具会根据 ESM 依赖做 tree-shaking。Reta UI 不要求用户在文档示例里写插件安装步骤，也不要求全局注册全部组件。",
+        "显式样式入口 reta-ui/style 主要服务于深层导入、样式顺序控制和特殊构建场景。常规应用不需要因为使用 Reta UI 而额外维护 CSS 引入。",
+      ],
+      exampleTitle: "导入示例",
     },
     platforms: {
       title: "支持的平台",
       description:
         "组件库优先支持现代浏览器和 Vue 3 工程化环境。SSR 场景需要把浏览器 API 放在客户端生命周期内使用。",
+      summary: [
+        "优先支持当前稳定版 Chromium、Safari 和 Firefox。",
+        "构建环境建议使用现代 Vue 工具链。",
+        "SSR 中需要隔离浏览器 API 和权限相关能力。",
+      ],
+      detailsTitle: "兼容范围",
+      paragraphs: [
+        "Reta UI 面向现代浏览器，不针对过旧浏览器做兼容妥协。组件样式使用 CSS 变量、color-mix、现代布局和过渡能力，以换取更稳定的主题表现。",
+        "服务端渲染项目可以使用大部分展示和表单组件，但通知权限、焦点测量、浮层定位这类浏览器能力应放在客户端执行。Nuxt、Vite SSG 和类似环境中尤其要注意初始主题与客户端状态一致。",
+        "如果应用运行在 WebView 或嵌入式容器中，建议先验证弹出层、滚动容器和输入控件表现。这些区域最容易受到宿主环境默认样式影响。",
+      ],
       columns: ["平台", "说明"],
+      matrixTitle: "平台矩阵",
     },
     platformRows: {
       vue: ["Vue 3.5+", "推荐使用 Vite、Rsbuild 或 Nuxt 等现代构建工具。"],
@@ -185,7 +249,19 @@ const zh = {
       title: "受控与非受控",
       description:
         "表单、浮层和导航类组件优先支持 v-model。需要由业务状态驱动时使用受控模式；只需要默认行为时使用默认值或内部状态。",
+      summary: [
+        "受控模式适合表单、筛选条件和路由同步。",
+        "非受控模式适合临时展开、短暂 hover 和一次性确认。",
+        "复杂页面可以混合使用，但状态归属要清楚。",
+      ],
+      detailsTitle: "状态边界",
+      paragraphs: [
+        "当一个值会影响接口请求、路由、提交结果或跨组件联动时，应该使用受控模式。父组件持有状态，Reta UI 组件通过 v-model 或事件同步变化。",
+        "当状态只是临时交互，例如某个浮层是否展开、某段内容是否临时折叠，可以让组件内部维护。这样业务页面不会堆满低价值的 UI 状态。",
+        "混合模式适合复杂表单：局部组件负责输入过程中的细节，最终提交时由父组件读取或校验。关键是不要让同一个状态同时被父组件和子组件抢着改。",
+      ],
       columns: ["模式", "说明"],
+      matrixTitle: "模式对比",
       rows: {
         controlled: ["受控", "父组件持有状态，通过 v-model 或 modelValue 同步。"],
         uncontrolled: ["非受控", "组件自己维护临时状态，业务只关心最终事件。"],
@@ -196,6 +272,18 @@ const zh = {
       title: "指南",
       description:
         "下面这些场景不是必须一次性接入，但在应用规模变大时会影响组件库的使用质量。",
+      summary: [
+        "TSX、SSR 和静态站点都可以接入，但边界不同。",
+        "浮层、通知和主题切换应优先在客户端执行。",
+        "文档站点和产品应用应共用同一套组件约定。",
+      ],
+      detailsTitle: "集成建议",
+      paragraphs: [
+        "Reta UI 不强制某一种应用框架。只要工程能运行 Vue 3，组件就可以按普通 Vue 组件使用。差异主要出现在样式入口、客户端能力和文档示例的组织方式上。",
+        "SSR 和静态生成场景要关注 hydration 前后的状态一致性。主题、语言和窗口尺寸如果在服务端与客户端初始值不一致，容易造成闪烁或布局跳动。",
+        "组件文档、业务后台和嵌入式控制台可以共享同一套约定：组件负责基础交互，业务层负责领域逻辑，主题 token 负责跨页面视觉一致性。",
+      ],
+      matrixTitle: "场景速查",
       items: {
         jsx: ["JSX / TSX", "组件支持 Vue 的常规 props 和 slots 约定，TSX 中保持事件名和插槽结构清晰。"],
         ssr: ["SSR", "避免在服务端直接访问 window、document 和通知权限等浏览器能力。"],
@@ -215,6 +303,17 @@ const zh = {
       title: "调整主题",
       description:
         "主题由 CSS token、语义色和 appearance store 共同驱动。深浅色切换应改变 token，而不是在组件内部写死背景和文字颜色。",
+      summary: [
+        "主题变量通过 CSS token 传递到组件和业务样式。",
+        "useAppearance 负责深浅色状态和切换动效。",
+        "自定义组件应使用 --mcsl-* 变量适配主题。",
+      ],
+      detailsTitle: "主题模型",
+      paragraphs: [
+        "Reta UI 的主题不是简单切换 class 后覆盖一批颜色。组件内部状态、浮层、表单焦点、代码块、表格和动画都围绕同一套 token 工作。",
+        "业务应用可以在入口处控制 appearance，也可以在设置页提供主题切换。默认跟随系统主题时，仍然建议把最终状态写入统一 store，避免不同组件各自读取媒体查询。",
+        "自定义业务组件要尽量使用 --mcsl-* 变量，而不是写死颜色。这样它们会跟随深浅色、语义色、圆角、字号和边框变化，整体界面才不会断层。",
+      ],
       columns: ["能力", "约定"],
       switchTitle: "提供主题",
       switchDescription:
@@ -235,6 +334,18 @@ const zh = {
       title: "国际化",
       description:
         "组件库使用 locale store 和 vue-i18n 连接。应用可以注入自己的语言包，也可以像 gallery 一样合并产品级文案。",
+      summary: [
+        "组件库语言状态由 useLocale 管理。",
+        "业务文案可以继续放在应用自己的 vue-i18n 配置里。",
+        "组件文案和产品文案应分层维护，避免互相覆盖。",
+      ],
+      detailsTitle: "语言接入",
+      paragraphs: [
+        "Reta UI 提供组件级语言状态，主要用于日期、默认按钮文案、通知和组件内部提示。业务应用仍然可以继续使用自己的 vue-i18n 实例管理产品文案。",
+        "如果你的应用只有一套语言切换入口，可以在切换时同时更新业务 i18n 和 Reta UI locale store。gallery 就是这种模式：顶部语言选择器会同步界面文案和组件库状态。",
+        "建议不要把业务页面的长文案塞进组件库语言包。组件库维护通用控件文案，产品应用维护领域文案，两者合并使用但职责分开。",
+      ],
+      exampleTitle: "切换语言",
     },
     rows: {
       localImport: ["局部引入", "适合业务页面和文档示例，依赖关系最清楚。"],
@@ -346,7 +457,7 @@ const en: typeof zh = {
     coCreatedWithPrefix: "Co-produced with",
     coCreatedWithSuffix: "",
     company: "AcmeCloud",
-    team: "MCSL Development Group",
+    team: "MCSLTeam",
     docs: "Docs",
     components: "Components",
     source: "GitHub",
@@ -477,28 +588,92 @@ const en: typeof zh = {
     quickStart: {
       title: "Quick Start",
       description:
-        "Reta UI is built for Vue 3 applications. Install the component package and style entry, then compose primitives such as RButton, RMessage, and RTable in product pages.",
+        "Reta UI is built for Vue 3 applications. Install the component package, import components from the main entry, and the global styles are loaded with it.",
+      summary: [
+        "Import components from the main entry to get components and base styles together.",
+        "Compose Reta UI primitives first, then add narrow page-level layout styles.",
+        "Initialize theme, locale, and overlay services at the application boundary.",
+      ],
+      detailsTitle: "Integration model",
+      paragraphs: [
+        "Reta UI is not just a collection of isolated controls. It is an interface foundation for consoles, operations tools, and dense production panels. When integrating it for the first time, start with buttons, inputs, panels, messages, and tables to unify the most frequent interactions.",
+        "Component names use the R prefix, such as RButton, RPanel, and RCombobox. In templates, their kebab-case names are r-button, r-panel, and r-combobox. This keeps Reta UI components distinct from product components and third-party widgets.",
+        "If your application already owns theme, locale, or notification infrastructure, you can begin with primitives only. Once the visual language is stable, wire useAppearance, useLocale, and overlay services into the application layout.",
+      ],
+      flowTitle: "Recommended flow",
     },
     installation: {
       title: "Installation",
       description:
-        "Install the component package by the following command. Requires Vue.js 3.5+.",
+        "Install the component package by the following command. Requires Vue.js 3.5+. The main entry imports Reta UI global styles automatically, so most apps do not need a separate CSS import.",
+      summary: [
+        "The package name is reta-ui and targets Vue 3.5+ projects.",
+        "The main entry automatically loads the component library styles.",
+        "Use reta-ui/style only when explicit style order is required.",
+      ],
+      detailsTitle: "Prerequisites",
+      paragraphs: [
+        "Reta UI is published with an ESM and TypeScript source entry, which fits modern Vue toolchains such as Vite, Rsbuild, and Nuxt. The project should be able to process Vue SFCs, TypeScript, and SCSS styles.",
+        "In normal usage, product code imports components or composables from reta-ui. The library entry brings in the base styles so every application does not need to maintain a manual CSS import.",
+        "If your project has strict style ordering, micro-frontend boundaries, or deep imports only, import reta-ui/style explicitly. That entry controls style order; it is not required for the common path.",
+      ],
+      commandTitle: "Install command",
+      styleNote:
+        "The main entry loads styles automatically. reta-ui/style is a supplemental entry for deep imports or explicit style ordering.",
     },
     sfc: {
       title: "Use in SFC",
       description:
         "Vue single-file components are the primary usage path. Import the components you need in script setup, compose them in templates, and keep local styles focused on page layout.",
+      summary: [
+        "Import components in script setup and use them directly in templates.",
+        "Let product pages handle layout instead of redefining component internals.",
+        "Wrap repeated business areas in product components composed from Reta UI primitives.",
+      ],
+      detailsTitle: "Page structure",
+      paragraphs: [
+        "Reta UI components are designed for composition. Buttons, form entries, messages, tables, and overlays can be used directly or assembled into larger workflow components.",
+        "Page-level styles should focus on spacing, grids, responsive behavior, and business layout. Hover, focus, disabled, loading, overlay layering, and motion should remain inside the component library so different pages do not drift apart.",
+        "When the same action area, filter panel, or detail block appears repeatedly, extract it into a product component. Reta UI owns low-level experience; the product component owns domain meaning.",
+      ],
+      exampleTitle: "Single-file component example",
+      styleNote:
+        "When components are imported from the reta-ui main entry, styles are loaded with the library entry. Use reta-ui/style only when you need explicit style ordering or deep imports.",
     },
     onDemand: {
       title: "On-demand Imports",
       description:
-        "Reta UI exports components and composables from a clear entry. Product pages should explicitly import what they use so dependencies stay readable.",
+        "Reta UI exports components and composables from the main entry. Product pages should explicitly import what they use; styles come along with that entry. For deep imports or special bundler setups, import reta-ui/style explicitly.",
+      summary: [
+        "Components, composables, and utilities are exported from the same main entry.",
+        "The main entry is the clearest dependency path for most product pages.",
+        "Deep imports are advanced usage and need explicit style-entry awareness.",
+      ],
+      detailsTitle: "Import convention",
+      paragraphs: [
+        "Product pages should explicitly import the components they use, such as RButton, RTable, and useAppearance. This keeps dependencies obvious during review and makes later extraction easier.",
+        "Modern bundlers can tree-shake ESM dependencies. Reta UI does not require examples to install a plugin or globally register every component.",
+        "The explicit style entry reta-ui/style mainly exists for deep imports, style ordering, and special build setups. Regular applications do not need extra CSS imports just because they use Reta UI.",
+      ],
+      exampleTitle: "Import example",
     },
     platforms: {
       title: "Supported Platforms",
       description:
         "The library targets modern browsers and Vue 3 build pipelines. In SSR, keep browser APIs inside client-side lifecycle or client-only boundaries.",
+      summary: [
+        "Current stable Chromium, Safari, and Firefox are the priority targets.",
+        "Use a modern Vue build pipeline for the best experience.",
+        "In SSR, isolate browser APIs and permission-related features.",
+      ],
+      detailsTitle: "Compatibility scope",
+      paragraphs: [
+        "Reta UI targets modern browsers and does not make heavy compromises for obsolete environments. Component styles use CSS variables, color-mix, modern layout, and transitions to keep theme behavior stable.",
+        "Server-rendered applications can use most display and form components, but notification permissions, focus measurement, and floating positioning should run on the client. Nuxt, Vite SSG, and similar environments need special care around initial theme state.",
+        "If your application runs inside a WebView or embedded shell, verify overlays, scroll containers, and input controls early. These areas are most affected by host defaults.",
+      ],
       columns: ["Platform", "Notes"],
+      matrixTitle: "Platform matrix",
     },
     platformRows: {
       vue: ["Vue 3.5+", "Vite, Rsbuild, Nuxt, and similar modern builders are recommended."],
@@ -509,7 +684,19 @@ const en: typeof zh = {
       title: "Controlled & Uncontrolled",
       description:
         "Form, overlay, and navigation components favor v-model. Use controlled mode when product state owns the value; use internal defaults when the component can handle temporary interaction state.",
+      summary: [
+        "Controlled mode works best for forms, filters, and route-synced state.",
+        "Uncontrolled mode is useful for temporary expansion, hover, and one-off confirmation.",
+        "Complex pages can mix both modes, but ownership must stay clear.",
+      ],
+      detailsTitle: "State boundaries",
+      paragraphs: [
+        "When a value affects API requests, routes, submission results, or cross-component coordination, use controlled mode. The parent owns the state and Reta UI components synchronize changes through v-model or events.",
+        "When state is temporary interaction detail, such as whether a popover is open or a small section is folded, component-owned state is often enough. This keeps product pages from filling up with low-value UI state.",
+        "Hybrid mode fits complex forms: local components manage input-time details, while the parent reads or validates the final values. The important part is preventing parent and child from competing over the same value.",
+      ],
       columns: ["Mode", "Notes"],
+      matrixTitle: "Mode comparison",
       rows: {
         controlled: ["Controlled", "Parent components own state through v-model or modelValue."],
         uncontrolled: ["Uncontrolled", "The component manages temporary state and emits final events."],
@@ -520,6 +707,18 @@ const en: typeof zh = {
       title: "Guides",
       description:
         "These integration topics are not required on day one, but they matter once the application grows.",
+      summary: [
+        "TSX, SSR, and static sites can all integrate Reta UI with different boundaries.",
+        "Overlays, notifications, and theme switching should run on the client.",
+        "Documentation sites and product apps should share the same component conventions.",
+      ],
+      detailsTitle: "Integration notes",
+      paragraphs: [
+        "Reta UI does not require a single application framework. If the project can run Vue 3, components can be used as regular Vue components. Differences mostly appear in style entry, client-only behavior, and example organization.",
+        "SSR and static generation should keep hydration state consistent. Theme, locale, and viewport-derived state can cause flicker or layout shift if server and client defaults diverge.",
+        "Documentation sites, admin consoles, and embedded control panels can share the same contract: components own base interaction, product code owns domain logic, and theme tokens keep visuals consistent.",
+      ],
+      matrixTitle: "Scenario checklist",
       items: {
         jsx: ["JSX / TSX", "Components follow normal Vue props and slots conventions; keep event names and slot structure explicit in TSX."],
         ssr: ["SSR", "Avoid reading window, document, notification permissions, or layout APIs directly during server rendering."],
@@ -539,6 +738,17 @@ const en: typeof zh = {
       title: "Theme",
       description:
         "Theme behavior is driven by CSS tokens, semantic colors, and the appearance store. Light and dark modes should change tokens instead of hardcoding component colors.",
+      summary: [
+        "Theme variables flow through CSS tokens into components and product styles.",
+        "useAppearance owns light and dark state plus transition behavior.",
+        "Custom components should use --mcsl-* variables to follow the theme.",
+      ],
+      detailsTitle: "Theme model",
+      paragraphs: [
+        "Reta UI theming is more than toggling a class and overriding a few colors. Component states, overlays, form focus, code blocks, tables, and motion all work from the same token system.",
+        "Applications can control appearance at the root or expose it in a settings surface. Even when following the system theme, write the resolved state into one store so components do not each read media queries independently.",
+        "Custom product components should prefer --mcsl-* variables instead of fixed colors. That lets them follow light and dark modes, semantic colors, radii, typography, and borders without visual breaks.",
+      ],
       columns: ["Capability", "Convention"],
       switchTitle: "Provide theme",
       switchDescription:
@@ -559,6 +769,18 @@ const en: typeof zh = {
       title: "Internationalization",
       description:
         "Reta UI connects locale store with vue-i18n. Applications can inject their own language packs or merge product-specific copy like this gallery does.",
+      summary: [
+        "Component-level locale is managed through useLocale.",
+        "Product copy can remain in the application vue-i18n setup.",
+        "Component copy and product copy should be layered rather than mixed together.",
+      ],
+      detailsTitle: "Locale integration",
+      paragraphs: [
+        "Reta UI provides component-level locale state for dates, default button text, notifications, and internal hints. Product applications can continue using their own vue-i18n instance for domain copy.",
+        "If the application has a single language switcher, update both product i18n and the Reta UI locale store from that control. The gallery follows this model: the topbar language selector synchronizes page copy and component locale.",
+        "Avoid putting long product copy into the component-library language pack. The library should maintain common control text, while the application owns domain text; they are merged at runtime but kept separate in responsibility.",
+      ],
+      exampleTitle: "Switch locale",
     },
     rows: {
       localImport: ["Local import", "Best for product pages and examples with clear dependencies."],

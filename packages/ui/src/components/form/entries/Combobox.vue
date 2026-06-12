@@ -31,7 +31,7 @@ const props = withDefaults(
     size: "medium",
     disabled: false,
     invalid: false,
-    clearable: true,
+    clearable: false,
     editable: true,
     autocomplete: true,
     multiple: false,
