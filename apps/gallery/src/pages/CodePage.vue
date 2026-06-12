@@ -38,7 +38,13 @@ const plainExample = `Reta UI Code component
             :hljs="galleryCodeHighlighter"
             line-numbers
           />
-          <r-code :code="plainExample" language="plaintext" max-height="12rem" />
+          <r-code
+            :code="plainExample"
+            language="plaintext"
+            max-height="12rem"
+            font-size="12px"
+            word-wrap
+          />
         </div>
       </r-panel>
     </template>

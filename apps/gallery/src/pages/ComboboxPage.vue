@@ -5,6 +5,8 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
 
 const command = ref("restart");
 const region = ref("sg");
+const readonlyRegion = ref("jp");
+const selectedCommands = ref(["restart", "backup"]);
 
 const commands = [
   { label: "Restart server", value: "restart", icon: "fas fa-rotate" },
@@ -35,6 +37,25 @@ const regions = [
             <span>Region</span>
             <r-combobox v-model="region" :options="regions" placeholder="Select region" />
           </label>
+          <label>
+            <span>Readonly Select</span>
+            <r-combobox
+              v-model="readonlyRegion"
+              :options="regions"
+              :editable="false"
+              :autocomplete="false"
+              placeholder="Select region"
+            />
+          </label>
+          <label>
+            <span>Multiple</span>
+            <r-combobox
+              v-model="selectedCommands"
+              :options="commands"
+              multiple
+              placeholder="Select commands"
+            />
+          </label>
         </div>
       </r-panel>
     </template>
@@ -48,6 +69,8 @@ const regions = [
           </r-message>
           <div class="tag-row">
             <r-tag color="primary">Region: {{ region }}</r-tag>
+            <r-tag color="success">Readonly: {{ readonlyRegion }}</r-tag>
+            <r-tag color="warning">Multiple: {{ selectedCommands.join(", ") }}</r-tag>
           </div>
         </div>
       </r-panel>

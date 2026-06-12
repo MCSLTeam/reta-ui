@@ -16,6 +16,11 @@ const props = withDefaults(
     placeholder?: string;
     password?: boolean;
     clearable?: boolean;
+    search?: boolean;
+    prefix?: string;
+    suffix?: string;
+    maxlength?: number;
+    showCount?: boolean;
     resizeable?: boolean;
     resizable?: boolean;
     resizeX?: boolean;
@@ -30,6 +35,11 @@ const props = withDefaults(
     placeholder: "",
     password: false,
     clearable: false,
+    search: false,
+    prefix: "",
+    suffix: "",
+    maxlength: undefined,
+    showCount: false,
     resizeable: false,
     resizable: false,
     resizeX: false,
@@ -50,8 +60,18 @@ const model = defineModel<string>({
 });
 
 const showPassword = ref(false);
-const showClearButton = computed(() => props.clearable && model.value.length > 0);
-const showPasswordButton = computed(() => !props.clearable && props.password);
+const showClearButton = computed(
+  () => !props.password && props.clearable && model.value.length > 0,
+);
+const showPasswordButton = computed(() => props.password);
+const showCountText = computed(
+  () => props.showCount || typeof props.maxlength === "number",
+);
+const countText = computed(() =>
+  typeof props.maxlength === "number"
+    ? `${model.value.length}/${props.maxlength}`
+    : String(model.value.length),
+);
 const resizeMode = computed<ResizeMode>(() => {
   if (props.resize !== "none") return props.resize;
 
@@ -96,8 +116,18 @@ if (formField) {
     :class="[
       `mcsl-size-${props.size}`,
       `mcsl-input-text__resize-${resizeMode}`,
+      {
+        'mcsl-input-text--has-prefix': prefix,
+        'mcsl-input-text--search': search,
+        'mcsl-input-text--has-suffix': suffix || showCountText,
+        'mcsl-input-text--has-action': showClearButton || showPasswordButton,
+      },
     ]"
   >
+    <span v-if="search" class="mcsl-input-text__prefix mcsl-input-text__search-icon">
+      <i class="fa fa-search" />
+    </span>
+    <span v-else-if="prefix" class="mcsl-input-text__prefix">{{ prefix }}</span>
     <input
       v-model="model"
       :aria-invalid="
@@ -115,6 +145,7 @@ if (formField) {
         ),
       }"
       :placeholder="props.placeholder"
+      :maxlength="maxlength"
       :type="props.password && !showPassword ? 'password' : 'text'"
       @blur="
         $emit('blur', $event);
@@ -136,7 +167,11 @@ if (formField) {
         formField?.onFocus($event);
       "
     />
-    <div v-if="showClearButton">
+    <span v-if="suffix || showCountText" class="mcsl-input-text__suffix">
+      <span v-if="suffix">{{ suffix }}</span>
+      <span v-if="showCountText" class="mcsl-input-text__count">{{ countText }}</span>
+    </span>
+    <div v-if="showClearButton" class="mcsl-input-text__action">
       <Button
         type="text"
         rounded
@@ -145,7 +180,7 @@ if (formField) {
         @click="model = ''"
       />
     </div>
-    <div v-else-if="showPasswordButton">
+    <div v-else-if="showPasswordButton" class="mcsl-input-text__action">
       <Button
         type="text"
         rounded
@@ -174,7 +209,7 @@ if (formField) {
       border-radius: utils.get-size-var("border-radius", $size, $vars);
     }
 
-    & > div {
+    & > .mcsl-input-text__action {
       height: $height;
 
       & > button {
@@ -185,6 +220,11 @@ if (formField) {
           font-size: var(--mcsl-font-size-sm);
         }
       }
+    }
+
+    & > .mcsl-input-text__prefix,
+    & > .mcsl-input-text__suffix {
+      height: $height;
     }
 
     &.mcsl-input-text__resize-vertical,
@@ -203,7 +243,32 @@ if (formField) {
   }
 }
 
+.mcsl-input-text--has-prefix > input {
+  padding-left: calc(var(--mcsl-input-text__prefix-width, 0px) + var(--mcsl-spacing-sm)) !important;
+}
+
+.mcsl-input-text--search > input {
+  padding-left: calc(var(--mcsl-input-text__search-width, 1.85rem) + var(--mcsl-spacing-xs)) !important;
+}
+
+.mcsl-input-text--has-suffix > input {
+  padding-right: calc(var(--mcsl-input-text__suffix-width, 0px) + var(--mcsl-spacing-sm)) !important;
+}
+
+.mcsl-input-text--has-action > input {
+  padding-right: calc(var(--mcsl-input-text__action-width, 2.25rem) + var(--mcsl-spacing-sm)) !important;
+}
+
+.mcsl-input-text--has-suffix.mcsl-input-text--has-action > input {
+  padding-right: calc(var(--mcsl-input-text__suffix-width, 0px) + var(--mcsl-input-text__action-width, 2.25rem) + var(--mcsl-spacing-sm)) !important;
+}
+
 .mcsl-input-text {
+  --mcsl-input-text__action-width: 2.25rem;
+  --mcsl-input-text__prefix-width: 2.5rem;
+  --mcsl-input-text__search-width: 1.85rem;
+  --mcsl-input-text__suffix-width: 3.25rem;
+
   flex: 1;
   transform: translate(0);
   min-width: 8rem;
@@ -301,7 +366,45 @@ if (formField) {
   }
 }
 
-.mcsl-input-text > div {
+.mcsl-input-text__prefix,
+.mcsl-input-text__suffix {
+  position: absolute;
+  top: 2px;
+  display: flex;
+  align-items: center;
+  max-height: calc(100% - 4px);
+  line-height: 1;
+  color: var(--mcsl-text-color-secondary);
+  font-size: var(--mcsl-font-size-sm);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.mcsl-input-text__prefix {
+  left: var(--mcsl-spacing-xs);
+}
+
+.mcsl-input-text__search-icon {
+  left: calc(var(--mcsl-spacing-xs) + 2px);
+  width: var(--mcsl-input-text__search-width);
+  justify-content: center;
+}
+
+.mcsl-input-text__suffix {
+  right: var(--mcsl-spacing-xs);
+  gap: var(--mcsl-spacing-3xs);
+}
+
+.mcsl-input-text--has-action .mcsl-input-text__suffix {
+  right: calc(var(--mcsl-input-text__action-width, 2.25rem) + var(--mcsl-spacing-xs));
+}
+
+.mcsl-input-text__count {
+  color: color-mix(in srgb, var(--mcsl-text-color-secondary) 86%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+.mcsl-input-text__action {
   position: absolute;
   top: 2px;
   right: 2px;

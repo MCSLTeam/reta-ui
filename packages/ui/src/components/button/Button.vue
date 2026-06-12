@@ -180,7 +180,7 @@ function onClick(event: MouseEvent) {
 
     $spacing: utils.get-size-var("spacing", $size, $vars);
     $size: utils.get-size-var("height", $size, $vars);
-    padding: 0 calc($spacing * 1.6);
+    padding: 0 calc($spacing * 1.25);
     min-width: $size;
     height: $size;
     gap: calc($spacing * 0.72);

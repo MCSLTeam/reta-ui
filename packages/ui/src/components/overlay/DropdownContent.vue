@@ -169,14 +169,43 @@ function toggle() {
   else open();
 }
 
+function containsTarget(target: EventTarget | null) {
+  if (!(target instanceof Node)) return false;
+  return (
+    wrapperEl.value?.contains(target) ||
+    triggererEl.value?.contains(target) ||
+    floatingContentEl.value?.containsElement(target)
+  );
+}
+
+function handleFocusIn(event: FocusEvent) {
+  if (!opened.value) return;
+  if (!containsTarget(event.target)) close();
+}
+
+function handlePointerDown(event: PointerEvent) {
+  if (!opened.value) return;
+  if (!containsTarget(event.target)) close();
+}
+
+function handleWindowBlur() {
+  if (opened.value) close();
+}
+
 onMounted(() => {
   window.addEventListener("resize", relocate);
   window.addEventListener("scroll", relocate, true);
+  window.addEventListener("focusin", handleFocusIn);
+  window.addEventListener("pointerdown", handlePointerDown, true);
+  window.addEventListener("blur", handleWindowBlur);
 });
 
 onUnmounted(() => {
   window.removeEventListener("resize", relocate);
   window.removeEventListener("scroll", relocate, true);
+  window.removeEventListener("focusin", handleFocusIn);
+  window.removeEventListener("pointerdown", handlePointerDown, true);
+  window.removeEventListener("blur", handleWindowBlur);
 });
 
 defineExpose({

@@ -61,9 +61,6 @@ const collapsed = ref(false);
 }
 
 .accordion-surface {
-  overflow: hidden;
-  border: 1px solid var(--mcsl-border-color-base);
-  border-radius: var(--mcsl-border-radius-sm);
-  background: var(--mcsl-bg-color-overlay);
+  min-width: 0;
 }
 </style>

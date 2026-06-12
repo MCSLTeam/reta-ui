@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, watch } from "vue";
-import Button from "../../button/Button.vue";
+import { inject, watch } from "vue";
 import type { FormFieldData } from "../FormEntry.vue";
 import { ColorData, type ColorType, getColorVar } from "../../../utils/css.ts";
 import type { Size } from "../../../utils/utils.ts";
@@ -54,7 +53,6 @@ if (formField) {
   });
 }
 
-const showClearButton = computed(() => props.clearable && model.value.length > 0);
 </script>
 
 <template>
@@ -86,15 +84,6 @@ const showClearButton = computed(() => props.clearable && model.value.length > 0
           formField?.onInput(event);
         }
       "
-    />
-    <Button
-      v-if="showClearButton"
-      class="mcsl-time-picker__clear"
-      icon="fa fa-xmark"
-      rounded
-      size="small"
-      type="text"
-      @click="model = ''"
     />
   </div>
 </template>
@@ -159,10 +148,4 @@ const showClearButton = computed(() => props.clearable && model.value.length > 0
   border-color: var(--mcsl-color-danger);
 }
 
-.mcsl-time-picker__clear {
-  position: absolute;
-  top: 50%;
-  right: var(--mcsl-spacing-2xs);
-  transform: translateY(-50%);
-}
 </style>

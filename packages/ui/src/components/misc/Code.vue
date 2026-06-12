@@ -21,6 +21,9 @@ const props = withDefaults(
     hljs?: CodeHighlighter;
     lineNumbers?: boolean;
     maxHeight?: string;
+    fontSize?: string;
+    mobileFontSize?: string;
+    wordWrap?: boolean;
   }>(),
   {
     code: "",
@@ -28,11 +31,16 @@ const props = withDefaults(
     hljs: undefined,
     lineNumbers: false,
     maxHeight: "32rem",
+    fontSize: "var(--mcsl-font-size-sm)",
+    mobileFontSize: "10px",
+    wordWrap: false,
   },
 );
 
 const codeStyle = computed(() => ({
   "--mcsl-code-max-height": props.maxHeight,
+  "--mcsl-code-font-size": props.fontSize,
+  "--mcsl-code-mobile-font-size": props.mobileFontSize,
 }));
 
 const languageClass = computed(() => `language-${props.language || "plaintext"}`);
@@ -70,7 +78,11 @@ function escapeHtml(value: string) {
 </script>
 
 <template>
-  <div class="mcsl-code" :style="codeStyle">
+  <div
+    class="mcsl-code"
+    :class="{ 'mcsl-code--word-wrap': wordWrap }"
+    :style="codeStyle"
+  >
     <pre class="mcsl-code__pre"><code
       v-if="lineNumbers"
       class="mcsl-code__code hljs"
@@ -95,37 +107,51 @@ function escapeHtml(value: string) {
 .mcsl-code {
   min-width: 0;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--mcsl-border-color-base) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mcsl-border-color-base) 82%, transparent);
   border-radius: var(--mcsl-border-radius-sm);
-  background: color-mix(in srgb, var(--mcsl-bg-color-dark) 76%, transparent);
+  background: color-mix(in srgb, var(--mcsl-bg-color-dark) 54%, var(--mcsl-bg-color-overlay));
+  text-size-adjust: none;
+  -webkit-text-size-adjust: none;
 }
 
 .mcsl-code__pre {
   max-height: var(--mcsl-code-max-height);
   margin: 0;
   overflow: auto;
+  text-size-adjust: none;
+  -webkit-text-size-adjust: none;
 }
 
 .mcsl-code__code {
   display: block;
   min-width: max-content;
-  padding: 14px 16px;
+  padding: 13px 16px;
   color: var(--mcsl-text-color-regular);
   font-family: var(--mcsl-font-family-mono);
-  font-size: var(--mcsl-font-size-sm);
-  line-height: 1.65;
+  font-size: var(--mcsl-code-font-size);
+  line-height: 1.6;
   tab-size: 2;
+  text-size-adjust: none;
+  -webkit-text-size-adjust: none;
   background: transparent;
+}
+
+.mcsl-code__code * {
+  font-size: inherit !important;
+  line-height: inherit;
+  text-size-adjust: none;
+  -webkit-text-size-adjust: none;
 }
 
 .mcsl-code__line {
   display: grid;
-  grid-template-columns: 3.2em minmax(0, 1fr);
-  min-height: 1.65em;
+  grid-template-columns: 3.6em minmax(0, 1fr);
+  min-height: 1.6em;
 }
 
 .mcsl-code__gutter {
-  padding-right: 14px;
+  box-sizing: border-box;
+  padding-right: 16px;
   color: var(--mcsl-text-color-placeholder);
   font-variant-numeric: tabular-nums;
   text-align: right;
@@ -134,6 +160,16 @@ function escapeHtml(value: string) {
 
 .mcsl-code__content {
   min-width: 0;
+}
+
+.mcsl-code--word-wrap .mcsl-code__code {
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.mcsl-code--word-wrap .mcsl-code__line {
+  align-items: start;
 }
 
 :deep(.hljs-keyword),
@@ -191,5 +227,27 @@ function escapeHtml(value: string) {
 :deep(.hljs-meta),
 :deep(.hljs-selector-id) {
   color: var(--mcsl-color-sky);
+}
+
+@media (max-width: 620px) {
+  .mcsl-code__code {
+    padding: 9px 10px;
+    font-size: var(--mcsl-code-mobile-font-size) !important;
+    line-height: 1.5 !important;
+  }
+
+  .mcsl-code__code * {
+    font-size: inherit !important;
+    line-height: inherit !important;
+  }
+
+  .mcsl-code__line {
+    grid-template-columns: 2.9em minmax(0, 1fr);
+    min-height: 1.5em;
+  }
+
+  .mcsl-code__gutter {
+    padding-right: 8px;
+  }
 }
 </style>

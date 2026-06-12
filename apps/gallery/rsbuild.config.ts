@@ -25,6 +25,9 @@ export default defineConfig({
   html: {
     title: "Reta UI Gallery",
     mountId: "app",
+    meta: {
+      viewport: "width=device-width, initial-scale=1, viewport-fit=cover",
+    },
     tags: [
       {
         tag: "style",

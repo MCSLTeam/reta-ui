@@ -5,7 +5,6 @@ import { useAppearance, useMousePosition } from "./utils/stores.ts";
 import { setLocale } from "yup";
 import { getYupLocale } from "./utils/yup.ts";
 import "./assets/css/style.scss";
-import { requestNotifPermission } from "./utils/notifications.ts";
 import { isDragging } from "./utils/upload.ts";
 
 export { default as Button } from "./components/button/Button.vue";
@@ -26,6 +25,7 @@ export { default as Slider } from "./components/form/entries/Slider.vue";
 export { default as Switch } from "./components/form/entries/Switch.vue";
 export { default as Textarea } from "./components/form/entries/Textarea.vue";
 export { default as TimePicker } from "./components/form/entries/TimePicker.vue";
+export { default as Transfer } from "./components/form/entries/Transfer.vue";
 export { default as TreeSelect } from "./components/form/entries/TreeSelect.vue";
 export { default as Avatar } from "./components/misc/Avatar.vue";
 export { default as Background } from "./components/misc/Background.vue";
@@ -88,6 +88,7 @@ export { default as RSlider } from "./components/form/entries/Slider.vue";
 export { default as RSwitch } from "./components/form/entries/Switch.vue";
 export { default as RTextarea } from "./components/form/entries/Textarea.vue";
 export { default as RTimePicker } from "./components/form/entries/TimePicker.vue";
+export { default as RTransfer } from "./components/form/entries/Transfer.vue";
 export { default as RTreeSelect } from "./components/form/entries/TreeSelect.vue";
 export { default as RAvatar } from "./components/misc/Avatar.vue";
 export { default as RBackground } from "./components/misc/Background.vue";
@@ -151,6 +152,7 @@ export { default as MSlider } from "./components/form/entries/Slider.vue";
 export { default as MSwitch } from "./components/form/entries/Switch.vue";
 export { default as MTextarea } from "./components/form/entries/Textarea.vue";
 export { default as MTimePicker } from "./components/form/entries/TimePicker.vue";
+export { default as MTransfer } from "./components/form/entries/Transfer.vue";
 export { default as MTreeSelect } from "./components/form/entries/TreeSelect.vue";
 export { default as MAvatar } from "./components/misc/Avatar.vue";
 export { default as MBackground } from "./components/misc/Background.vue";
@@ -197,8 +199,19 @@ export { default as MSpinner } from "./components/progress/Spinner.vue";
 export { default as MFileDropper } from "./components/upload/FileDropper.vue";
 export { default as MFileInfo } from "./components/upload/FileInfo.vue";
 export { useAppearance, useLocale, useMousePosition, useScreenWidth } from "./utils/stores.ts";
+export {
+  requestNotifPermission,
+  setSystemNotif,
+  setSystemNotificationsEnabled,
+  systemNotificationsEnabled,
+} from "./utils/notifications.ts";
 export { useThemeVars } from "./utils/theme.ts";
 export type { Locale, Rendering, Theme, ThemeTransition } from "./utils/stores.ts";
+export type {
+  NotificationType,
+  RetaNotifSettings,
+  SystemNotifSettings,
+} from "./utils/notifications.ts";
 export type { ThemeVarName, ThemeVars } from "./utils/theme.ts";
 export type { TreeNode } from "./utils/tree.ts";
 
@@ -212,13 +225,6 @@ export async function loadUi() {
   window.removeEventListener("mouseout", useMousePosition().onMouseOut);
   window.addEventListener("mousemove", useMousePosition().onMouseMove);
   window.addEventListener("mouseout", useMousePosition().onMouseOut);
-
-  const onUserInteraction = () => {
-    requestNotifPermission();
-    document.removeEventListener("click", onUserInteraction);
-  };
-
-  document.addEventListener("click", onUserInteraction);
 
   let dragTimeout = -1;
 

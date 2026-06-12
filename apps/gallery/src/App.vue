@@ -34,6 +34,8 @@ const router = useRouter();
 const preferredReducedMotion = usePreferredReducedMotion();
 const galleryVersion = "v0.1.0";
 const currentTocItems = ref<GalleryTocItem[]>([]);
+const collapsedMobileMenuSections = ref(new Set<string>());
+const collapsedSidebarGroups = ref(new Set<string>());
 
 provide("gallery-doc-toc", (items: GalleryTocItem[]) => {
   currentTocItems.value = items;
@@ -114,13 +116,6 @@ const docsSidebarGroups = computed(() => [
 
 const componentSidebarGroups = computed(() => [
   {
-    label: t("gallery.sidebar.overview"),
-    pages: [
-      { label: t("gallery.sidebar.pageHeader"), description: "PageHeader", link: "/components/page-header" },
-      { label: t("gallery.sidebar.compositions"), description: "Compositions", link: "/components/compositions" },
-    ],
-  },
-  {
     label: t("gallery.sidebar.general"),
     pages: [
       { label: t("gallery.sidebar.buttons"), description: "Buttons", link: "/components/buttons" },
@@ -130,26 +125,36 @@ const componentSidebarGroups = computed(() => [
     ],
   },
   {
+    label: t("gallery.sidebar.layout"),
+    pages: [
+      { label: t("gallery.sidebar.panel"), description: "Panel", link: "/components/panel" },
+      { label: t("gallery.sidebar.pageHeader"), description: "PageHeader", link: "/components/page-header" },
+      { label: t("gallery.sidebar.divider"), description: "Divider", link: "/components/divider" },
+      { label: t("gallery.sidebar.accordion"), description: "Accordion", link: "/components/accordion" },
+      { label: t("gallery.sidebar.compositions"), description: "Compositions", link: "/components/compositions" },
+    ],
+  },
+  {
     label: t("gallery.sidebar.form"),
     pages: [
       { label: t("gallery.sidebar.input"), description: "Input", link: "/components/input" },
       { label: t("gallery.sidebar.numberBox"), description: "NumberBox", link: "/components/number-box" },
-      { label: t("gallery.sidebar.select"), description: "Select", link: "/components/select" },
       { label: t("gallery.sidebar.combobox"), description: "Combobox", link: "/components/combobox" },
+      { label: t("gallery.sidebar.select"), description: "Select", link: "/components/select" },
       { label: t("gallery.sidebar.dateTime"), description: "Date & Time", link: "/components/date-time" },
       { label: t("gallery.sidebar.slider"), description: "Slider", link: "/components/slider" },
       { label: t("gallery.sidebar.radio"), description: "Radio", link: "/components/radio" },
       { label: t("gallery.sidebar.checkbox"), description: "Checkbox", link: "/components/checkbox" },
       { label: t("gallery.sidebar.toggle"), description: "Toggle", link: "/components/toggle" },
+      { label: t("gallery.sidebar.transfer"), description: "Transfer", link: "/components/transfer" },
     ],
   },
   {
-    label: t("gallery.sidebar.display"),
+    label: t("gallery.sidebar.dataDisplay"),
     pages: [
       { label: t("gallery.sidebar.table"), description: "Table", link: "/components/table" },
       { label: t("gallery.sidebar.dataTable"), description: "DataTable", link: "/components/data-table" },
-      { label: t("gallery.sidebar.divider"), description: "Divider", link: "/components/divider" },
-      { label: t("gallery.sidebar.accordion"), description: "Accordion", link: "/components/accordion" },
+      { label: t("gallery.sidebar.tree"), description: "Tree", link: "/components/tree" },
       { label: t("gallery.sidebar.copyableText"), description: "CopyableText", link: "/components/copyable-text" },
       { label: t("gallery.sidebar.code"), description: "Code", link: "/components/code" },
       { label: t("gallery.sidebar.displayPage"), description: "Display", link: "/components/display" },
@@ -173,7 +178,6 @@ const componentSidebarGroups = computed(() => [
     pages: [
       { label: t("gallery.sidebar.breadcrumbs"), description: "Breadcrumbs", link: "/components/breadcrumbs" },
       { label: t("gallery.sidebar.sidebar"), description: "Sidebar", link: "/components/sidebar" },
-      { label: t("gallery.sidebar.tree"), description: "Tree", link: "/components/tree" },
       { label: t("gallery.sidebar.navTabs"), description: "NavTabs", link: "/components/nav-tabs" },
       { label: t("gallery.sidebar.steps"), description: "Steps", link: "/components/steps" },
       { label: t("gallery.sidebar.pagination"), description: "Pagination", link: "/components/pagination" },
@@ -239,6 +243,82 @@ const visibleMobileSidebarGroups = computed(() =>
   filteredSidebarGroups.value.filter((group) => group.pages.length > 0),
 );
 
+const activeMobileSidebarGroupLabel = computed(() => {
+  for (const group of visibleMobileSidebarGroups.value) {
+    if (group.pages.some((page) => isSidebarPageActive(page))) return group.label;
+  }
+  return visibleMobileSidebarGroups.value[0]?.label;
+});
+
+function mobileSectionKey(type: string, label = "") {
+  return label ? `${type}:${label}` : type;
+}
+
+function isMobileMenuSectionCollapsed(type: string, label = "") {
+  return collapsedMobileMenuSections.value.has(mobileSectionKey(type, label));
+}
+
+function toggleMobileMenuSection(type: string, label = "") {
+  const key = mobileSectionKey(type, label);
+  const next = new Set(collapsedMobileMenuSections.value);
+  if (next.has(key)) {
+    next.delete(key);
+  } else {
+    next.add(key);
+  }
+  collapsedMobileMenuSections.value = next;
+}
+
+function resetMobileMenuSections() {
+  const next = new Set<string>();
+  for (const group of visibleMobileSidebarGroups.value) {
+    if (group.label !== activeMobileSidebarGroupLabel.value) {
+      next.add(mobileSectionKey("sidebar", group.label));
+    }
+  }
+  collapsedMobileMenuSections.value = next;
+}
+
+function sidebarGroupKey(label: string) {
+  return `sidebar:${label}`;
+}
+
+function isSidebarGroupCollapsed(label: string) {
+  return collapsedSidebarGroups.value.has(sidebarGroupKey(label));
+}
+
+function toggleSidebarGroup(label: string) {
+  const key = sidebarGroupKey(label);
+  const next = new Set(collapsedSidebarGroups.value);
+  if (next.has(key)) {
+    next.delete(key);
+  } else {
+    next.add(key);
+  }
+  collapsedSidebarGroups.value = next;
+}
+
+function resetSidebarGroups() {
+  if (route.path === "/docs") {
+    collapsedSidebarGroups.value = new Set();
+    return;
+  }
+
+  const keyword = search.value.trim();
+  if (keyword) {
+    collapsedSidebarGroups.value = new Set();
+    return;
+  }
+
+  const next = new Set<string>();
+  for (const group of filteredSidebarGroups.value) {
+    if (!group.pages.some((page) => isSidebarPageActive(page))) {
+      next.add(sidebarGroupKey(group.label));
+    }
+  }
+  collapsedSidebarGroups.value = next;
+}
+
 function isTopNavActive(link: string) {
   if (link === "/components/buttons") return route.path.startsWith("/components");
   return route.path === link;
@@ -272,8 +352,17 @@ watch(
   () => {
     search.value = "";
     currentTocItems.value = [];
+    resetMobileMenuSections();
+    resetSidebarGroups();
   },
+  { immediate: true },
 );
+
+watch(search, () => {
+  resetMobileMenuSections();
+  resetSidebarGroups();
+});
+
 </script>
 
 <template>
@@ -317,6 +406,7 @@ watch(
           v-model="search"
           class="gallery-search-input gallery-search-input--desktop"
           clearable
+          search
           :placeholder="searchPlaceholder"
           size="medium"
         />
@@ -363,6 +453,40 @@ watch(
           </template>
 
           <div class="gallery-mobile-menu__body">
+            <section class="gallery-mobile-menu__section gallery-mobile-menu__settings">
+              <label class="gallery-language gallery-mobile-menu__row">
+                <span>{{ t("gallery.controls.language") }}</span>
+                <r-select
+                  v-model="galleryLanguage"
+                  :options="languageOptions"
+                  class="gallery-language__select"
+                  size="small"
+                />
+              </label>
+
+              <label class="gallery-toggle gallery-mobile-menu__row">
+                <r-switch v-model="darkTheme" size="small" color="primary" />
+                <span>{{
+                  darkTheme
+                    ? t("gallery.controls.themeDark")
+                    : t("gallery.controls.themeLight")
+                }}</span>
+              </label>
+
+              <div class="gallery-mobile-menu__actions">
+                <r-button
+                  icon="fab fa-github"
+                  link="https://github.com/MCSLTeam/reta-ui"
+                  :router-link="false"
+                  size="small"
+                  type="text"
+                >
+                  GitHub
+                </r-button>
+                <r-tag size="small">{{ galleryVersion }}</r-tag>
+              </div>
+            </section>
+
             <section class="gallery-mobile-menu__section">
               <h3>{{ t("gallery.nav.primary") }}</h3>
               <div class="gallery-mobile-menu__nav">
@@ -383,13 +507,14 @@ watch(
               v-if="hasSidebar"
               v-model="search"
               clearable
+              search
               :placeholder="searchPlaceholder"
               size="medium"
             />
 
             <section
               v-if="hasSidebar && visibleMobileSidebarGroups.length"
-              class="gallery-mobile-menu__section"
+              class="gallery-mobile-menu__section gallery-mobile-menu__section--flush"
             >
               <div class="gallery-mobile-sidebar-groups">
                 <section
@@ -397,8 +522,21 @@ watch(
                   :key="group.label"
                   class="gallery-mobile-sidebar-group"
                 >
-                  <h3>{{ group.label }}</h3>
-                  <div class="gallery-mobile-menu__nav">
+                  <button
+                    class="gallery-mobile-menu__heading"
+                    type="button"
+                    @click="toggleMobileMenuSection('sidebar', group.label)"
+                  >
+                    <span>{{ group.label }}</span>
+                    <i
+                      class="fas fa-chevron-down"
+                      :class="{ 'is-collapsed': isMobileMenuSectionCollapsed('sidebar', group.label) }"
+                    />
+                  </button>
+                  <div
+                    v-show="!isMobileMenuSectionCollapsed('sidebar', group.label)"
+                    class="gallery-mobile-menu__nav"
+                  >
                     <r-button
                       v-for="page in group.pages"
                       :key="page.label"
@@ -414,57 +552,6 @@ watch(
                 </section>
               </div>
             </section>
-
-            <section
-              v-if="currentTocItems.length"
-              class="gallery-mobile-menu__section"
-            >
-              <h3>{{ t("gallery.sections.onThisPage") }}</h3>
-              <div class="gallery-mobile-menu__nav">
-                <r-button
-                  v-for="item in currentTocItems"
-                  :key="item.id"
-                  :class="{ 'gallery-mobile-menu__toc-sub': item.depth === 3 }"
-                  align="left"
-                  type="text"
-                  @click="scrollToTocItem(item.id)"
-                >
-                  {{ item.label }}
-                </r-button>
-              </div>
-            </section>
-
-            <label class="gallery-language gallery-mobile-menu__row">
-              <span>{{ t("gallery.controls.language") }}</span>
-              <r-select
-                v-model="galleryLanguage"
-                :options="languageOptions"
-                class="gallery-language__select"
-                size="small"
-              />
-            </label>
-
-            <label class="gallery-toggle gallery-mobile-menu__row">
-              <r-switch v-model="darkTheme" size="small" color="primary" />
-              <span>{{
-                darkTheme
-                  ? t("gallery.controls.themeDark")
-                  : t("gallery.controls.themeLight")
-              }}</span>
-            </label>
-
-            <div class="gallery-mobile-menu__actions">
-              <r-button
-                icon="fab fa-github"
-                link="https://github.com/MCSLTeam/reta-ui"
-                :router-link="false"
-                size="small"
-                type="text"
-              >
-                GitHub
-              </r-button>
-              <r-tag size="small">{{ galleryVersion }}</r-tag>
-            </div>
           </div>
         </r-popover>
       </div>
@@ -509,8 +596,22 @@ watch(
               :key="group.label"
               class="gallery-sidebar-group"
             >
-              <h4>{{ group.label }}</h4>
-              <r-sidebar :pages="group.pages" size="small" />
+              <button
+                class="gallery-sidebar-group__heading"
+                type="button"
+                @click="toggleSidebarGroup(group.label)"
+              >
+                <span>{{ group.label }}</span>
+                <i
+                  class="fas fa-chevron-down"
+                  :class="{ 'is-collapsed': isSidebarGroupCollapsed(group.label) }"
+                />
+              </button>
+              <r-sidebar
+                v-show="!isSidebarGroupCollapsed(group.label)"
+                :pages="group.pages"
+                size="small"
+              />
             </section>
           </div>
         </aside>
@@ -631,9 +732,9 @@ watch(
 }
 
 .gallery-brand {
-  min-width: 0;
+  max-width: 150px;
   white-space: nowrap;
-  padding: 0 2px 0 0;
+  padding: 0;
   border: 0;
   background: transparent;
   color: inherit;
@@ -642,11 +743,18 @@ watch(
   text-align: left;
 }
 
+:deep(.gallery-brand.mcsl-button) {
+  width: fit-content;
+  max-width: min(172px, calc(100vw - 96px));
+  justify-content: flex-start;
+}
+
 .gallery-brand__content {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 11px;
+  max-width: 100%;
   flex-wrap: nowrap;
   min-width: 0;
   white-space: nowrap;
@@ -672,12 +780,16 @@ watch(
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  flex: 1 1 auto;
   min-width: 0;
   gap: 1px;
   line-height: 1.05;
 }
 
 .gallery-brand strong {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: var(--mcsl-text-color-primary);
   font-size: 18px;
   font-weight: 650;
@@ -709,18 +821,30 @@ watch(
   display: none;
 }
 
+:deep(.gallery-mobile-menu > .mcsl-button) {
+  margin-right: 16px;
+}
+
 .gallery-mobile-menu__body {
   display: grid;
-  gap: 16px;
-  width: min(82vw, 22rem);
+  gap: 10px;
+  box-sizing: border-box;
+  width: min(78vw, 19rem);
   max-height: min(70vh, 38rem);
   min-width: 0;
-  overflow: auto;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .gallery-mobile-menu__row {
   justify-content: space-between;
   width: 100%;
+}
+
+.gallery-mobile-menu__settings {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--mcsl-border-color-base);
 }
 
 .gallery-mobile-menu__section,
@@ -729,31 +853,86 @@ watch(
 .gallery-mobile-menu__nav {
   display: grid;
   min-width: 0;
+  width: 100%;
 }
 
 .gallery-mobile-menu__section,
 .gallery-mobile-sidebar-groups {
-  gap: 12px;
+  gap: 8px;
+}
+
+.gallery-mobile-menu__section--flush {
+  gap: 6px;
 }
 
 .gallery-mobile-sidebar-group,
 .gallery-mobile-menu__nav {
-  gap: 3px;
+  gap: 2px;
 }
 
 .gallery-mobile-menu__section h3,
 .gallery-mobile-sidebar-group h3 {
   margin: 0;
+  padding: 2px 4px;
   color: var(--mcsl-text-color-secondary);
   font-size: var(--mcsl-font-size-sm);
   font-weight: 680;
   line-height: 1.35;
 }
 
+.gallery-mobile-menu__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  min-height: 30px;
+  padding: 0 4px;
+  border: 0;
+  border-radius: var(--mcsl-border-radius-sm);
+  background: transparent;
+  color: var(--mcsl-text-color-secondary);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--mcsl-font-size-sm);
+  font-weight: 680;
+  line-height: 1.35;
+  text-align: left;
+  transition:
+    background-color var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-enter),
+    color var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-enter);
+}
+
+.gallery-mobile-menu__heading:hover {
+  background: color-mix(in srgb, var(--mcsl-bg-color-dark) 74%, transparent);
+  color: var(--mcsl-text-color-primary);
+}
+
+.gallery-mobile-menu__heading span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gallery-mobile-menu__heading i {
+  flex: none;
+  font-size: 11px;
+  opacity: 0.72;
+  transform: rotate(0deg);
+  transition: transform var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-enter);
+}
+
+.gallery-mobile-menu__heading i.is-collapsed {
+  transform: rotate(-90deg);
+}
+
 .gallery-mobile-menu__nav :deep(.mcsl-button) {
   justify-content: flex-start;
   min-width: 0;
   width: 100%;
+  max-width: 100%;
 }
 
 .gallery-mobile-menu__nav :deep(.mcsl-button.is-active) {
@@ -761,15 +940,28 @@ watch(
 }
 
 .gallery-mobile-menu__nav :deep(.mcsl-button__label) {
-  display: grid;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
   min-width: 0;
+  width: 100%;
   text-align: left;
 }
 
 .gallery-mobile-menu__nav small {
+  flex: none;
   color: var(--mcsl-text-color-secondary);
   font-size: var(--mcsl-font-size-xs);
   line-height: 1.35;
+  opacity: 0.82;
+  white-space: nowrap;
+}
+
+.gallery-mobile-menu__nav span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .gallery-mobile-menu__toc-sub {
@@ -781,6 +973,12 @@ watch(
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  min-width: 0;
+}
+
+.gallery-mobile-menu__actions :deep(.mcsl-button) {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .gallery-mobile-toc-bar {
@@ -839,10 +1037,10 @@ watch(
   padding: 28px;
 }
 
-.gallery-shell--docs,
-.gallery-shell--components {
-  padding: 0 0 0 18px;
-}
+// .gallery-shell--docs,
+// .gallery-shell--components {
+//   padding: 0 0 0 18px;
+// }
 
 .gallery-docs {
   display: grid;
@@ -858,7 +1056,9 @@ watch(
 }
 
 .gallery-docs__sidebar {
+  box-sizing: border-box;
   min-height: 0;
+  padding: 0 10px;
   overflow-x: hidden;
   overflow-y: auto;
   border-right: 1px solid var(--mcsl-border-color-base);
@@ -876,12 +1076,50 @@ watch(
   gap: 8px;
 }
 
-.gallery-sidebar-group h4 {
+.gallery-sidebar-group__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-height: 30px;
   margin: 0 0 3px;
-  padding-left: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--mcsl-border-radius-sm);
+  background: transparent;
   color: var(--mcsl-text-color-secondary);
+  cursor: pointer;
+  font: inherit;
   font-size: 13px;
   font-weight: 650;
+  text-align: left;
+  transition:
+    background-color var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-standard),
+    color var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-standard);
+}
+
+.gallery-sidebar-group__heading:hover {
+  background: color-mix(in srgb, var(--mcsl-bg-color-dark) 68%, transparent);
+  color: var(--mcsl-text-color-primary);
+}
+
+.gallery-sidebar-group__heading span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gallery-sidebar-group__heading i {
+  flex: none;
+  font-size: 11px;
+  opacity: 0.72;
+  transition: transform var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-standard);
+}
+
+.gallery-sidebar-group__heading i.is-collapsed {
+  transform: rotate(-90deg);
 }
 
 :deep(.gallery-sidebar-group .sidebar__btn) {
@@ -896,7 +1134,6 @@ watch(
 .gallery-docs__content {
   min-width: 0;
   min-height: 0;
-  margin-top: 28px;
   overflow-y: auto;
   padding: 0 0 56px;
 }
@@ -999,6 +1236,7 @@ watch(
 
   .gallery-brand {
     grid-area: brand;
+    // margin-left: 14px; 114514
     min-width: 0;
     justify-self: start;
   }
@@ -1067,7 +1305,6 @@ watch(
   }
 
   .gallery-docs__content {
-    margin-top: 18px;
     overflow-y: visible;
     padding: 0 0 32px;
   }

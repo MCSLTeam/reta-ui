@@ -15,6 +15,7 @@ const active = defineModel<Array<string>>({
 });
 
 function activate(name: string) {
+  if (isActive(name)) return;
   active.value = [...active.value, name];
 }
 
@@ -44,7 +45,7 @@ function refresh() {
 onMounted(() => refresh());
 watchEffect(() => refresh());
 
-provide("mcsl-accordion", { activate, deactivate, isActive });
+provide("mcsl-accordion", { activate, deactivate, isActive, toggle });
 defineExpose({ activate, deactivate, isActive, toggle, active });
 </script>
 
@@ -55,3 +56,10 @@ defineExpose({ activate, deactivate, isActive, toggle, active });
 </template>
 
 <style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.mcsl-accordion {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+</style>

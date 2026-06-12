@@ -108,3 +108,10 @@ export type SelectionItem = {
   icon?: string;
   disabled?: boolean;
 };
+
+export type SelectionGroup = {
+  group: string;
+  options: SelectionItem[];
+};
+
+export type SelectionInfo = SelectionItem[] | SelectionGroup[];

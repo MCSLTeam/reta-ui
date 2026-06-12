@@ -8,6 +8,9 @@ const smallName = ref("Small input");
 const mediumName = ref("Medium input");
 const largeName = ref("Large input");
 const password = ref("correct-horse-battery-staple");
+const memory = ref("4096");
+const limitedName = ref("Future Paper");
+const searchText = ref("backup");
 const note = ref("A quiet resize interaction matters when the user is editing long server notes.");
 const command = ref("java -Xms2G -Xmx4G -jar server.jar nogui");
 const port = ref(25565);
@@ -26,6 +29,18 @@ const port = ref(25565);
           <label class="input-field">
             <span>Password</span>
             <r-input-text v-model="password" password placeholder="Password" />
+          </label>
+          <label class="input-field">
+            <span>Memory</span>
+            <r-input-text v-model="memory" prefix="RAM" suffix="MB" placeholder="4096" />
+          </label>
+          <label class="input-field">
+            <span>Limited</span>
+            <r-input-text v-model="limitedName" :maxlength="16" placeholder="Instance alias" />
+          </label>
+          <label class="input-field">
+            <span>Search</span>
+            <r-input-text v-model="searchText" search clearable placeholder="Search instances" />
           </label>
           <label class="input-field">
             <span>Port</span>

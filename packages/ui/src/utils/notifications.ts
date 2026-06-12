@@ -27,6 +27,11 @@ export type RetaNotifSettings = {
   data: any;
 };
 
+export const systemNotificationsEnabled = useLocalStorage(
+  "reta-system-notifications-enabled",
+  false,
+);
+
 let systemNotifSettings: SystemNotifSettings = {
   supported: "Notification" in window,
   async requestPermission() {
@@ -42,6 +47,11 @@ let systemNotifSettings: SystemNotifSettings = {
 
 export function setSystemNotif(notif: SystemNotifSettings) {
   systemNotifSettings = notif;
+}
+
+export async function setSystemNotificationsEnabled(enabled: boolean) {
+  systemNotificationsEnabled.value = enabled;
+  if (enabled) await requestNotifPermission();
 }
 
 export class RetaNotif {
@@ -69,6 +79,7 @@ export class RetaNotif {
     if (this._closed) return;
     this.opened.value = true;
     if (
+      systemNotificationsEnabled.value &&
       systemNotifSettings.isPermissionGranted() == "granted" &&
       this.isSystem
     ) {
@@ -115,6 +126,7 @@ export class RetaNotif {
 const sysNotifWarning = useLocalStorage("sys-notif-warning", true);
 
 export async function requestNotifPermission() {
+  if (!systemNotificationsEnabled.value) return;
   const t = useLocale().getI18n().t;
   let shouldShowWarning = false;
   if (!systemNotifSettings.supported) {

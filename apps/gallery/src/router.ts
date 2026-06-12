@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "./pages/HomePage.vue";
 import DocsPage from "./pages/DocsPage.vue";
 import PageHeaderPage from "./pages/PageHeaderPage.vue";
+import PanelPage from "./pages/PanelPage.vue";
 import ButtonsPage from "./pages/ButtonsPage.vue";
 import InputPage from "./pages/InputPage.vue";
 import NumberBoxPage from "./pages/NumberBoxPage.vue";
@@ -12,6 +13,7 @@ import SliderPage from "./pages/SliderPage.vue";
 import RadioPage from "./pages/RadioPage.vue";
 import CheckboxPage from "./pages/CheckboxPage.vue";
 import TogglePage from "./pages/TogglePage.vue";
+import TransferPage from "./pages/TransferPage.vue";
 import ResultPage from "./pages/ResultPage.vue";
 import EmptyPage from "./pages/EmptyPage.vue";
 import DividerPage from "./pages/DividerPage.vue";
@@ -53,6 +55,7 @@ export default createRouter({
     { path: "/", component: HomePage },
     { path: "/docs", component: DocsPage },
     { path: "/components/page-header", component: PageHeaderPage },
+    { path: "/components/panel", component: PanelPage },
     { path: "/components/buttons", component: ButtonsPage },
     { path: "/components/input", component: InputPage },
     { path: "/components/number-box", component: NumberBoxPage },
@@ -63,6 +66,7 @@ export default createRouter({
     { path: "/components/radio", component: RadioPage },
     { path: "/components/checkbox", component: CheckboxPage },
     { path: "/components/toggle", component: TogglePage },
+    { path: "/components/transfer", component: TransferPage },
     { path: "/components/result", component: ResultPage },
     { path: "/components/empty", component: EmptyPage },
     { path: "/components/divider", component: DividerPage },

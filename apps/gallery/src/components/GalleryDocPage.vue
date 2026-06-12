@@ -43,16 +43,24 @@ const pageSource = computed(() => galleryPageSources[route.path]?.trim() ?? "");
 const exampleCode = computed(() => extractComponentExample(pageSource.value));
 const pageRoot = ref<HTMLElement>();
 const tocItems = ref<TocItem[]>([]);
+const exampleCodeLineNumbers = ref(true);
 const syncAppToc = inject<((items: TocItem[]) => void) | undefined>(
   "gallery-doc-toc",
   undefined,
 );
+let exampleCodeMediaQuery: MediaQueryList | undefined;
+let syncExampleCodeDensity: (() => void) | undefined;
 
 const pageMeta: Record<string, PageMeta> = {
   "/components/page-header": {
     titleKey: "gallery.sidebar.pageHeader",
     name: "PageHeader",
     descriptionKey: "gallery.componentMeta.pageHeader",
+  },
+  "/components/panel": {
+    titleKey: "gallery.sidebar.panel",
+    name: "Panel",
+    descriptionKey: "gallery.componentMeta.panel",
   },
   "/components/buttons": {
     titleKey: "gallery.sidebar.buttons",
@@ -103,6 +111,11 @@ const pageMeta: Record<string, PageMeta> = {
     titleKey: "gallery.sidebar.toggle",
     name: "Switch",
     descriptionKey: "gallery.componentMeta.toggle",
+  },
+  "/components/transfer": {
+    titleKey: "gallery.sidebar.transfer",
+    name: "Transfer",
+    descriptionKey: "gallery.componentMeta.transfer",
   },
   "/components/result": {
     titleKey: "gallery.sidebar.result",
@@ -449,7 +462,21 @@ async function collectToc() {
 
 watch(() => [route.path, i18n.locale.value], collectToc);
 onMounted(collectToc);
-onUnmounted(() => syncAppToc?.([]));
+onMounted(() => {
+  exampleCodeMediaQuery = window.matchMedia("(min-width: 721px)");
+  syncExampleCodeDensity = () => {
+    exampleCodeLineNumbers.value = exampleCodeMediaQuery?.matches ?? true;
+  };
+
+  syncExampleCodeDensity();
+  exampleCodeMediaQuery.addEventListener("change", syncExampleCodeDensity);
+});
+onUnmounted(() => {
+  syncAppToc?.([]);
+  if (syncExampleCodeDensity) {
+    exampleCodeMediaQuery?.removeEventListener("change", syncExampleCodeDensity);
+  }
+});
 </script>
 
 <template>
@@ -479,12 +506,19 @@ onUnmounted(() => syncAppToc?.([]));
 
       <section v-if="exampleCode" class="gallery-doc-chapter gallery-code-section">
         <h2>{{ t("gallery.sections.exampleCode") }}</h2>
-        <r-code
-          :code="exampleCode"
-          language="xml"
-          :hljs="galleryCodeHighlighter"
-          line-numbers
-        />
+        <div class="gallery-example-code">
+          <r-code
+            :code="exampleCode"
+            language="xml"
+            :hljs="galleryCodeHighlighter"
+            :line-numbers="exampleCodeLineNumbers"
+            class="gallery-example-code__block"
+            max-height="min(62vh, 38rem)"
+            font-size="12px"
+            mobile-font-size="11px"
+            word-wrap
+          />
+        </div>
       </section>
 
       <slot name="api">
@@ -530,6 +564,7 @@ onUnmounted(() => syncAppToc?.([]));
 
 .gallery-doc-main {
   min-width: 0;
+  padding-top: 28px;
 }
 
 .gallery-doc-hero {
@@ -595,6 +630,14 @@ onUnmounted(() => syncAppToc?.([]));
 .page-shell {
   display: grid;
   gap: 24px;
+}
+
+.gallery-example-code {
+  min-width: 0;
+}
+
+.gallery-example-code__block {
+  min-width: 0;
 }
 
 .doc-section__fallback {
@@ -748,6 +791,10 @@ onUnmounted(() => syncAppToc?.([]));
     gap: 0;
   }
 
+  .gallery-doc-main {
+    padding-top: 18px;
+  }
+
   .gallery-doc-hero {
     margin-bottom: 24px;
   }
@@ -769,6 +816,14 @@ onUnmounted(() => syncAppToc?.([]));
 
   .page-shell {
     gap: 18px;
+  }
+
+  .gallery-code-section {
+    margin-inline: -2px;
+  }
+
+  .gallery-example-code {
+    overflow: hidden;
   }
 
   :deep(.doc-section .mcsl-panel__header h2) {

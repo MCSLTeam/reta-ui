@@ -198,6 +198,8 @@ const routes = computed(() => [
 
 .preview-window {
   display: grid;
+  box-sizing: border-box;
+  width: 100%;
   min-width: 0;
   gap: 18px;
   padding: 16px;
@@ -230,6 +232,17 @@ const routes = computed(() => [
   min-width: 0;
 }
 
+.preview-header > div {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.preview-header :deep(.mcsl-badge) {
+  flex: none;
+  max-width: 100%;
+}
+
 .preview-header h2 {
   margin: 0 0 6px;
   font-weight: 700;
@@ -245,8 +258,9 @@ const routes = computed(() => [
 
 .preview-grid {
   display: grid;
-  grid-template-columns: 1fr 0.8fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
   gap: 12px;
+  min-width: 0;
 }
 
 .preview-health,
@@ -271,8 +285,46 @@ const routes = computed(() => [
 }
 
 .preview-job span {
+  min-width: 0;
   color: var(--mcsl-text-color-regular);
   font-size: var(--mcsl-font-size-sm);
+  overflow-wrap: anywhere;
+}
+
+.preview-window :deep(.mcsl-panel),
+.preview-window :deep(.mcsl-message),
+.preview-window :deep(.mcsl-nav-tabs),
+.preview-window :deep(.mcsl-meter-group),
+.preview-window :deep(.mcsl-progress-bar) {
+  min-width: 0;
+}
+
+.preview-window :deep(.mcsl-panel__header),
+.preview-window :deep(.mcsl-panel__body-wrapper),
+.preview-window :deep(.mcsl-message__content),
+.preview-window :deep(.mcsl-message__body),
+.preview-window :deep(.mcsl-nav-tabs__tab) {
+  min-width: 0;
+}
+
+.preview-window :deep(.mcsl-panel__header h1),
+.preview-window :deep(.mcsl-panel__header h2),
+.preview-window :deep(.mcsl-panel__header h3),
+.preview-window :deep(.mcsl-message__title),
+.preview-window :deep(.mcsl-message__body),
+.preview-window :deep(.mcsl-nav-tabs__tab),
+.preview-window :deep(.mcsl-nav-tabs__tab span) {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.preview-window :deep(.mcsl-button__label),
+.preview-window :deep(.mcsl-tag) {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .home-stats {
@@ -342,6 +394,18 @@ const routes = computed(() => [
 
   .preview-window {
     padding: 12px;
+  }
+
+  .preview-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+  }
+
+  .preview-health__status,
+  .preview-job {
+    align-items: flex-start;
+    gap: 8px;
   }
 
   .home-stats {

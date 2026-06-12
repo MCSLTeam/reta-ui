@@ -43,7 +43,7 @@ const days = computed(() => {
 
   return Array.from({ length: 42 }, (_, index) => {
     const date = start.add(index, "day");
-    const value = date.format("YYYY-RM-DD");
+    const value = date.format("YYYY-MM-DD");
     const disabled =
       (props.min ? date.isBefore(dayjs(props.min), "day") : false) ||
       (props.max ? date.isAfter(dayjs(props.max), "day") : false) ||

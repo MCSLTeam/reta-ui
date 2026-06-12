@@ -127,6 +127,10 @@ function clickedOutside(event: MouseEvent) {
   );
 }
 
+function containsElement(target: EventTarget | null) {
+  return target instanceof Node && wrapperEl.value?.contains(target);
+}
+
 function handleClick(event: MouseEvent) {
   if (
     visible.value &&
@@ -148,6 +152,7 @@ defineExpose({
   locate,
   canFullyShow,
   clickedOutside,
+  containsElement,
   opened: computed(() => visible.value),
 });
 </script>
