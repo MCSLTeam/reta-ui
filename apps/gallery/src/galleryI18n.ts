@@ -87,11 +87,6 @@ const zh = {
       "面向复杂控制台、运维面板和生产工具的 Vue 组件系统。Reta UI 专注把高密度信息、稳定交互和统一主题整理成可复用的界面基础设施。",
     browseComponents: "浏览组件",
     readDocs: "阅读文档",
-    stats: {
-      components: "组件体系",
-      docs: "文档规范",
-      themes: "主题能力",
-    },
     preview: {
       online: "Online",
       title: "生产控制台预览",
@@ -407,11 +402,6 @@ const en: typeof zh = {
       "A Vue component system for complex consoles, operations panels, and production tools. Reta UI is an independent product focused on reusable interface infrastructure for dense information, stable interactions, and unified theming.",
     browseComponents: "Browse components",
     readDocs: "Read docs",
-    stats: {
-      components: "Component system",
-      docs: "Documentation",
-      themes: "Theme modes",
-    },
     preview: {
       online: "Online",
       title: "Production Console Preview",

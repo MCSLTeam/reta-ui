@@ -5,12 +5,6 @@ import { RBadge, RButton, RButtonGroup, RCard, RMessage, RMeterGroup, RNavTabs, 
 
 const { t } = useI18n();
 
-const stats = computed(() => [
-  { label: t("gallery.home.stats.components"), value: "40+" },
-  { label: t("gallery.home.stats.docs"), value: "API" },
-  { label: t("gallery.home.stats.themes"), value: "2" },
-]);
-
 const previewTabs = [
   { label: "Runtime", icon: "fas fa-gauge" },
   { label: "Tasks", icon: "fas fa-list-check" },
@@ -123,13 +117,6 @@ const routes = computed(() => [
       </section>
     </section>
 
-    <section class="home-stats" aria-label="Gallery stats">
-      <div v-for="item in stats" :key="item.label" class="home-stat">
-        <strong>{{ item.value }}</strong>
-        <span>{{ item.label }}</span>
-      </div>
-    </section>
-
     <section class="home-routes">
       <r-card
         v-for="item in routes"
@@ -151,6 +138,7 @@ const routes = computed(() => [
   display: grid;
   min-width: 0;
   gap: 22px;
+  margin: 0 38px;
 }
 
 .home-hero {
@@ -327,14 +315,6 @@ const routes = computed(() => [
   word-break: break-word;
 }
 
-.home-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  border: 1px solid var(--mcsl-border-color-base);
-  border-radius: var(--mcsl-border-radius-sm);
-  overflow: hidden;
-}
-
 .home-stat {
   display: grid;
   gap: 4px;
@@ -378,6 +358,7 @@ const routes = computed(() => [
 @media (max-width: 620px) {
   .home-page {
     gap: 18px;
+    margin: 0 28px;
   }
 
   .home-hero {
@@ -406,10 +387,6 @@ const routes = computed(() => [
   .preview-job {
     align-items: flex-start;
     gap: 8px;
-  }
-
-  .home-stats {
-    grid-template-columns: 1fr;
   }
 
   .home-stat:not(:last-child) {

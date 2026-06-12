@@ -418,11 +418,10 @@ watch(search, () => {
         class="gallery-topbar__inner"
         :class="{ 'gallery-topbar__inner--no-search': !hasSidebar }"
       >
-        <r-button
+        <router-link
           class="gallery-brand"
-          type="text"
+          to="/"
           aria-label="Reta UI"
-          @click="navigateTopbar('/')"
         >
           <div class="gallery-brand__content">
             <span class="gallery-brand__mark" aria-hidden="true">
@@ -432,7 +431,7 @@ watch(search, () => {
               <strong>Reta UI</strong>
             </span>
           </div>
-        </r-button>
+        </router-link>
 
         <nav class="gallery-topnav" :aria-label="t('gallery.nav.primary')">
           <r-button
@@ -778,6 +777,7 @@ watch(search, () => {
 }
 
 .gallery-brand {
+  width: fit-content;
   max-width: 150px;
   white-space: nowrap;
   padding: 0;
@@ -787,12 +787,9 @@ watch(search, () => {
   cursor: pointer;
   font: inherit;
   text-align: left;
-}
-
-:deep(.gallery-brand.mcsl-button) {
-  width: fit-content;
-  max-width: min(172px, calc(100vw - 96px));
-  justify-content: flex-start;
+  text-decoration: none;
+  min-width: 0;
+  flex: 0 1 min(172px, calc(100vw - 96px));
 }
 
 .gallery-brand__content {
@@ -800,6 +797,7 @@ watch(search, () => {
   flex-direction: row;
   align-items: center;
   gap: 11px;
+  margin-left: 11px;
   max-width: 100%;
   flex-wrap: nowrap;
   min-width: 0;
@@ -1078,15 +1076,6 @@ watch(search, () => {
   padding: 0;
   box-sizing: border-box;
 }
-
-.gallery-shell--home {
-  padding: 28px;
-}
-
-// .gallery-shell--docs,
-// .gallery-shell--components {
-//   padding: 0 0 0 18px;
-// }
 
 .gallery-docs {
   display: grid;
