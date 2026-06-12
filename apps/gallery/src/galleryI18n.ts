@@ -20,10 +20,10 @@ const zh = {
     hideCode: "隐藏代码",
   },
   footer: {
-    copyright: "Copyright 2026 云上极致（深圳）互联网有限公司",
-    product:
-      "Reta UI 由云上极致（深圳）互联网有限公司旗下 MCSL 开发组维护，是面向复杂控制台、运维面板和生产工具的 Vue 组件系统。",
-    company: "云上极致（深圳）互联网有限公司",
+    copyrightPrefix: "Copyright © 2022 - 2026",
+    coCreatedWithPrefix: "与",
+    coCreatedWithSuffix: "共同出品",
+    company: "云上极致",
     team: "MCSL 开发组",
     docs: "文档",
     components: "组件",
@@ -92,7 +92,6 @@ const zh = {
     overlays: "浮层",
   },
   home: {
-    eyebrow: "Vue Component System",
     description:
       "面向复杂控制台、运维面板和生产工具的 Vue 组件系统。Reta UI 专注把高密度信息、稳定交互和统一主题整理成可复用的界面基础设施。",
     browseComponents: "浏览组件",
@@ -345,10 +344,10 @@ const en: typeof zh = {
     hideCode: "Hide code",
   },
   footer: {
-    copyright: "Copyright 2026 云上极致（深圳）互联网有限公司",
-    product:
-      "Reta UI is maintained by the MCSL Development Group under 云上极致（深圳）互联网有限公司 for complex consoles, operations panels, and production tools.",
-    company: "云上极致（深圳）互联网有限公司",
+    copyrightPrefix: "Copyright © 2022 - 2026",
+    coCreatedWithPrefix: "Co-produced with",
+    coCreatedWithSuffix: "",
+    company: "AcmeCloud",
     team: "MCSL Development Group",
     docs: "Docs",
     components: "Components",
@@ -417,7 +416,6 @@ const en: typeof zh = {
     overlays: "Overlays",
   },
   home: {
-    eyebrow: "Vue Component System",
     description:
       "A Vue component system for complex consoles, operations panels, and production tools. Reta UI is an independent product focused on reusable interface infrastructure for dense information, stable interactions, and unified theming.",
     browseComponents: "Browse components",

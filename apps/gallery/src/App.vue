@@ -677,25 +677,6 @@ watch(search, () => {
               </Motion>
             </AnimatePresence>
           </RouterView>
-          <footer class="gallery-footer">
-            <div class="gallery-footer__main">
-              <span>{{ t("gallery.footer.copyright") }}</span>
-              <span>{{ t("gallery.footer.product") }}</span>
-            </div>
-            <nav class="gallery-footer__links" aria-label="Footer">
-              <a href="https://acmecloud.cn/" rel="noreferrer" target="_blank">
-                {{ t("gallery.footer.company") }}
-              </a>
-              <a href="https://www.mcsl.com.cn/" rel="noreferrer" target="_blank">
-                {{ t("gallery.footer.team") }}
-              </a>
-              <router-link to="/docs">{{ t("gallery.footer.docs") }}</router-link>
-              <router-link to="/components/buttons">{{ t("gallery.footer.components") }}</router-link>
-              <a href="https://github.com/MCSLTeam/reta-ui" rel="noreferrer" target="_blank">
-                {{ t("gallery.footer.source") }}
-              </a>
-            </nav>
-          </footer>
         </section>
       </section>
     </main>
@@ -1189,47 +1170,12 @@ watch(search, () => {
   min-width: 0;
   min-height: 0;
   overflow-y: auto;
-  padding: 0 0 56px;
 }
 
 .gallery-route-motion {
   min-height: 100%;
   transform-origin: 50% 0;
   will-change: opacity, transform, filter;
-}
-
-.gallery-footer {
-  display: grid;
-  gap: 12px;
-  margin: 20px 0 0;
-  padding: 22px 0 28px;
-  border-top: 1px solid var(--mcsl-border-color-base);
-  color: var(--mcsl-text-color-secondary);
-  font-size: var(--mcsl-font-size-sm);
-  line-height: 1.65;
-}
-
-.gallery-footer__main,
-.gallery-footer__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  min-width: 0;
-}
-
-.gallery-footer__main {
-  flex-direction: column;
-}
-
-.gallery-footer__links a {
-  color: var(--mcsl-text-color-regular);
-  text-decoration: none;
-  transition: color var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-standard);
-}
-
-.gallery-footer__links a:hover,
-.gallery-footer__links a:focus-visible {
-  color: var(--mcsl-color-primary);
 }
 
 .gallery-notif-btn {
@@ -1350,9 +1296,9 @@ watch(search, () => {
     min-height: calc(100vh - 112px);
   }
 
-  .gallery-shell--home {
-    padding: 18px;
-  }
+  // .gallery-shell--home {
+  //   padding: 18px;
+  // }
 
   .gallery-shell--docs,
   .gallery-shell--components {
@@ -1396,6 +1342,7 @@ watch(search, () => {
     overflow-y: visible;
     padding: 0 0 32px;
   }
+
 }
 
 @media (max-width: 460px) {
