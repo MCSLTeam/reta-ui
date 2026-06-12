@@ -176,3 +176,9 @@ $vars: map.merge(
   }
 }
 </style>
+
+<style lang="scss">
+.mcsl-panel.mcsl-menu > .mcsl-panel__body-wrapper > .mcsl-panel__body {
+  padding: 0;
+}
+</style>

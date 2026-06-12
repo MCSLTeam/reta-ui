@@ -20,5 +20,25 @@ $vars: map.merge(
       "medium": var(--mcsl-spacing-sm),
       "large": var(--mcsl-spacing-md),
     ),
+    "header-spacing": (
+      "small": var(--mcsl-spacing-xs),
+      "medium": var(--mcsl-spacing-sm),
+      "large": var(--mcsl-spacing-md),
+    ),
+    "action-spacing": (
+      "small": var(--mcsl-spacing-2xs),
+      "medium": var(--mcsl-spacing-xs),
+      "large": var(--mcsl-spacing-sm),
+    ),
+    "font-size": (
+      "small": var(--mcsl-font-size-sm),
+      "medium": var(--mcsl-font-size-md),
+      "large": var(--mcsl-font-size-md),
+    ),
+    "title-font-size": (
+      "small": var(--mcsl-font-size-md),
+      "medium": var(--mcsl-font-size-lg),
+      "large": var(--mcsl-font-size-lg),
+    ),
   )
 );
