@@ -6,8 +6,6 @@ Reta UI is the standalone workspace for the Reta component library and its galle
 
 - `packages/ui`: Vue component library.
 - `apps/gallery`: component gallery and documentation site.
-- `packages/configs`: shared TypeScript, ESLint, and Prettier configuration.
-- `packages/locales`: locale resources used by the component store utilities.
 
 ## Commands
 

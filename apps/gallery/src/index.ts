@@ -5,7 +5,7 @@ import FloatingVue from "floating-vue";
 import App from "./App.vue";
 import router from "./router";
 import { loadUi, useLocale } from "reta-ui";
-import { mergeGalleryMessages } from "./galleryI18n";
+import { createGalleryI18nOptions } from "./galleryI18n";
 
 (async () => {
   const app = createApp(App);
@@ -13,9 +13,7 @@ import { mergeGalleryMessages } from "./galleryI18n";
   app.use(pinia);
 
   const localeStore = useLocale();
-  const i18n = createI18n(
-    mergeGalleryMessages(await localeStore.generateConfig()),
-  );
+  const i18n = createI18n(createGalleryI18nOptions(localeStore.getLocale(localeStore.locale)));
   app.use(i18n);
   localeStore.injectI18n(i18n.global as any);
 

@@ -6,9 +6,8 @@ import {
   usePreferredLanguages,
 } from "@vueuse/core";
 import { computed, ref, watch } from "vue";
-import { type Composer, type I18nOptions } from "vue-i18n";
+import { type Composer } from "vue-i18n";
 
-/* ========== [ 外观 ]========== */
 export type Theme = "system" | "light" | "dark";
 export type ThemeTransition = "viewTransition" | "fade" | "none";
 export type Rendering = "advanced" | "basic" | "fast";
@@ -42,7 +41,6 @@ export const useAppearance = defineStore("appearance", () => {
       document.dispatchEvent(new Event("theme:change"));
     };
 
-    // 添加过渡样式
     const style = document.createElement("style");
     document.head.appendChild(style);
 
@@ -61,7 +59,6 @@ export const useAppearance = defineStore("appearance", () => {
 
     switch (transition) {
       case "none":
-        // 禁用动画
         style.innerHTML = `
           * {
               transition: none !important;
@@ -70,7 +67,6 @@ export const useAppearance = defineStore("appearance", () => {
         set();
         break;
       case "fade":
-        // 渐变动画
         style.innerHTML = `
           * {
               transition-property: background-color, border-color, color, fill, stroke, box-shadow, outline-color, opacity !important;
@@ -81,9 +77,7 @@ export const useAppearance = defineStore("appearance", () => {
         set();
         break;
       case "viewTransition":
-        // 扩散动画
         if (!document.startViewTransition) {
-          // 浏览器不支持 ViewTransition 就使用渐变
           changeTheme(theme, "fade");
           return;
         }
@@ -94,10 +88,8 @@ export const useAppearance = defineStore("appearance", () => {
           }
           `;
 
-          // 加载过渡动画
           const viewTransition = document.startViewTransition(set);
 
-          // 从鼠标处开始扩散
           const mouseX = useMousePosition().x;
           const mouseY = useMousePosition().y;
 
@@ -135,7 +127,6 @@ export const useAppearance = defineStore("appearance", () => {
         break;
     }
 
-    // 移除过渡样式
     setTimeout(() => style.remove(), 360);
   }
 
@@ -149,7 +140,6 @@ export const useAppearance = defineStore("appearance", () => {
     setRendering(renderingStorage.value);
   }
 
-  // 监听系统主题变更
   watch(usePreferredColorScheme(), () => {
     changeTheme(themeStorage.value, "fade");
   });
@@ -173,37 +163,15 @@ export const useAppearance = defineStore("appearance", () => {
   };
 });
 
-/* ========== [ 语言 ]========== */
 export const LOCALES = [
   "en-US",
-  "ja-JP",
-  "ru-RU",
   "zh-CN",
-  "zh-TW",
-  "zh-HK",
-  "zh-MEME",
 ] as const;
-
-export type I18nMessages = Record<Locale, any>;
 
 export type Locale = (typeof LOCALES)[number] | "system";
 
-const i18nOptions: I18nOptions = {
-  legacy: false,
-  fallbackLocale: {
-    zh: ["zh-CN"],
-    "zh-TW": ["zh-HK", "zh-CN"],
-    "zh-HK": ["zh-TW", "zh-CN"],
-    "zh-MEME": ["zh-CN"],
-    "zh-Hans": ["zh-CN"],
-    "zh-Hant": ["zh-TW", "zh-HK", "zh-CN"],
-    default: ["en-US"],
-  },
-};
-
 export const useLocale = defineStore("locale", () => {
   const locale = useLocalStorage<Locale>("locale", "system");
-  let messagesCache: I18nMessages | undefined = undefined;
   let i18n: Composer | undefined = undefined;
 
   function injectI18n(composer: Composer) {
@@ -212,34 +180,6 @@ export const useLocale = defineStore("locale", () => {
 
   function getI18n() {
     return i18n!;
-  }
-
-  async function generateConfig(): Promise<I18nOptions> {
-    await importMessages();
-    return {
-      ...i18nOptions,
-      locale: getLocale(locale.value),
-      messages: getMessages(),
-    };
-  }
-
-  async function importMessages() {
-    const messages: any = {};
-    for (const locale of LOCALES) {
-      const message = (await import(`@repo/locales/locales/${locale}.json`))
-        .default;
-      const eula = (await import(`@repo/locales/eula/${locale}.json`)).default;
-      message.shared.eula = {
-        ...message.shared.eula,
-        ...eula,
-      };
-      messages[locale] = message;
-    }
-    messagesCache = messages;
-  }
-
-  function getMessages() {
-    return messagesCache!;
   }
 
   function getLocale(locale: Locale) {
@@ -257,26 +197,11 @@ export const useLocale = defineStore("locale", () => {
     locale,
     injectI18n,
     getI18n,
-    generateConfig,
-    getMessages,
     getLocale,
     setLocale,
   };
 });
 
-/* ========== [ 屏幕宽度 ]========== */
-
-/**
- * 屏幕宽度类型
- *
- * lg - 大型电脑（屏幕宽度 >= 1024px）
- *
- * md - 笔记本电脑（768px < 屏幕宽度 < 1024px）
- *
- * sm - 平板电脑（450px < 屏幕宽度 <= 768px）
- *
- * xs - 手机（屏幕宽度 <= 450px） 为什么不用425px呢，因为我iPhone 12 Pro Max大于425px就很神奇
- */
 export type ScreenWidth = "lg" | "md" | "sm";
 
 export const useScreenWidth = defineStore("screenWidth", () => {
@@ -297,7 +222,6 @@ export const useScreenWidth = defineStore("screenWidth", () => {
   };
 });
 
-/* ========== [ 鼠标位置 ]========== */
 export const useMousePosition = defineStore("mousePosition", () => {
   const mousePosition = ref({ x: 0, y: 0 });
 

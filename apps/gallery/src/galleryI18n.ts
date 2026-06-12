@@ -662,19 +662,13 @@ function resolveGalleryLanguage(locale: string): GalleryLanguage {
   return locale.startsWith("zh") ? "zh-CN" : "en-US";
 }
 
-export function mergeGalleryMessages(config: I18nOptions): I18nOptions {
-  const messages = (config.messages ?? {}) as Record<string, any>;
-
-  for (const locale of Object.keys(messages)) {
-    const language = resolveGalleryLanguage(locale);
-    messages[locale] = {
-      ...messages[locale],
-      ...galleryMessages[language],
-    };
-  }
+export function createGalleryI18nOptions(locale = "zh-CN"): I18nOptions {
+  const resolvedLocale = resolveGalleryLanguage(locale);
 
   return {
-    ...config,
-    messages,
+    legacy: false,
+    locale: resolvedLocale,
+    fallbackLocale: "en-US",
+    messages: galleryMessages,
   };
 }

@@ -1,31 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { RBadge, RButton, RButtonGroup, RCard, RMessage, RMeterGroup, RNavTabs, RPanel, RProgressBar, RTag } from "reta-ui";
+import { RButton, RButtonGroup, RCard } from "reta-ui";
 import RetaLogo from "../components/RetaLogo.vue";
 
 const { t } = useI18n();
-
-const previewTabs = [
-  { label: "Runtime", icon: "fas fa-gauge" },
-  { label: "Tasks", icon: "fas fa-list-check" },
-  { label: "Network", icon: "fas fa-diagram-project" },
-];
-
-const meter = {
-  length: 100,
-  values: [
-    { label: "CPU", length: 22, type: "success" },
-    { label: "RAM", length: 46, type: "primary" },
-    { label: "Disk", length: 68, type: "warning" },
-  ],
-};
-
-const previewJobs = computed(() => [
-  { label: t("gallery.home.preview.jobs.backup"), value: "02:18", color: "primary" },
-  { label: t("gallery.home.preview.jobs.sync"), value: "64%", color: "success" },
-  { label: t("gallery.home.preview.jobs.alert"), value: "1", color: "warning" },
-]);
 
 const routes = computed(() => [
   {
@@ -64,57 +43,6 @@ const routes = computed(() => [
           </r-button>
         </r-button-group>
       </div>
-
-      <section class="home-preview" aria-label="Reta UI example">
-        <div class="preview-window">
-          <div class="preview-window__bar">
-            <span />
-            <span />
-            <span />
-          </div>
-          <div class="preview-header">
-            <div>
-              <h2>{{ t("gallery.home.preview.title") }}</h2>
-              <p>{{ t("gallery.home.preview.subtitle") }}</p>
-            </div>
-            <r-badge value="3" color="success">
-              <r-button squared icon="fas fa-terminal" type="primary" color="primary" />
-            </r-badge>
-          </div>
-
-          <r-nav-tabs :tabs="previewTabs" />
-
-          <div class="preview-grid">
-            <r-panel size="small">
-              <template #header><h3>{{ t("gallery.home.preview.health") }}</h3></template>
-              <div class="preview-health">
-                <div class="preview-health__status">
-                  <strong>99.98%</strong>
-                  <r-tag color="success" size="small">{{ t("gallery.home.preview.online") }}</r-tag>
-                </div>
-                <r-meter-group :meter="meter" />
-              </div>
-            </r-panel>
-
-            <r-panel size="small">
-              <template #header><h3>{{ t("gallery.home.preview.queue") }}</h3></template>
-              <div class="preview-jobs">
-                <div v-for="job in previewJobs" :key="job.label" class="preview-job">
-                  <span>{{ job.label }}</span>
-                  <r-tag :color="job.color as any" size="small">{{ job.value }}</r-tag>
-                </div>
-              </div>
-            </r-panel>
-          </div>
-
-          <div class="preview-footer">
-            <r-message :title="t('gallery.home.preview.messageTitle')" color="success" variant="soft">
-              {{ t("gallery.home.preview.message") }}
-            </r-message>
-            <r-progress-bar :value="64" color="primary" />
-          </div>
-        </div>
-      </section>
     </section>
 
     <section class="home-routes">
@@ -182,11 +110,11 @@ const routes = computed(() => [
 
 .home-hero {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(420px, 0.75fr);
-  gap: 34px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
   align-items: center;
   min-width: 0;
-  min-height: min(520px, calc(100vh - 150px));
+  min-height: min(430px, calc(100vh - 190px));
 }
 
 .home-hero__copy {
@@ -216,142 +144,6 @@ const routes = computed(() => [
 
 .home-hero__copy :deep(.mcsl-button-group) {
   flex-wrap: wrap;
-}
-
-.home-preview {
-  align-self: center;
-  min-width: 0;
-}
-
-.preview-window {
-  display: grid;
-  box-sizing: border-box;
-  width: 100%;
-  min-width: 0;
-  gap: 18px;
-  padding: 16px;
-  border: 1px solid var(--mcsl-border-color-base);
-  border-radius: var(--mcsl-border-radius-md);
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--mcsl-bg-color-overlay) 94%, transparent), var(--mcsl-bg-color-main)),
-    var(--mcsl-bg-color-overlay);
-  box-shadow: 0 18px 60px color-mix(in srgb, var(--mcsl-color-primary) 12%, transparent);
-}
-
-.preview-window__bar {
-  display: flex;
-  gap: 7px;
-}
-
-.preview-window__bar span {
-  width: 9px;
-  height: 9px;
-  border-radius: 99px;
-  background: var(--mcsl-border-color-dark);
-}
-
-.preview-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 18px;
-  align-items: start;
-  min-width: 0;
-}
-
-.preview-header > div {
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: 100%;
-}
-
-.preview-header :deep(.mcsl-badge) {
-  flex: none;
-  max-width: 100%;
-}
-
-.preview-header h2 {
-  margin: 0 0 6px;
-  font-weight: 700;
-  overflow-wrap: anywhere;
-}
-
-.preview-header p {
-  margin: 0;
-  color: var(--mcsl-text-color-secondary);
-  line-height: 1.6;
-  overflow-wrap: anywhere;
-}
-
-.preview-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
-  gap: 12px;
-  min-width: 0;
-}
-
-.preview-health,
-.preview-jobs,
-.preview-footer {
-  display: grid;
-  gap: 14px;
-}
-
-.preview-health__status,
-.preview-job {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.preview-health__status strong {
-  color: var(--mcsl-text-color-primary);
-  font-size: var(--mcsl-font-size-3xl);
-}
-
-.preview-job span {
-  min-width: 0;
-  color: var(--mcsl-text-color-regular);
-  font-size: var(--mcsl-font-size-sm);
-  overflow-wrap: anywhere;
-}
-
-.preview-window :deep(.mcsl-panel),
-.preview-window :deep(.mcsl-message),
-.preview-window :deep(.mcsl-nav-tabs),
-.preview-window :deep(.mcsl-meter-group),
-.preview-window :deep(.mcsl-progress-bar) {
-  min-width: 0;
-}
-
-.preview-window :deep(.mcsl-panel__header),
-.preview-window :deep(.mcsl-panel__body-wrapper),
-.preview-window :deep(.mcsl-message__content),
-.preview-window :deep(.mcsl-message__body),
-.preview-window :deep(.mcsl-nav-tabs__tab) {
-  min-width: 0;
-}
-
-.preview-window :deep(.mcsl-panel__header h1),
-.preview-window :deep(.mcsl-panel__header h2),
-.preview-window :deep(.mcsl-panel__header h3),
-.preview-window :deep(.mcsl-message__title),
-.preview-window :deep(.mcsl-message__body),
-.preview-window :deep(.mcsl-nav-tabs__tab),
-.preview-window :deep(.mcsl-nav-tabs__tab span) {
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.preview-window :deep(.mcsl-button__label),
-.preview-window :deep(.mcsl-tag) {
-  min-width: 0;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: break-word;
 }
 
 .home-stat {
@@ -484,8 +276,7 @@ const routes = computed(() => [
 
 @media (max-width: 1080px) {
   .home-hero,
-  .home-routes,
-  .preview-grid {
+  .home-routes {
     grid-template-columns: 1fr;
   }
 
@@ -518,22 +309,6 @@ const routes = computed(() => [
 
   .home-hero__copy p {
     font-size: var(--mcsl-font-size-md);
-  }
-
-  .preview-window {
-    padding: 12px;
-  }
-
-  .preview-header {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 12px;
-  }
-
-  .preview-health__status,
-  .preview-job {
-    align-items: flex-start;
-    gap: 8px;
   }
 
   .home-stat:not(:last-child) {

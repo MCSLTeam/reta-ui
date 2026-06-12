@@ -895,6 +895,10 @@ watch(search, () => {
   border-bottom: 1px solid var(--mcsl-border-color-base);
 }
 
+.gallery-mobile-menu__settings .gallery-language__select {
+  width: 96px;
+}
+
 .gallery-mobile-menu__section,
 .gallery-mobile-sidebar-groups,
 .gallery-mobile-sidebar-group,

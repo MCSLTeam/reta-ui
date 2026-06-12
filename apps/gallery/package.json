@@ -13,8 +13,6 @@
   },
   "dependencies": {
     "reta-ui": "workspace:*",
-    "@repo/configs": "workspace:*",
-    "@repo/locales": "workspace:*",
     "@vueuse/core": "^14.2.1",
     "eslint": "^10.0.0",
     "floating-vue": "^5.2.2",

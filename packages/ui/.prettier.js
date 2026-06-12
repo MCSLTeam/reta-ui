@@ -1,3 +1,7 @@
-import config from "@repo/configs/prettier/base";
-
-export default config;
+export default {
+  useTabs: true,
+  tabWidth: 4,
+  singleQuote: true,
+  bracketSameLine: true,
+  printWidth: 120,
+};

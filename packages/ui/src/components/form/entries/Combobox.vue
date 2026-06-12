@@ -346,6 +346,14 @@ function clearValue(event?: MouseEvent) {
 
 .mcsl-combobox__trigger {
   position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.mcsl-combobox__trigger--editable :deep(.mcsl-input-text) {
+  width: 100%;
+  min-width: 0;
 }
 
 .mcsl-combobox__trigger--editable :deep(.mcsl-input-text > input) {
@@ -355,7 +363,7 @@ function clearValue(event?: MouseEvent) {
 .mcsl-combobox__select-trigger {
   box-sizing: border-box;
   width: 100%;
-  min-width: 8rem;
+  min-width: 0;
   margin: 0;
   padding: 0 2.8rem 0 var(--mcsl-spacing-sm);
   border: 1px solid var(--mcsl-border-color-base);

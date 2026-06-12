@@ -1,7 +1,18 @@
 {
-  "extends": "@repo/configs/ts/base.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
   "include": ["rsbuild.config.ts"],
   "compilerOptions": {
-    "composite": true
+    "composite": true,
+    "isolatedModules": true,
+    "lib": ["ES2023"],
+    "module": "NodeNext",
+    "moduleDetection": "force",
+    "moduleResolution": "NodeNext",
+    "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES2022",
+    "verbatimModuleSyntax": true
   }
 }
