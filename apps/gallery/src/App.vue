@@ -36,6 +36,8 @@ const galleryVersion = "v0.1.0";
 const currentTocItems = ref<GalleryTocItem[]>([]);
 const collapsedMobileMenuSections = ref(new Set<string>());
 const collapsedSidebarGroups = ref(new Set<string>());
+const mobileMenuSectionsInitialized = ref(false);
+const sidebarGroupsInitialized = ref(false);
 
 provide("gallery-doc-toc", (items: GalleryTocItem[]) => {
   currentTocItems.value = items;
@@ -279,6 +281,15 @@ function resetMobileMenuSections() {
   collapsedMobileMenuSections.value = next;
 }
 
+function expandActiveMobileSidebarGroup() {
+  const activeLabel = activeMobileSidebarGroupLabel.value;
+  if (!activeLabel) return;
+
+  const next = new Set(collapsedMobileMenuSections.value);
+  next.delete(mobileSectionKey("sidebar", activeLabel));
+  collapsedMobileMenuSections.value = next;
+}
+
 function sidebarGroupKey(label: string) {
   return `sidebar:${label}`;
 }
@@ -319,6 +330,41 @@ function resetSidebarGroups() {
   collapsedSidebarGroups.value = next;
 }
 
+function syncMobileMenuSectionsForRoute() {
+  if (!visibleMobileSidebarGroups.value.length) return;
+
+  if (!mobileMenuSectionsInitialized.value) {
+    resetMobileMenuSections();
+    mobileMenuSectionsInitialized.value = true;
+    return;
+  }
+
+  expandActiveMobileSidebarGroup();
+}
+
+function syncSidebarGroupsForRoute() {
+  if (!filteredSidebarGroups.value.length) return;
+
+  if (!sidebarGroupsInitialized.value) {
+    resetSidebarGroups();
+    sidebarGroupsInitialized.value = true;
+    return;
+  }
+
+  expandActiveSidebarGroup();
+}
+
+function expandActiveSidebarGroup() {
+  const activeGroup = filteredSidebarGroups.value.find((group) =>
+    group.pages.some((page) => isSidebarPageActive(page)),
+  );
+  if (!activeGroup) return;
+
+  const next = new Set(collapsedSidebarGroups.value);
+  next.delete(sidebarGroupKey(activeGroup.label));
+  collapsedSidebarGroups.value = next;
+}
+
 function isTopNavActive(link: string) {
   if (link === "/components/buttons") return route.path.startsWith("/components");
   return route.path === link;
@@ -352,8 +398,8 @@ watch(
   () => {
     search.value = "";
     currentTocItems.value = [];
-    resetMobileMenuSections();
-    resetSidebarGroups();
+    syncMobileMenuSectionsForRoute();
+    syncSidebarGroupsForRoute();
   },
   { immediate: true },
 );
