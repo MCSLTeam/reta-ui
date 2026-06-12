@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Reta UI Vue component library.",
   "type": "module",
-  "license": "GPL-3.0-only",
+  "license": "MIT",
   "sideEffects": [
     "**/*.css",
     "**/*.scss",
