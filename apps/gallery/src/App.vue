@@ -79,7 +79,7 @@ const routeMotionTransition = computed(() => ({
 const darkTheme = computed({
   get: () => appearance.actualTheme === "dark",
   set: (value: boolean) => {
-    appearance.changeTheme(value ? "dark" : "light", "none");
+    appearance.changeTheme(value ? "dark" : "light", "fade");
   },
 });
 
@@ -578,22 +578,24 @@ watch(search, () => {
                       :class="{ 'is-collapsed': isMobileMenuSectionCollapsed('sidebar', group.label) }"
                     />
                   </button>
-                  <div
-                    v-show="!isMobileMenuSectionCollapsed('sidebar', group.label)"
-                    class="gallery-mobile-menu__nav"
-                  >
-                    <r-button
-                      v-for="page in group.pages"
-                      :key="page.label"
-                      :class="{ 'is-active': isSidebarPageActive(page) }"
-                      align="left"
-                      type="text"
-                      @click="activateSidebarPage(page)"
+                  <Transition name="collapse-vertical">
+                    <div
+                      v-show="!isMobileMenuSectionCollapsed('sidebar', group.label)"
+                      class="gallery-mobile-menu__nav"
                     >
-                      <span>{{ page.label }}</span>
-                      <small v-if="'description' in page">{{ page.description }}</small>
-                    </r-button>
-                  </div>
+                      <r-button
+                        v-for="page in group.pages"
+                        :key="page.label"
+                        :class="{ 'is-active': isSidebarPageActive(page) }"
+                        align="left"
+                        type="text"
+                        @click="activateSidebarPage(page)"
+                      >
+                        <span>{{ page.label }}</span>
+                        <small v-if="'description' in page">{{ page.description }}</small>
+                      </r-button>
+                    </div>
+                  </Transition>
                 </section>
               </div>
             </section>
@@ -652,11 +654,13 @@ watch(search, () => {
                   :class="{ 'is-collapsed': isSidebarGroupCollapsed(group.label) }"
                 />
               </button>
-              <r-sidebar
-                v-show="!isSidebarGroupCollapsed(group.label)"
-                :pages="group.pages"
-                size="small"
-              />
+              <Transition name="collapse-vertical">
+                <r-sidebar
+                  v-show="!isSidebarGroupCollapsed(group.label)"
+                  :pages="group.pages"
+                  size="small"
+                />
+              </Transition>
             </section>
           </div>
         </aside>

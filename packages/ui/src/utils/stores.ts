@@ -73,7 +73,9 @@ export const useAppearance = defineStore("appearance", () => {
         // 渐变动画
         style.innerHTML = `
           * {
-              transition: var(--mcsl-motion-duration-slower) var(--mcsl-motion-ease-standard) !important;
+              transition-property: background-color, border-color, color, fill, stroke, box-shadow, outline-color, opacity !important;
+              transition-duration: var(--mcsl-motion-duration-slower) !important;
+              transition-timing-function: var(--mcsl-motion-ease-standard) !important;
           }
           `;
         set();

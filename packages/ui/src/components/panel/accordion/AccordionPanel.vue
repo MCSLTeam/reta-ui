@@ -47,6 +47,33 @@ function togglePanel() {
     emit("expand");
   }
 }
+
+function prepareCollapseTransition(element: Element) {
+  const el = element as HTMLElement;
+  el.style.height = "0";
+  el.style.opacity = "0";
+}
+
+function enterCollapseTransition(element: Element) {
+  const el = element as HTMLElement;
+  el.style.height = `${el.scrollHeight}px`;
+  el.style.opacity = "1";
+}
+
+function afterCollapseTransition(element: Element) {
+  const el = element as HTMLElement;
+  el.style.height = "";
+  el.style.opacity = "";
+}
+
+function leaveCollapseTransition(element: Element) {
+  const el = element as HTMLElement;
+  el.style.height = `${el.scrollHeight}px`;
+  el.style.opacity = "1";
+  void el.offsetHeight;
+  el.style.height = "0";
+  el.style.opacity = "0";
+}
 </script>
 
 <template>
@@ -77,15 +104,26 @@ function togglePanel() {
       </span>
     </button>
 
-    <div class="mcsl-accordion-panel__body-wrapper">
-      <div
-        class="mcsl-accordion-panel__body"
-        :class="bodyClass"
-        :style="bodyStyle"
-      >
-        <slot />
+    <Transition
+      name="mcsl-accordion-panel-collapse"
+      @before-enter="prepareCollapseTransition"
+      @enter="enterCollapseTransition"
+      @after-enter="afterCollapseTransition"
+      @enter-cancelled="afterCollapseTransition"
+      @before-leave="leaveCollapseTransition"
+      @after-leave="afterCollapseTransition"
+      @leave-cancelled="afterCollapseTransition"
+    >
+      <div v-show="expanded" class="mcsl-accordion-panel__body-wrapper">
+        <div
+          class="mcsl-accordion-panel__body"
+          :class="bodyClass"
+          :style="bodyStyle"
+        >
+          <slot />
+        </div>
       </div>
-    </div>
+    </Transition>
   </section>
 </template>
 
@@ -186,16 +224,11 @@ function togglePanel() {
 
 .mcsl-accordion-panel__body-wrapper {
   overflow: hidden;
-  max-height: 0;
-  opacity: 0;
-  transition:
-    max-height var(--mcsl-motion-duration-base) var(--mcsl-motion-ease-enter),
-    opacity var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-enter);
-}
-
-.mcsl-accordion-panel--expanded .mcsl-accordion-panel__body-wrapper {
-  max-height: 640px;
+  height: auto;
   opacity: 1;
+  transition:
+    height var(--mcsl-motion-duration-slow) var(--mcsl-motion-ease-standard),
+    opacity var(--mcsl-motion-duration-base) var(--mcsl-motion-ease-standard);
 }
 
 .mcsl-accordion-panel__body {

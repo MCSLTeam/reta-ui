@@ -125,10 +125,19 @@ defineExpose({
   }
 
   & > .mcsl-panel__body-wrapper {
+    display: grid;
+    grid-template-rows: 1fr;
     overflow: hidden;
-    max-height: 640px;
-    transition: max-height var(--mcsl-motion-duration-base) var(--mcsl-motion-ease-standard), opacity var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-standard);
+    transition:
+      grid-template-rows var(--mcsl-motion-duration-slow) var(--mcsl-motion-ease-standard),
+      opacity var(--mcsl-motion-duration-base) var(--mcsl-motion-ease-standard),
+      border-color var(--mcsl-motion-duration-base) var(--mcsl-motion-ease-standard);
     opacity: 1;
+
+    & > .mcsl-panel__body {
+      min-height: 0;
+      overflow: hidden;
+    }
   }
 }
 
@@ -138,9 +147,8 @@ defineExpose({
   }
 
   & > .mcsl-panel__body-wrapper {
-    max-height: 0;
+    grid-template-rows: 0fr;
     opacity: 0;
-    transition: max-height var(--mcsl-motion-duration-base) var(--mcsl-motion-ease-standard), opacity var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-standard);
   }
 }
 

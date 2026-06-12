@@ -146,8 +146,7 @@ const routes = computed(() => [
             {{ t("gallery.footer.copyrightPrefix") }}
             <a href="https://www.mcsl.com.cn/" rel="noreferrer" target="_blank">
               {{ t("gallery.footer.team") }}
-            </a>
-            .
+            </a>.
           </span>
           <span class="home-footer__co-created">
             {{ t("gallery.footer.coCreatedWithPrefix") }}
