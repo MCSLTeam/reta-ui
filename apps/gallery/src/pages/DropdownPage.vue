@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { RButton, RButtonGroup, RDropdownMenu, RPanel } from "reta-ui";
+import { RButton, RButtonGroup, RDropdownMenu } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const menu = [
   { label: "Open settings", icon: "fas fa-gear" },
@@ -26,8 +27,7 @@ const groupedMenu = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="overlay-row">
           <r-dropdown-menu :menu="menu">
             <template #triggerer="{ toggle }">
@@ -40,12 +40,11 @@ const groupedMenu = [
             </template>
           </r-dropdown-menu>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <r-button-group>
           <r-button type="primary" color="primary">Start</r-button>
           <r-dropdown-menu :menu="groupedMenu">
@@ -54,7 +53,7 @@ const groupedMenu = [
             </template>
           </r-dropdown-menu>
         </r-button-group>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { RButton, RMessage, RPanel, RPopover, RTag } from "reta-ui";
+import { RButton, RMessage, RPopover, RTag } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="overlay-row">
           <r-popover title="Inspector">
             <template #triggerer="{ toggle }">
@@ -22,12 +22,11 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
             <r-tag color="success">Online</r-tag>
           </r-popover>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <r-popover title="Inspector">
           <template #triggerer="{ toggle }">
             <r-button icon="fas fa-magnifying-glass-chart" @click="toggle">Open Popover</r-button>
@@ -37,7 +36,7 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
             <span>12 players · 41 ms latency</span>
           </div>
         </r-popover>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

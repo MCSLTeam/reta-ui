@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RPanel, RSegmented, RSelect } from "reta-ui";
+import { RSegmented, RSelect } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const runtime = ref("java21");
 const flavor = ref("paper");
@@ -47,27 +48,25 @@ const featureOptions = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="select-grid">
           <r-select v-model="runtime" :options="runtimeOptions" prefix="Runtime: " />
           <r-select v-model="region" :options="regionOptions" placeholder="Region" />
           <r-segmented v-model="flavor" :options="flavorOptions" />
           <r-segmented v-model="features" :options="featureOptions" multiple />
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="select-grid">
           <r-select v-model="flavor" :options="flavorOptions" placeholder="Server flavor" />
           <r-select disabled placeholder="Disabled select" :options="runtimeOptions" />
           <r-segmented v-model="flavor" :options="flavorOptions" />
           <r-segmented v-model="features" :options="featureOptions" multiple nullable />
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

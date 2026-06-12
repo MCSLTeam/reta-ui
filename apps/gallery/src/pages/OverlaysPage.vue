@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { RButton, RDropdownMenu, RPanel, RPopover, RTooltip } from "reta-ui";
+import { RButton, RDropdownMenu, RPopover, RTooltip } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const menu = [
   { label: "Open settings", icon: "fas fa-gear" },
@@ -12,8 +13,7 @@ const menu = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="overlay-demo">
           <r-dropdown-menu :menu="menu">
             <template #triggerer="{ toggle }">
@@ -32,12 +32,11 @@ const menu = [
             <p class="overlay-note">Compact contextual surface.</p>
           </r-popover>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="overlay-demo">
           <r-dropdown-menu :menu="menu">
             <template #triggerer="{ toggle }">
@@ -51,7 +50,7 @@ const menu = [
             <p class="overlay-note">Paper EU-1 · Online · 12 players</p>
           </r-popover>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

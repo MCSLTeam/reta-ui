@@ -1,19 +1,22 @@
 <script setup lang="ts">
 import { RButton, RMessage, RPanel, RTag } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="panel-grid">
           <r-panel header="Default panel">
             Panels group related content with a header, body, border, and optional divider.
           </r-panel>
-          <r-panel header="No divider" :header-divider="false">
-            The body can visually connect with the header when the divider is disabled.
+          <r-panel header="Header extra">
+            <template #header-extra>
+              <r-tag color="primary">Live</r-tag>
+            </template>
+            Header extra content stays aligned with the title and does not affect body rhythm.
           </r-panel>
           <r-panel header="Small" size="small">
             Small panels are useful for dense controls.
@@ -22,29 +25,42 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
             Large panels have roomier spacing and optional hover elevation.
           </r-panel>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
-        <r-panel class="settings-panel" header="Instance policy" shadow="hover">
-          <div class="settings-row">
-            <div>
-              <strong>Paper EU-1</strong>
-              <p>Runtime limits, backup policy, and operator-facing actions.</p>
+      <GalleryExample :title="$t('gallery.sections.example')">
+        <div class="panel-demo-stack">
+          <r-panel class="settings-panel" header="Instance policy" shadow="hover">
+            <template #header-extra>
+              <r-tag color="success">Online</r-tag>
+            </template>
+            <div class="settings-row">
+              <div>
+                <strong>Paper EU-1</strong>
+                <p>Runtime limits, backup policy, and operator-facing actions.</p>
+              </div>
             </div>
-            <r-tag color="success">Online</r-tag>
-          </div>
-          <r-message color="help" title="Panel as a section primitive">
-            Use Panel for bounded work areas where header actions and scrollable content matter.
-          </r-message>
-          <div class="action-row">
-            <r-button icon="fas fa-rotate-right">Restart</r-button>
-            <r-button type="primary" color="primary" icon="fas fa-save">Save</r-button>
-          </div>
-        </r-panel>
-      </r-panel>
+            <r-message color="help" title="Panel as a section primitive">
+              Use Panel for bounded work areas where header actions and scrollable content matter.
+            </r-message>
+            <template #footer>
+              <div class="panel-footer">
+                Last policy sync: 18 minutes ago
+              </div>
+            </template>
+            <template #action>
+              <r-button icon="fas fa-rotate-right">Restart</r-button>
+              <r-button type="primary" color="primary" icon="fas fa-save">Save</r-button>
+            </template>
+          </r-panel>
+          <r-panel class="scroll-panel" header="Recent events" scrollable>
+            <p v-for="index in 12" :key="index">
+              Event {{ index }}: panel headers and dividers stay fixed while the body scrolls.
+            </p>
+          </r-panel>
+        </div>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>
@@ -58,6 +74,11 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
 
 .settings-panel {
   max-width: 680px;
+}
+
+.panel-demo-stack {
+  display: grid;
+  gap: 16px;
 }
 
 .settings-row {
@@ -78,11 +99,24 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
   line-height: 1.6;
 }
 
-.action-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 14px;
+.panel-footer {
+  color: var(--mcsl-text-color-secondary);
+  font-size: var(--mcsl-font-size-sm);
+}
+
+.scroll-panel {
+  max-width: 680px;
+  height: 260px;
+}
+
+.scroll-panel p {
+  margin: 0;
+  color: var(--mcsl-text-color-regular);
+  line-height: 1.7;
+}
+
+.scroll-panel p + p {
+  margin-top: 10px;
 }
 
 @media (max-width: 820px) {

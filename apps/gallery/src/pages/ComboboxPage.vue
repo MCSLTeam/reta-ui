@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RAutoComplete, RCombobox, RMessage, RPanel, RTag } from "reta-ui";
+import { RAutoComplete, RCombobox, RMessage, RTag } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const command = ref("restart");
 const region = ref("sg");
@@ -26,8 +27,7 @@ const regions = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>Autocomplete</h2></template>
+      <GalleryExample title="Autocomplete">
         <div class="combo-grid">
           <label>
             <span>Command</span>
@@ -57,12 +57,11 @@ const regions = [
             />
           </label>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.boundValue") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.boundValue')">
         <div class="combo-stack">
           <r-message color="help" title="Autocomplete keeps custom text">
             {{ command }}
@@ -73,7 +72,7 @@ const regions = [
             <r-tag color="warning">Multiple: {{ selectedCommands.join(", ") }}</r-tag>
           </div>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

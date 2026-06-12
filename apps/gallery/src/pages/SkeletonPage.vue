@@ -1,24 +1,23 @@
 <script setup lang="ts">
-import { RAvatar, RPanel, RSkeleton } from "reta-ui";
+import { RAvatar, RSkeleton } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="skeleton-stack">
           <r-skeleton :lines="3" height="14px" />
           <r-skeleton width="64%" height="16px" />
           <r-skeleton width="36%" height="28px" :rounded="false" />
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="skeleton-card">
           <r-avatar text="LD" />
           <div>
@@ -26,7 +25,7 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
             <r-skeleton :lines="3" height="12px" />
           </div>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

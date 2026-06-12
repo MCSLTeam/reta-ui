@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RCheckbox, RPanel } from "reta-ui";
+import { RCheckbox } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const enabled = ref(true);
 const mixed = ref<boolean | null>(null);
@@ -13,8 +14,7 @@ const inherited = ref<boolean | null>(null);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="state-grid">
           <r-checkbox v-model="enabled">Checked</r-checkbox>
           <r-checkbox v-model="backups">Unchecked</r-checkbox>
@@ -23,18 +23,17 @@ const inherited = ref<boolean | null>(null);
           <r-checkbox disabled>Disabled</r-checkbox>
           <r-checkbox invalid>Invalid</r-checkbox>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="policy-list">
           <r-checkbox v-model="snapshots">Allow snapshot builds</r-checkbox>
           <r-checkbox v-model="backups" color="success">Run scheduled backups</r-checkbox>
           <r-checkbox v-model="inherited" color="help">Inherit parent policy</r-checkbox>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

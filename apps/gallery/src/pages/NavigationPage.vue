@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RBreadcrumbs, RNavTabs, RPanel, RSidebar } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const crumbs = [
   { label: "Reta Future", icon: "fas fa-cube" },
@@ -24,18 +25,16 @@ const tabs = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="navigation-stack">
           <r-breadcrumbs :items="crumbs" />
           <r-nav-tabs :tabs="tabs" />
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="nav-grid">
           <r-panel size="small">
             <template #header><h4>Sidebar</h4></template>
@@ -49,7 +48,7 @@ const tabs = [
             </div>
           </r-panel>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

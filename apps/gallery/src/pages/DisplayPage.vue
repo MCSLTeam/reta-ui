@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RAvatar, RCopyableText, REmpty, RMessage, RPanel, RResult, RSkeleton, RTable, RTag } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const columns = ["Name", "Status", "Version"];
 const rows = [
@@ -12,8 +13,7 @@ const rows = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="display-grid">
           <r-panel size="small">
             <template #header><h4>Identity</h4></template>
@@ -32,12 +32,11 @@ const rows = [
             <r-empty title="No resources yet" description="Display components should communicate state with calm hierarchy." />
           </r-panel>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="display-stack">
           <r-message title="Heads up" color="warning">
             This is a lightweight message surface for inline guidance.
@@ -46,7 +45,7 @@ const rows = [
           <r-table :columns="columns" :rows="rows" />
           <r-skeleton :lines="4" height="14px" />
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

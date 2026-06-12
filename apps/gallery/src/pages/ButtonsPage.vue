@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { RBadge, RButton, RButtonGroup, RPanel, RSplitButton } from "reta-ui";
+import { RBadge, RButton, RButtonGroup, RSplitButton } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const menu = [
   { label: "Duplicate", icon: "fas fa-copy" },
@@ -12,13 +13,7 @@ const menu = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header>
-          <div class="doc-heading">
-            <h2>{{ $t("gallery.sections.basic") }}</h2>
-          </div>
-        </template>
-
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="button-layout">
           <div class="button-row">
             <r-button type="primary" color="primary" icon="fas fa-check">
@@ -38,13 +33,11 @@ const menu = [
             <r-button disabled icon="fas fa-ban">Disabled</r-button>
           </div>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
-
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="button-layout">
           <section class="button-demo-block">
             <h3>{{ $t("gallery.sections.buttonGroup") }}</h3>
@@ -81,19 +74,12 @@ const menu = [
             </div>
           </section>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>
 
 <style scoped lang="scss">
-.doc-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
 .button-layout {
   display: grid;
   gap: 18px;

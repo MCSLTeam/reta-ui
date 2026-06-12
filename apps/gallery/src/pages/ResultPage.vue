@@ -1,23 +1,22 @@
 <script setup lang="ts">
-import { RButton, RPanel, RResult } from "reta-ui";
+import { RButton, RResult } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="result-grid">
           <r-result title="Completed" description="Deployment image was published." status="success" />
           <r-result title="Needs attention" description="Two plugins need review." status="warning" />
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <r-result
           title="Deployment completed"
           description="The server image has been rebuilt and published."
@@ -28,7 +27,7 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
             <r-button>View Logs</r-button>
           </div>
         </r-result>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

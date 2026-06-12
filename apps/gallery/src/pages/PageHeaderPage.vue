@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { RButton, RButtonGroup, RPageHeader, RPanel } from "reta-ui";
+import { RButton, RButtonGroup, RPageHeader } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <r-page-header
           title="Instances"
           subtitle="Manage server lifecycle, runtime policy, and operational state."
@@ -16,12 +16,11 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
             <r-button type="primary" color="primary" icon="fas fa-plus">Create</r-button>
           </template>
         </r-page-header>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <r-page-header title="Paper EU-1" subtitle="Online · Java 21 · 4 GB memory">
           <template #actions>
             <r-button-group>
@@ -30,7 +29,7 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
             </r-button-group>
           </template>
         </r-page-header>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

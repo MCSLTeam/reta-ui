@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RButton, RDataTable, RPanel, RTag } from "reta-ui";
+import { RButton, RDataTable, RTag } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const selectedKeys = ref<string[]>(["paper-eu"]);
 const sortBy = ref("players");
@@ -31,8 +32,7 @@ function statusColor(status: unknown) {
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>Data Table</h2></template>
+      <GalleryExample title="Data Table">
         <r-data-table
           v-model:selected-keys="selectedKeys"
           v-model:sort-by="sortBy"
@@ -48,17 +48,16 @@ function statusColor(status: unknown) {
             <r-button size="small" type="text">Open</r-button>
           </template>
         </r-data-table>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>States</h2></template>
+      <GalleryExample title="States">
         <div class="datatable-stack">
           <r-data-table :columns="columns" :rows="[]" />
           <r-data-table :columns="columns" :rows="rows.slice(0, 2)" loading />
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { RNavTabs, RPanel } from "reta-ui";
+import { RNavTabs } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const tabs = [
   { label: "Details", icon: "fas fa-circle-info" },
@@ -13,21 +14,19 @@ const tabs = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="tabs-stack">
           <r-nav-tabs :tabs="tabs" size="small" />
           <r-nav-tabs :tabs="tabs" />
           <r-nav-tabs :tabs="tabs" size="large" color="help" />
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <r-nav-tabs :tabs="tabs" shadow="hover" />
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

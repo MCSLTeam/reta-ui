@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { RAvatar, RBadge, RPanel } from "reta-ui";
+import { RAvatar, RBadge } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="avatar-row">
           <r-avatar text="RF" :size="32" />
           <r-avatar text="WS" />
@@ -16,18 +16,17 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
             <r-avatar text="AD" />
           </r-badge>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="avatar-list">
           <div class="avatar-item"><r-avatar text="RF" /><span>Reta Future</span></div>
           <div class="avatar-item"><r-avatar text="EU" /><span>Paper EU-1</span></div>
           <div class="avatar-item"><r-avatar text="DV" /><span>Development</span></div>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

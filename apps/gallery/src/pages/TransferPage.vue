@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RMessage, RPanel, RTag, RTransfer } from "reta-ui";
+import { RMessage, RTag, RTransfer } from "reta-ui";
 import { computed, ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const enabledServices = ref(["console", "backup"]);
 const selectedRegions = ref(["sg"]);
@@ -32,8 +33,7 @@ const selectedServiceLabels = computed(() =>
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <r-transfer
           v-model="enabledServices"
           :options="serviceOptions"
@@ -42,12 +42,11 @@ const selectedServiceLabels = computed(() =>
           source-placeholder="Search disabled"
           target-placeholder="Search enabled"
         />
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="transfer-demo">
           <r-transfer
             v-model="selectedRegions"
@@ -69,7 +68,7 @@ const selectedServiceLabels = computed(() =>
             </div>
           </r-message>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

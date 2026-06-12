@@ -16,6 +16,8 @@ const zh = {
     themeLight: "浅色",
     searchComponents: "搜索组件",
     searchDocs: "搜索文档导航",
+    showCode: "显示代码",
+    hideCode: "隐藏代码",
   },
   sidebar: {
     docs: "文档",
@@ -334,6 +336,8 @@ const en: typeof zh = {
     themeLight: "Light",
     searchComponents: "Search components",
     searchDocs: "Search docs",
+    showCode: "Show code",
+    hideCode: "Hide code",
   },
   sidebar: {
     docs: "Docs",

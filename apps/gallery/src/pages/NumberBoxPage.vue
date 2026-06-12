@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RInputNumber, RPanel } from "reta-ui";
+import { RInputNumber } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const port = ref(25565);
 const memory = ref(4096);
@@ -11,20 +12,18 @@ const players = ref(20);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="number-grid">
           <r-input-number v-model="port" :min="1" :max="65535" />
           <r-input-number v-model="memory" :step="512" :min="1024" />
           <r-input-number v-model="players" size="small" :min="1" :max="200" />
           <r-input-number v-model="players" disabled />
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="number-grid">
           <label class="field">
             <span>Port</span>
@@ -35,7 +34,7 @@ const players = ref(20);
             <r-input-number v-model="memory" :step="512" :min="1024" />
           </label>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

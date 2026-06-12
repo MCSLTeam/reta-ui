@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RButton, RConfirmDialog, RPanel } from "reta-ui";
+import { RButton, RConfirmDialog } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const deleteVisible = ref(false);
 const restartVisible = ref(false);
@@ -10,18 +11,16 @@ const restartVisible = ref(false);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="overlay-row">
           <r-button color="warning" @click="restartVisible = true">Restart</r-button>
           <r-button color="danger" type="primary" @click="deleteVisible = true">Delete</r-button>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <r-button color="danger" type="primary" icon="fas fa-trash" @click="deleteVisible = true">
           Delete Instance
         </r-button>
@@ -40,7 +39,7 @@ const restartVisible = ref(false);
           confirm-text="Restart"
           cancel-text="Cancel"
         />
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { RButton, RCard, RMessage, RMeterGroup, RNavTabs, RPanel, RTag } from "reta-ui";
+import { RButton, RCard, RMessage, RMeterGroup, RNavTabs, RTag } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const qualities = [
   "Calmer surfaces",
@@ -28,8 +29,7 @@ const meter = {
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="composition">
           <div class="composition-main">
             <h3>Server Overview</h3>
@@ -41,12 +41,11 @@ const meter = {
             <r-tag v-for="quality in qualities" :key="quality">{{ quality }}</r-tag>
           </div>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="instance-shell">
           <div class="instance-header">
             <div>
@@ -69,7 +68,7 @@ const meter = {
             </div>
           </r-card>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

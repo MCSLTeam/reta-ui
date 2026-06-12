@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { RBadge, RButton, RPanel, RTag } from "reta-ui";
+import { RBadge, RButton, RTag } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="tag-row">
           <r-tag color="surface">Surface</r-tag>
           <r-tag color="primary">Primary</r-tag>
@@ -16,12 +16,11 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
           <r-tag color="danger">Danger</r-tag>
           <r-tag color="help">Help</r-tag>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="tag-row">
           <r-badge value="8" color="danger">
             <r-button icon="fas fa-bell">Notifications</r-button>
@@ -30,7 +29,7 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
           <r-tag color="primary">Java 21</r-tag>
           <r-tag color="help">Paper</r-tag>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { RButton, RMessage, RPanel } from "reta-ui";
+import { RButton, RMessage } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="message-grid">
           <r-message title="Instance ready" color="success" closeable>
             Paper EU-1 is online and accepting console commands.
@@ -22,12 +22,11 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
             Backup jobs will run after the current upload finishes.
           </r-message>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="message-grid">
           <r-message title="Borderless surface" color="primary">
             Status messages use a quiet tinted background and keep the icon aligned to the text rhythm.
@@ -46,7 +45,7 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
             Inline messages keep the same spacing model without drawing a container.
           </r-message>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

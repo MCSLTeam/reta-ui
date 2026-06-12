@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RPanel, RSidebar } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const pages = [
   { label: "Overview", description: "Status", icon: "fas fa-gauge", link: "/components/sidebar" },
@@ -13,8 +14,7 @@ const pages = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="sidebar-grid">
           <r-panel size="small">
             <template #header><h4>Expanded</h4></template>
@@ -25,14 +25,13 @@ const pages = [
             <r-sidebar :pages="pages" collapsed />
           </r-panel>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <r-sidebar :pages="pages" />
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { RCode, RMessage, RPanel } from "reta-ui";
+import { RCode, RMessage } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 import { galleryCodeHighlighter } from "../components/galleryCodeHighlighter";
 
 const vueExample = `<script setup lang="ts">
@@ -29,8 +30,7 @@ const plainExample = `Reta UI Code component
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>Code</h2></template>
+      <GalleryExample title="Code">
         <div class="code-stack">
           <r-code
             :code="vueExample"
@@ -46,12 +46,11 @@ const plainExample = `Reta UI Code component
             word-wrap
           />
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.externalHighlighter") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.externalHighlighter')">
         <div class="code-stack">
           <r-message color="help" title="No bundled highlighter">
             Code only receives an hljs-compatible object from the application.
@@ -63,7 +62,7 @@ const plainExample = `Reta UI Code component
             line-numbers
           />
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

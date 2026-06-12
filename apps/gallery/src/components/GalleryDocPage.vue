@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { computed, inject, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, inject, nextTick, onMounted, onUnmounted, provide, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { RButton, RCode } from "reta-ui";
+import { RButton } from "reta-ui";
 import GalleryApiTable from "./GalleryApiTable.vue";
-import { galleryCodeHighlighter } from "./galleryCodeHighlighter";
 import { defaultGalleryApiDocs, galleryApiDocs } from "./galleryApiDocs";
 import { galleryPageSources } from "./galleryPageSources";
 
@@ -40,16 +39,22 @@ const i18n = useI18n();
 const t = i18n.t;
 const apiItems = computed(() => galleryApiDocs[route.path] ?? defaultGalleryApiDocs);
 const pageSource = computed(() => galleryPageSources[route.path]?.trim() ?? "");
-const exampleCode = computed(() => extractComponentExample(pageSource.value));
+const exampleCodes = computed(() => extractComponentExamples(pageSource.value));
 const pageRoot = ref<HTMLElement>();
 const tocItems = ref<TocItem[]>([]);
 const exampleCodeLineNumbers = ref(true);
+const exampleCodeCursor = ref(0);
 const syncAppToc = inject<((items: TocItem[]) => void) | undefined>(
   "gallery-doc-toc",
   undefined,
 );
 let exampleCodeMediaQuery: MediaQueryList | undefined;
 let syncExampleCodeDensity: (() => void) | undefined;
+
+provide("gallery-example-source", {
+  next: () => exampleCodes.value[exampleCodeCursor.value++] ?? "",
+  lineNumbers: exampleCodeLineNumbers,
+});
 
 const pageMeta: Record<string, PageMeta> = {
   "/components/page-header": {
@@ -322,8 +327,8 @@ function headingId(text: string, index: number) {
   return `gallery-${slug || "section"}-${index}`;
 }
 
-function extractComponentExample(source: string) {
-  if (!source) return "";
+function extractComponentExamples(source: string) {
+  if (!source) return [];
 
   const scriptClose = "</scr" + "ipt>";
   const script =
@@ -334,21 +339,24 @@ function extractComponentExample(source: string) {
     templateStart >= 0 && templateEnd > templateStart
       ? source.slice(templateStart + "<template>".length, templateEnd)
       : "";
-  const componentTemplate = extractComponentTemplate(template);
-  const componentScript = cleanScriptSetup(script, componentTemplate);
+  return extractComponentExampleTemplates(template).map((componentTemplate) => {
+    const componentScript = cleanScriptSetup(script, componentTemplate);
 
-  return [
-    componentScript ? `<script setup lang="ts">\n${componentScript}\n${scriptClose}` : "",
-    `<template>\n${indentBlock(componentTemplate, "  ")}\n</template>`,
-  ]
-    .filter(Boolean)
-    .join("\n\n")
-    .trim();
+    return [
+      componentScript ? `<script setup lang="ts">\n${componentScript}\n${scriptClose}` : "",
+      `<template>\n${indentBlock(componentTemplate, "  ")}\n</template>`,
+    ]
+      .filter(Boolean)
+      .join("\n\n")
+      .trim();
+  });
 }
 
-function extractComponentTemplate(template: string) {
-  const output: string[] = [];
-  let skippingHeader = false;
+function extractComponentExampleTemplates(template: string) {
+  const examples: string[] = [];
+  const output: string[][] = [];
+  let activeOutput: string[] | undefined;
+  let depth = 0;
 
   for (const line of template.split("\n")) {
     if (/^\s*<GalleryDocPage\b/.test(line) || /^\s*<\/GalleryDocPage>/.test(line)) {
@@ -359,30 +367,41 @@ function extractComponentTemplate(template: string) {
       continue;
     }
 
-    if (skippingHeader) {
-      if (/^\s*<\/template>/.test(line)) skippingHeader = false;
+    const isExampleOpen = /^\s*<GalleryExample\b/.test(line);
+    const isExampleClose = /^\s*<\/GalleryExample>$/.test(line) && activeOutput && depth === 1;
+
+    if (isExampleOpen) {
+      activeOutput = [];
+      output.push(activeOutput);
+      depth = 1;
       continue;
     }
 
-    if (/^\s*<template #header>/.test(line)) {
-      skippingHeader = !/<\/template>/.test(line);
+    if (!activeOutput) continue;
+
+    if (isExampleClose) {
+      activeOutput = undefined;
+      depth = 0;
       continue;
     }
 
-    if (/^ {6}<r-panel\b[^>]*class="doc-section"/.test(line) || /^ {6}<\/r-panel>$/.test(line)) {
-      continue;
-    }
-
-    output.push(line);
+    activeOutput.push(line);
+    depth += countComponentTagDelta(line);
   }
 
-  return trimBlankLines(dedentBlock(output.join("\n")));
+  for (const block of output) {
+    const cleaned = trimBlankLines(dedentBlock(block.join("\n")));
+    if (cleaned) examples.push(cleaned);
+  }
+
+  return examples;
 }
 
 function cleanScriptSetup(script: string, componentTemplate: string) {
   const cleanedLines = script
     .split("\n")
     .filter((line) => !/from "\.\.\/components\/GalleryDocPage\.vue";/.test(line))
+    .filter((line) => !/from "\.\.\/components\/GalleryExample\.vue";/.test(line))
     .join("\n")
     .replace(
       /import\s+\{([^}]+)\}\s+from\s+"(?:@(repo|mcsl)\/ui|reta-ui)";/g,
@@ -428,6 +447,14 @@ function trimBlankLines(value: string) {
   return value.replace(/^\s*\n/, "").replace(/\n\s*$/, "").trim();
 }
 
+function countComponentTagDelta(line: string) {
+  const opened = line.match(/<(?:r-[\w-]+|GalleryExample)(?:\s|>|$)/g)?.length ?? 0;
+  const closed = line.match(/<\/(?:r-[\w-]+|GalleryExample)>/g)?.length ?? 0;
+  const selfClosed = line.match(/<(?:r-[\w-]+|GalleryExample)[^>]*\/>/g)?.length ?? 0;
+
+  return opened - closed - selfClosed;
+}
+
 function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -461,6 +488,9 @@ async function collectToc() {
 }
 
 watch(() => [route.path, i18n.locale.value], collectToc);
+watch(() => route.path, () => {
+  exampleCodeCursor.value = 0;
+}, { flush: "sync" });
 onMounted(collectToc);
 onMounted(() => {
   exampleCodeMediaQuery = window.matchMedia("(min-width: 721px)");
@@ -501,23 +531,6 @@ onUnmounted(() => {
           <slot name="demo">
             <div class="doc-section__fallback">{{ t("gallery.sections.noDemo") }}</div>
           </slot>
-        </div>
-      </section>
-
-      <section v-if="exampleCode" class="gallery-doc-chapter gallery-code-section">
-        <h2>{{ t("gallery.sections.exampleCode") }}</h2>
-        <div class="gallery-example-code">
-          <r-code
-            :code="exampleCode"
-            language="xml"
-            :hljs="galleryCodeHighlighter"
-            :line-numbers="exampleCodeLineNumbers"
-            class="gallery-example-code__block"
-            max-height="min(62vh, 38rem)"
-            font-size="12px"
-            mobile-font-size="11px"
-            word-wrap
-          />
         </div>
       </section>
 
@@ -642,43 +655,6 @@ onUnmounted(() => {
 
 .doc-section__fallback {
   color: var(--mcsl-text-color-secondary);
-}
-
-:deep(.doc-section.mcsl-panel) {
-  padding: 0;
-  overflow: visible;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none !important;
-}
-
-:deep(.doc-section.mcsl-panel > .mcsl-divider) {
-  display: none;
-}
-
-:deep(.doc-section.mcsl-panel > .mcsl-panel__header) {
-  display: block;
-  margin: 0 0 14px;
-}
-
-:deep(.doc-section.mcsl-panel > .mcsl-panel__body-wrapper) {
-  overflow: visible;
-}
-
-:deep(.doc-section.mcsl-panel > .mcsl-panel__body-wrapper > .mcsl-panel__body) {
-  padding: 0;
-}
-
-:deep(.doc-section .mcsl-panel__header h2),
-:deep(.doc-section .mcsl-panel__header h3),
-:deep(.doc-section .mcsl-panel__header h4) {
-  margin: 0;
-  color: var(--mcsl-text-color-primary);
-  font-size: 1.18rem;
-  font-weight: 680;
-  letter-spacing: 0;
-  line-height: 1.35;
 }
 
 :deep(.doc-note) {
@@ -818,16 +794,8 @@ onUnmounted(() => {
     gap: 18px;
   }
 
-  .gallery-code-section {
-    margin-inline: -2px;
-  }
-
   .gallery-example-code {
     overflow: hidden;
-  }
-
-  :deep(.doc-section .mcsl-panel__header h2) {
-    font-size: 1.08rem;
   }
 
   :deep(.doc-stack) {

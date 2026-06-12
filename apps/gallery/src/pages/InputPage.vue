@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RInputNumber, RInputText, RPanel, RTextarea } from "reta-ui";
+import { RInputNumber, RInputText, RTextarea } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const name = ref("Future Paper EU-1");
 const smallName = ref("Small input");
@@ -19,8 +20,7 @@ const port = ref(25565);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>Inputs</h2></template>
+      <GalleryExample title="Inputs">
         <div class="input-layout">
           <label class="input-field">
             <span>Instance</span>
@@ -51,10 +51,9 @@ const port = ref(25565);
             <r-textarea v-model="note" placeholder="Server notes" />
           </label>
         </div>
-      </r-panel>
+      </GalleryExample>
 
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>Sizes</h2></template>
+      <GalleryExample title="Sizes">
         <div class="sizes-layout">
           <label class="input-field">
             <span>Small</span>
@@ -69,12 +68,11 @@ const port = ref(25565);
             <r-input-text v-model="largeName" size="large" clearable />
           </label>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>Resize Control</h2></template>
+      <GalleryExample title="Resize Control">
         <div class="resize-layout">
           <label class="input-field">
             <span>Resize X</span>
@@ -93,7 +91,7 @@ const port = ref(25565);
             <r-textarea v-model="note" />
           </label>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

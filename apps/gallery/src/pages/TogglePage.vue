@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RPanel, RSwitch } from "reta-ui";
+import { RSwitch } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const autoStart = ref(false);
 const maintenance = ref(true);
@@ -12,8 +13,7 @@ const locked = ref(false);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="toggle-grid">
           <label class="toggle-row">
             <r-switch v-model="autoStart" size="small" />
@@ -32,12 +32,11 @@ const locked = ref(false);
             <span>Disabled</span>
           </label>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="toggle-stack">
           <label class="toggle-row">
             <r-switch v-model="autoStart" />
@@ -52,7 +51,7 @@ const locked = ref(false);
             <span>Collect metrics</span>
           </label>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

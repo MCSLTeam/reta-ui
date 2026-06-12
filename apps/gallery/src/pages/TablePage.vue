@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { RPanel, RTable } from "reta-ui";
+import { RTable } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const columns = ["Name", "Status", "Version", "Players"];
 const rows = [
@@ -20,20 +21,18 @@ const denseRows = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <r-table :columns="columns" :rows="rows" />
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="table-stack">
           <r-table :columns="columns" :rows="rows" />
           <r-table :columns="['Metric', 'Value', 'State']" :rows="denseRows" />
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

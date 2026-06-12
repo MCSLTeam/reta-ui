@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RMessage, RPanel, RSteps } from "reta-ui";
+import { RMessage, RSteps } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const current = ref(1);
 
@@ -23,18 +24,16 @@ const taskSteps = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>Steps</h2></template>
+      <GalleryExample title="Steps">
         <div class="steps-stack">
           <r-steps v-model="current" :items="installSteps" clickable />
           <r-steps :items="installSteps" :model-value="2" size="small" color="success" />
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.installFlow") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.installFlow')">
         <div class="steps-demo">
           <r-steps v-model="current" :items="installSteps" clickable color="primary" />
           <r-message color="help" title="Selected step">
@@ -42,7 +41,7 @@ const taskSteps = [
           </r-message>
           <r-steps :items="taskSteps" :model-value="1" vertical color="warning" />
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

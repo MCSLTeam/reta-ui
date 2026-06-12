@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RCodeEditor, RCopyableText, RPanel } from "reta-ui";
+import { RCodeEditor, RCopyableText } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const value = ref(`{
   "name": "Future Paper EU-1",
@@ -14,22 +15,20 @@ const value = ref(`{
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="editor-meta">
           <r-copyable-text>daemon_instance.json</r-copyable-text>
           <r-copyable-text>UTF-8</r-copyable-text>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="editor-wrap">
           <r-code-editor v-model="value" default-lang="json" />
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { RButton, RCheckbox, RInputNumber, RInputText, RPanel, RSelect, RTextarea } from "reta-ui";
+import { RButton, RCheckbox, RInputNumber, RInputText, RSelect, RTextarea } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const instanceName = ref("Future Paper EU-1");
 const runtime = ref("java-21");
@@ -27,8 +28,7 @@ const coreOptions = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="form-grid">
           <label class="field">
             <span>Instance Name</span>
@@ -47,12 +47,11 @@ const coreOptions = [
             <r-input-number v-model="memory" :step="512" :min="1024" />
           </label>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="form-grid form-grid--wide">
           <label class="field">
             <span>Server Core</span>
@@ -74,7 +73,7 @@ const coreOptions = [
             <r-button icon="fas fa-eye">Preview</r-button>
           </div>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

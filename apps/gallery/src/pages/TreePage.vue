@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RMessage, RPanel, RTree, RTreeSelect } from "reta-ui";
+import { RMessage, RTree, RTreeSelect } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const expandedKeys = ref(["instances", "configs"]);
 const selectedKeys = ref(["paper-eu"]);
@@ -42,24 +43,22 @@ const treeItems = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>Tree</h2></template>
+      <GalleryExample title="Tree">
         <r-tree
           v-model:expanded-keys="expandedKeys"
           v-model:selected-keys="selectedKeys"
           :items="treeItems"
         />
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.treeSelect") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.treeSelect')">
         <div class="tree-stack">
           <r-tree-select v-model="selectedFile" :items="treeItems" placeholder="Choose file" />
           <r-message color="help" title="Selected key">{{ selectedFile }}</r-message>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

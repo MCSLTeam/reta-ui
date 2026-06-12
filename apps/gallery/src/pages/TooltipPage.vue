@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { RButton, RPanel, RTooltip } from "reta-ui";
+import { RButton, RTooltip } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="overlay-row">
           <r-tooltip content="Start the selected instance.">
             <template #triggerer="{ open, close }">
@@ -20,12 +20,11 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
             </template>
           </r-tooltip>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <r-tooltip content="Helpful detail for this action.">
           <template #triggerer="{ open, close }">
             <r-button icon="fas fa-circle-info" @mouseenter="open" @mouseleave="close">
@@ -33,7 +32,7 @@ import GalleryDocPage from "../components/GalleryDocPage.vue";
             </r-button>
           </template>
         </r-tooltip>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

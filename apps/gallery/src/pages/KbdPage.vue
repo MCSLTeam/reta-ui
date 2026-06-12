@@ -1,32 +1,31 @@
 <script setup lang="ts">
-import { RKbd, RPanel } from "reta-ui";
+import { RKbd } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 </script>
 
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="kbd-row">
           <r-kbd size="small">Esc</r-kbd>
           <r-kbd>Ctrl</r-kbd>
           <r-kbd>K</r-kbd>
           <r-kbd>Enter</r-kbd>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="shortcut-list">
           <span><r-kbd>Ctrl</r-kbd><r-kbd>K</r-kbd></span>
           <span>Command palette</span>
           <span><r-kbd>Esc</r-kbd></span>
           <span>Close overlay</span>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

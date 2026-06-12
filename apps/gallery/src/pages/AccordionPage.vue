@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RAccordion, RAccordionPanel, RCollapsablePanel, RMessage, RPanel } from "reta-ui";
+import { RAccordion, RAccordionPanel, RCollapsablePanel, RMessage } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const activeSingle = ref(["runtime"]);
 const activeMultiple = ref(["memory", "network"]);
@@ -11,8 +12,7 @@ const collapsed = ref(false);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>Accordion</h2></template>
+      <GalleryExample title="Accordion">
         <r-accordion v-model="activeSingle" class="accordion-surface">
           <r-accordion-panel name="runtime" header="Runtime">
             Java path, launch arguments, and environment variables.
@@ -24,12 +24,11 @@ const collapsed = ref(false);
             Disabled panels keep their context without accepting input.
           </r-accordion-panel>
         </r-accordion>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.multiplePanels") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.multiplePanels')">
         <div class="accordion-stack">
           <r-accordion v-model="activeMultiple" multiple class="accordion-surface">
             <r-accordion-panel name="memory" header="Memory">
@@ -49,7 +48,7 @@ const collapsed = ref(false);
             </r-message>
           </r-collapsable-panel>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

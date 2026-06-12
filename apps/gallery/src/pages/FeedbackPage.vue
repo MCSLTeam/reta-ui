@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { REmpty, RMessage, RMeterGroup, RPanel, RResult, RSkeleton } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const healthyMeter = {
   length: 100,
@@ -22,8 +23,7 @@ const attentionMeter = {
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="status-grid">
           <r-panel size="small">
             <template #header><h4>Healthy</h4></template>
@@ -40,18 +40,17 @@ const attentionMeter = {
             </div>
           </r-panel>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div class="feedback-stack">
           <r-result title="Backup completed" description="Snapshot and metadata have been stored." status="success" />
           <r-empty title="No running instances" description="Use this state to explain the next meaningful action." />
           <r-skeleton :lines="3" height="14px" />
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

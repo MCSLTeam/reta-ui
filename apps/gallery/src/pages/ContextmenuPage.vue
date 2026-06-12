@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RContextmenu, RPanel, RTag } from "reta-ui";
+import { RContextmenu, RTag } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const target = ref<HTMLElement | null>(null);
 const menu = [
@@ -14,24 +15,22 @@ const menu = [
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="context-target context-target--small">
           <r-tag color="help">Right click</r-tag>
           <span>Scoped menu target</span>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <div ref="target" class="context-target">
           <r-tag color="primary">Instance</r-tag>
           <span>Right click this area</span>
         </div>
         <r-contextmenu :parent="target as any" :menu="menu" />
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

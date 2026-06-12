@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RCalendar, RDatePicker, RMessage, RPanel, RTimePicker } from "reta-ui";
+import { RCalendar, RDatePicker, RMessage, RTimePicker } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const date = ref("2026-06-10");
 const time = ref("21:30");
@@ -12,8 +13,7 @@ const maintenanceTime = ref("");
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>Date & Time</h2></template>
+      <GalleryExample title="Date & Time">
         <div class="date-grid">
           <label>
             <span>Deployment date</span>
@@ -24,12 +24,11 @@ const maintenanceTime = ref("");
             <r-time-picker v-model="time" min="00:00" max="23:59" />
           </label>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>Maintenance Window</h2></template>
+      <GalleryExample title="Maintenance Window">
         <div class="date-stack">
           <r-calendar v-model="maintenanceDate" min="2026-01-01" max="2026-12-31" />
           <div class="date-grid">
@@ -46,7 +45,7 @@ const maintenanceTime = ref("");
             {{ maintenanceDate || "No date" }} {{ maintenanceTime || "No time" }}
           </r-message>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RButton, RDrawer, RMessage, RPanel, RTag } from "reta-ui";
+import { RButton, RDrawer, RMessage, RTag } from "reta-ui";
 import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
+import GalleryExample from "../components/GalleryExample.vue";
 
 const rightVisible = ref(false);
 const bottomVisible = ref(false);
@@ -10,18 +11,16 @@ const bottomVisible = ref(false);
 <template>
   <GalleryDocPage>
     <template #effects>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.basic") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="overlay-row">
           <r-button type="primary" color="primary" @click="rightVisible = true">Right Drawer</r-button>
           <r-button @click="bottomVisible = true">Bottom Drawer</r-button>
         </div>
-      </r-panel>
+      </GalleryExample>
     </template>
 
     <template #demo>
-      <r-panel class="doc-section" shadow="hover">
-        <template #header><h2>{{ $t("gallery.sections.example") }}</h2></template>
+      <GalleryExample :title="$t('gallery.sections.example')">
         <r-button type="primary" color="primary" icon="fas fa-sidebar" @click="rightVisible = true">
           Open Drawer
         </r-button>
@@ -44,7 +43,7 @@ const bottomVisible = ref(false);
         <r-drawer v-model:visible="bottomVisible" title="Task Queue" placement="bottom">
           <r-message title="Backup queued" color="help">The next scheduled backup starts after upload.</r-message>
         </r-drawer>
-      </r-panel>
+      </GalleryExample>
     </template>
   </GalleryDocPage>
 </template>
