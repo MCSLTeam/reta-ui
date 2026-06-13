@@ -284,6 +284,11 @@ function selectStep(index: number, item: StepItem) {
       0 0 0 4px var(--mcsl-steps__color-soft),
       0 5px 14px color-mix(in srgb, var(--mcsl-steps__color) 18%, transparent),
       inset 0 1px 0 color-mix(in srgb, white 28%, transparent);
+
+    span,
+    i {
+      color: #fff;
+    }
   }
 
   .mcsl-steps__title {
