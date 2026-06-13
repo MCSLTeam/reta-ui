@@ -114,6 +114,20 @@ function toggleOption(selection: "source" | "target", option: SelectionItem) {
   selected.value = next;
 }
 
+function setOptionChecked(
+  selection: "source" | "target",
+  option: SelectionItem,
+  checked: boolean | null,
+) {
+  if (props.disabled || option.disabled) return;
+  const selected = selection === "source" ? selectedSource : selectedTarget;
+  const next = new Set(selected.value);
+  const key = valueKey(option.value);
+  if (checked === true) next.add(key);
+  else next.delete(key);
+  selected.value = next;
+}
+
 function toggleAll(selection: "source" | "target", checked: boolean | null) {
   if (props.disabled) return;
   const options =
@@ -169,23 +183,29 @@ function moveToSource() {
         :size="size"
       />
       <div class="mcsl-transfer__list">
-        <button
+        <div
           v-for="option in filteredSourceOptions"
           :key="valueKey(option.value)"
-          type="button"
           class="mcsl-transfer__option"
-          :disabled="disabled || option.disabled"
+          :class="{ 'mcsl-transfer__option--disabled': disabled || option.disabled }"
+          :aria-disabled="disabled || option.disabled ? 'true' : undefined"
+          role="button"
+          :tabindex="disabled || option.disabled ? -1 : 0"
           @click="toggleOption('source', option)"
+          @keydown.enter.prevent="toggleOption('source', option)"
+          @keydown.space.prevent="toggleOption('source', option)"
         >
           <Checkbox
             :model-value="selectedSource.has(valueKey(option.value))"
             :disabled="disabled || option.disabled"
             :color="color"
             :size="size"
+            @click.stop
+            @update:model-value="setOptionChecked('source', option, $event)"
           />
           <i v-if="option.icon" :class="option.icon" />
           <span>{{ optionLabel(option) }}</span>
-        </button>
+        </div>
         <p v-if="filteredSourceOptions.length === 0" class="mcsl-transfer__empty">
           No items
         </p>
@@ -233,23 +253,29 @@ function moveToSource() {
         :size="size"
       />
       <div class="mcsl-transfer__list">
-        <button
+        <div
           v-for="option in filteredTargetOptions"
           :key="valueKey(option.value)"
-          type="button"
           class="mcsl-transfer__option"
-          :disabled="disabled || option.disabled"
+          :class="{ 'mcsl-transfer__option--disabled': disabled || option.disabled }"
+          :aria-disabled="disabled || option.disabled ? 'true' : undefined"
+          role="button"
+          :tabindex="disabled || option.disabled ? -1 : 0"
           @click="toggleOption('target', option)"
+          @keydown.enter.prevent="toggleOption('target', option)"
+          @keydown.space.prevent="toggleOption('target', option)"
         >
           <Checkbox
             :model-value="selectedTarget.has(valueKey(option.value))"
             :disabled="disabled || option.disabled"
             :color="color"
             :size="size"
+            @click.stop
+            @update:model-value="setOptionChecked('target', option, $event)"
           />
           <i v-if="option.icon" :class="option.icon" />
           <span>{{ optionLabel(option) }}</span>
-        </button>
+        </div>
         <p v-if="filteredTargetOptions.length === 0" class="mcsl-transfer__empty">
           No items
         </p>
@@ -333,14 +359,15 @@ function moveToSource() {
     color var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-standard);
 }
 
-.mcsl-transfer__option:hover:not(:disabled) {
+.mcsl-transfer__option:hover:not(.mcsl-transfer__option--disabled) {
   background: color-mix(in srgb, var(--mcsl-color-primary) 8%, var(--mcsl-bg-color-overlay));
   color: var(--mcsl-text-color-primary);
 }
 
-.mcsl-transfer__option:disabled {
+.mcsl-transfer__option--disabled {
   cursor: not-allowed;
   opacity: 0.5;
+  pointer-events: none;
 }
 
 .mcsl-transfer__option span {

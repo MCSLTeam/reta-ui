@@ -279,7 +279,7 @@ function selectStep(index: number, item: StepItem) {
   .mcsl-steps__indicator {
     border-color: color-mix(in srgb, var(--mcsl-steps__color) 76%, transparent);
     background: var(--mcsl-steps__color);
-    color: var(--mcsl-text-color-light);
+    color: #fff;
     box-shadow:
       0 0 0 4px var(--mcsl-steps__color-soft),
       0 5px 14px color-mix(in srgb, var(--mcsl-steps__color) 18%, transparent),

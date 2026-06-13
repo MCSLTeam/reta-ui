@@ -203,6 +203,7 @@ function nextValue() {
   .mcsl-checkbox__box {
     border-color: var(--mcsl-checkbox__color);
     background: var(--mcsl-checkbox__color);
+    color: #fff;
     box-shadow: none;
 
     i {
@@ -225,6 +226,13 @@ function nextValue() {
     background: color-mix(in srgb, var(--mcsl-border-color-base) 70%, transparent);
     color: var(--mcsl-text-color-secondary);
     box-shadow: none;
+  }
+}
+
+.mcsl-checkbox__checked.mcsl-checkbox__disabled,
+.mcsl-checkbox__mixed.mcsl-checkbox__disabled {
+  .mcsl-checkbox__box {
+    color: #fff;
   }
 }
 
