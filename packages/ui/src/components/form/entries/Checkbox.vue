@@ -193,9 +193,12 @@ function nextValue() {
   }
 }
 
-.mcsl-checkbox:hover .mcsl-checkbox__box {
+.mcsl-checkbox:not(.mcsl-checkbox__checked):not(.mcsl-checkbox__mixed):hover .mcsl-checkbox__box {
   border-color: color-mix(in srgb, var(--mcsl-checkbox__color) 42%, var(--mcsl-border-color-dark));
   background: color-mix(in srgb, var(--mcsl-checkbox__color) 6%, var(--mcsl-bg-color-overlay));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--mcsl-bg-color-overlay) 45%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--mcsl-checkbox__color) 8%, transparent);
 }
 
 .mcsl-checkbox__checked,
@@ -209,7 +212,19 @@ function nextValue() {
     i {
       opacity: 1;
       transform: scale(1);
+      color: #fff;
     }
+  }
+}
+
+.mcsl-checkbox__checked:hover,
+.mcsl-checkbox__mixed:hover {
+  .mcsl-checkbox__box {
+    border-color: color-mix(in srgb, var(--mcsl-checkbox__color) 88%, #fff);
+    background: var(--mcsl-checkbox__color);
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--mcsl-checkbox__color) 14%, transparent),
+      inset 0 1px 0 color-mix(in srgb, #fff 22%, transparent);
   }
 }
 
@@ -233,6 +248,10 @@ function nextValue() {
 .mcsl-checkbox__mixed.mcsl-checkbox__disabled {
   .mcsl-checkbox__box {
     color: #fff;
+
+    i {
+      color: #fff;
+    }
   }
 }
 
