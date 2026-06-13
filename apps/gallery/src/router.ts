@@ -3,6 +3,9 @@ import HomePage from "./pages/HomePage.vue";
 import DocsPage from "./pages/DocsPage.vue";
 import PageHeaderPage from "./pages/PageHeaderPage.vue";
 import PanelPage from "./pages/PanelPage.vue";
+import FlexPage from "./pages/FlexPage.vue";
+import AffixPage from "./pages/AffixPage.vue";
+import SeparatorPage from "./pages/SeparatorPage.vue";
 import ButtonsPage from "./pages/ButtonsPage.vue";
 import InputPage from "./pages/InputPage.vue";
 import NumberBoxPage from "./pages/NumberBoxPage.vue";
@@ -21,6 +24,8 @@ import EmptyPage from "./pages/EmptyPage.vue";
 import DividerPage from "./pages/DividerPage.vue";
 import CopyableTextPage from "./pages/CopyableTextPage.vue";
 import CodePage from "./pages/CodePage.vue";
+import TextPage from "./pages/TextPage.vue";
+import PicturePage from "./pages/PicturePage.vue";
 import SkeletonPage from "./pages/SkeletonPage.vue";
 import DisplayPage from "./pages/DisplayPage.vue";
 import FeedbackPage from "./pages/FeedbackPage.vue";
@@ -59,6 +64,9 @@ export default createRouter({
     { path: "/docs/:article", component: DocsPage },
     { path: "/components/page-header", component: PageHeaderPage },
     { path: "/components/panel", component: PanelPage },
+    { path: "/components/flex", component: FlexPage },
+    { path: "/components/affix", component: AffixPage },
+    { path: "/components/separator", component: SeparatorPage },
     { path: "/components/buttons", component: ButtonsPage },
     { path: "/components/input", component: InputPage },
     { path: "/components/number-box", component: NumberBoxPage },
@@ -78,6 +86,8 @@ export default createRouter({
     { path: "/components/divider", component: DividerPage },
     { path: "/components/copyable-text", component: CopyableTextPage },
     { path: "/components/code", component: CodePage },
+    { path: "/components/text", component: TextPage },
+    { path: "/components/picture", component: PicturePage },
     { path: "/components/skeleton", component: SkeletonPage },
     { path: "/components/display", component: DisplayPage },
     { path: "/components/feedback", component: FeedbackPage },

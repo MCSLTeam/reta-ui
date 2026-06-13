@@ -67,6 +67,21 @@ const pageMeta: Record<string, PageMeta> = {
     name: "Panel",
     descriptionKey: "gallery.componentMeta.panel",
   },
+  "/components/flex": {
+    titleKey: "gallery.sidebar.flex",
+    name: "Flex",
+    descriptionKey: "gallery.componentMeta.flex",
+  },
+  "/components/affix": {
+    titleKey: "gallery.sidebar.affix",
+    name: "Affix",
+    descriptionKey: "gallery.componentMeta.affix",
+  },
+  "/components/separator": {
+    titleKey: "gallery.sidebar.separator",
+    name: "Separator",
+    descriptionKey: "gallery.componentMeta.separator",
+  },
   "/components/buttons": {
     titleKey: "gallery.sidebar.buttons",
     name: "Button",
@@ -151,6 +166,16 @@ const pageMeta: Record<string, PageMeta> = {
     titleKey: "gallery.sidebar.copyableText",
     name: "CopyableText",
     descriptionKey: "gallery.componentMeta.copyableText",
+  },
+  "/components/text": {
+    titleKey: "gallery.sidebar.text",
+    name: "Text",
+    descriptionKey: "gallery.componentMeta.text",
+  },
+  "/components/picture": {
+    titleKey: "gallery.sidebar.picture",
+    name: "Picture",
+    descriptionKey: "gallery.componentMeta.picture",
   },
   "/components/code": {
     titleKey: "gallery.sidebar.code",
