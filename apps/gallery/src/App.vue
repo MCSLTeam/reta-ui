@@ -138,8 +138,11 @@ const componentSidebarGroups = computed(() => [
     label: t("gallery.sidebar.form"),
     pages: [
       { label: t("gallery.sidebar.input"), description: "Input", link: "/components/input" },
+      { label: t("gallery.sidebar.inputOtp"), description: "InputOTP", link: "/components/input-otp" },
       { label: t("gallery.sidebar.numberBox"), description: "NumberBox", link: "/components/number-box" },
       { label: t("gallery.sidebar.combobox"), description: "Combobox", link: "/components/combobox" },
+      { label: t("gallery.sidebar.cascader"), description: "Cascader", link: "/components/cascader" },
+      { label: t("gallery.sidebar.colorPicker"), description: "ColorPicker", link: "/components/color-picker" },
       { label: t("gallery.sidebar.dateTime"), description: "Date & Time", link: "/components/date-time" },
       { label: t("gallery.sidebar.slider"), description: "Slider", link: "/components/slider" },
       { label: t("gallery.sidebar.radio"), description: "Radio", link: "/components/radio" },

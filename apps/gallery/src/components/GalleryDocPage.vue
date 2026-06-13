@@ -87,6 +87,21 @@ const pageMeta: Record<string, PageMeta> = {
     name: "Combobox",
     descriptionKey: "gallery.componentMeta.combobox",
   },
+  "/components/cascader": {
+    titleKey: "gallery.sidebar.cascader",
+    name: "Cascader",
+    descriptionKey: "gallery.componentMeta.cascader",
+  },
+  "/components/color-picker": {
+    titleKey: "gallery.sidebar.colorPicker",
+    name: "ColorPicker",
+    descriptionKey: "gallery.componentMeta.colorPicker",
+  },
+  "/components/input-otp": {
+    titleKey: "gallery.sidebar.inputOtp",
+    name: "InputOTP",
+    descriptionKey: "gallery.componentMeta.inputOtp",
+  },
   "/components/date-time": {
     titleKey: "gallery.sidebar.dateTime",
     name: "DatePicker / TimePicker",

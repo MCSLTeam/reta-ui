@@ -56,6 +56,9 @@ const zh = {
     input: "输入框",
     numberBox: "数字输入",
     combobox: "组合框",
+    cascader: "级联选择",
+    colorPicker: "颜色选择器",
+    inputOtp: "验证码输入",
     dateTime: "日期时间",
     slider: "滑块",
     radio: "单选框",
@@ -391,6 +394,9 @@ const zh = {
     input: "用于录入文本、密码、多行内容和可调整尺寸的编辑区域。",
     numberBox: "用于录入带上下限和步进控制的数值。",
     combobox: "统一输入与选择能力，支持可编辑、不可编辑、多选、搜索和自定义筛选。",
+    cascader: "从多层级选项中逐级定位并选择一个路径。",
+    colorPicker: "选择、输入和预览颜色值，支持预设色和透明度。",
+    inputOtp: "输入一次性验证码、短令牌或分段安全码。",
     dateTime: "处理日期、时间和时间窗口选择。",
     slider: "在连续或离散范围内调整数值。",
     radio: "在互斥选项中选择一个值。",
@@ -488,6 +494,9 @@ const en: typeof zh = {
     input: "Input",
     numberBox: "NumberBox",
     combobox: "Combobox",
+    cascader: "Cascader",
+    colorPicker: "ColorPicker",
+    inputOtp: "InputOTP",
     dateTime: "Date & Time",
     slider: "Slider",
     radio: "Radio",
@@ -826,6 +835,9 @@ const en: typeof zh = {
     input: "Captures text, passwords, multiline content, and resizable editing areas.",
     numberBox: "Captures numeric values with limits and step controls.",
     combobox: "Unifies editable and non-editable selection with multiple values, search, and custom filtering.",
+    cascader: "Selects a value path from nested option levels.",
+    colorPicker: "Selects, edits, and previews color values with presets and optional alpha.",
+    inputOtp: "Captures one-time passwords, short tokens, or segmented security codes.",
     dateTime: "Handles date, time, and maintenance-window selection.",
     slider: "Adjusts values across continuous or stepped ranges.",
     radio: "Selects one value from mutually exclusive options.",
@@ -869,9 +881,114 @@ const en: typeof zh = {
   },
 };
 
-const galleryMessages: Record<GalleryLanguage, { gallery: typeof zh }> = {
-  "en-US": { gallery: en },
-  "zh-CN": { gallery: zh },
+const uiZh = {
+  common: {
+    "do-not-show-again": "不再显示",
+  },
+  "copyable-text": {
+    tooltip: "点击复制",
+  },
+  editor: {
+    lang: {
+      auto: "自动",
+      "search-placeholder": "搜索语言",
+    },
+  },
+  "meter-group": {
+    label: "{label}: {percentage}%",
+    unallocated: "未分配",
+  },
+  notification: {
+    title: {
+      error: "错误",
+      warning: "警告",
+    },
+    message: {
+      "not-supported": "当前浏览器不支持系统通知。",
+      request: "是否允许 Reta UI 发送系统通知？",
+      "not-allowed": "系统通知权限未开启。",
+    },
+  },
+  upload: {
+    dropper: {
+      title: "拖放文件到这里",
+      subtitle: "或点击选择文件",
+      tip: {
+        multiple: "支持选择多个文件",
+        "multiple-count": "最多选择 {maxCount} 个文件",
+        accept: "支持的文件类型：{accept}",
+        size: "单个文件最大 {maxSize}",
+      },
+    },
+    error: {
+      accept: "文件类型不受支持：{name}",
+      count: "最多只能选择 {maxCount} 个文件。",
+      empty: "没有可上传的文件。",
+      size: "文件过大：{name}",
+    },
+    list: {
+      title: "文件列表",
+    },
+  },
+};
+
+const uiEn: typeof uiZh = {
+  common: {
+    "do-not-show-again": "Do not show again",
+  },
+  "copyable-text": {
+    tooltip: "Click to copy",
+  },
+  editor: {
+    lang: {
+      auto: "Auto",
+      "search-placeholder": "Search language",
+    },
+  },
+  "meter-group": {
+    label: "{label}: {percentage}%",
+    unallocated: "Unallocated",
+  },
+  notification: {
+    title: {
+      error: "Error",
+      warning: "Warning",
+    },
+    message: {
+      "not-supported": "System notifications are not supported by this browser.",
+      request: "Allow Reta UI to send system notifications?",
+      "not-allowed": "System notification permission is not enabled.",
+    },
+  },
+  upload: {
+    dropper: {
+      title: "Drop files here",
+      subtitle: "or click to choose files",
+      tip: {
+        multiple: "Multiple files are supported",
+        "multiple-count": "Select up to {maxCount} files",
+        accept: "Supported file types: {accept}",
+        size: "Maximum file size: {maxSize}",
+      },
+    },
+    error: {
+      accept: "Unsupported file type: {name}",
+      count: "You can select up to {maxCount} files.",
+      empty: "No files to upload.",
+      size: "File is too large: {name}",
+    },
+    list: {
+      title: "Files",
+    },
+  },
+};
+
+const galleryMessages: Record<
+  GalleryLanguage,
+  { gallery: typeof zh; ui: typeof uiZh }
+> = {
+  "en-US": { gallery: en, ui: uiEn },
+  "zh-CN": { gallery: zh, ui: uiZh },
 };
 
 function resolveGalleryLanguage(locale: string): GalleryLanguage {

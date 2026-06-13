@@ -7,6 +7,9 @@ import ButtonsPage from "./pages/ButtonsPage.vue";
 import InputPage from "./pages/InputPage.vue";
 import NumberBoxPage from "./pages/NumberBoxPage.vue";
 import ComboboxPage from "./pages/ComboboxPage.vue";
+import CascaderPage from "./pages/CascaderPage.vue";
+import ColorPickerPage from "./pages/ColorPickerPage.vue";
+import InputOTPPage from "./pages/InputOTPPage.vue";
 import DateTimePage from "./pages/DateTimePage.vue";
 import SliderPage from "./pages/SliderPage.vue";
 import RadioPage from "./pages/RadioPage.vue";
@@ -61,6 +64,9 @@ export default createRouter({
     { path: "/components/number-box", component: NumberBoxPage },
     { path: "/components/select", redirect: "/components/combobox" },
     { path: "/components/combobox", component: ComboboxPage },
+    { path: "/components/cascader", component: CascaderPage },
+    { path: "/components/color-picker", component: ColorPickerPage },
+    { path: "/components/input-otp", component: InputOTPPage },
     { path: "/components/date-time", component: DateTimePage },
     { path: "/components/slider", component: SliderPage },
     { path: "/components/radio", component: RadioPage },
