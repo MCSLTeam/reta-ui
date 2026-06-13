@@ -305,7 +305,7 @@ export const galleryApiDocs: Record<string, GalleryApiItem[]> = {
     { name: "closeOnClick", type: "boolean", default: "true", description: "Closes the menu after choosing an item." },
   ],
   "/components/overlays": [
-    { name: "overlay components", type: "DropdownMenu | Popover | Tooltip | Modal | Drawer | ConfirmDialog | Contextmenu", default: "-", description: "Composed overlay primitives for layered interaction." },
+    { name: "overlay components", type: "Dropdown | Popover | Tooltip | Modal | Drawer | ConfirmDialog | Contextmenu", default: "-", description: "Composed overlay primitives for layered interaction." },
     { name: "trigger slot", type: "VNode", default: "-", description: "Most overlay components use a trigger element or visible model to control display." },
     { name: "placement", type: "FloatingPlacement", default: "component-specific", description: "Floating overlays support placement around their trigger." },
   ],

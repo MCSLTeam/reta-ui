@@ -3,7 +3,6 @@ import Panel from "./Panel.vue";
 import Button from "../button/Button.vue";
 import type { ColorType } from "../../utils/css.ts";
 import type { Size } from "../../utils/utils.ts";
-import Divider from "../misc/Divider.vue";
 import { computed } from "vue";
 
 export type MenuItem = {
@@ -87,8 +86,8 @@ const menuInfo = computed(() => {
       v-for="(item, index) in menuInfo"
       :key="index"
       class="mcsl-menu__group"
+      :class="{ 'mcsl-menu__group--named': item?.group }"
     >
-      <Divider v-if="index > 0" spacing="4xs" />
       <h5 v-if="item?.group">
         {{ item.group }}
       </h5>
@@ -127,8 +126,8 @@ $vars: map.merge(
   (
     "spacing": (
       "small": var(--mcsl-spacing-4xs),
-      "medium": var(--mcsl-spacing-2xs),
-      "large": var(--mcsl-spacing-xs),
+      "medium": var(--mcsl-spacing-4xs),
+      "large": var(--mcsl-spacing-2xs),
     ),
     "width": (
       "small": 10rem,
@@ -147,20 +146,43 @@ $vars: map.merge(
       padding: $spacing;
     }
 
-    .mcsl-menu__group {
-      & > h5 {
-        margin: calc($spacing / 2);
-      }
+    .mcsl-menu__group + .mcsl-menu__group {
+      margin-top: calc($spacing + var(--mcsl-spacing-4xs));
+      padding-top: calc($spacing + var(--mcsl-spacing-4xs));
     }
 
     .mcsl-menu__items {
-      gap: calc($spacing / 2);
+      gap: 1px;
 
       & > button {
-        min-height: calc(utils.get-size-var("height", $size, Panel.$vars) - 2px);
+        min-height: calc(utils.get-size-var("height", $size, Panel.$vars) - 4px);
       }
     }
   }
+}
+
+.mcsl-menu__group {
+  position: relative;
+  min-width: 0;
+}
+
+.mcsl-menu__group + .mcsl-menu__group {
+  border-top: 1px solid color-mix(in srgb, var(--mcsl-border-color-base) 68%, transparent);
+}
+
+.mcsl-menu__group > h5 {
+  margin: 0 0 2px;
+  padding: 3px var(--mcsl-spacing-2xs) 2px;
+  color: var(--mcsl-text-color-secondary);
+  font-size: var(--mcsl-font-size-xs);
+  font-weight: 620;
+  letter-spacing: 0;
+  line-height: 1.45;
+  text-transform: none;
+}
+
+.mcsl-menu__group--named .mcsl-menu__items > button {
+  min-width: 9.5rem;
 }
 
 .mcsl-menu__items {
@@ -170,6 +192,7 @@ $vars: map.merge(
   & > button {
     width: 100%;
     justify-content: flex-start;
+    border-radius: calc(var(--mcsl-border-radius-sm) - 1px);
     &:focus-visible {
       z-index: 10; // 避免outline被遮挡
     }
@@ -178,7 +201,7 @@ $vars: map.merge(
 </style>
 
 <style lang="scss">
-.mcsl-panel.mcsl-menu > .mcsl-panel__body-wrapper > .mcsl-panel__body {
+.mcsl-panel.mcsl-menu.mcsl-menu.mcsl-menu > .mcsl-panel__body-wrapper > .mcsl-panel__body {
   padding: 0;
 }
 </style>

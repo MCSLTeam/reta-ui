@@ -184,7 +184,7 @@ const pageMeta: Record<string, PageMeta> = {
   },
   "/components/dropdown": {
     titleKey: "gallery.sidebar.dropdown",
-    name: "DropdownMenu",
+    name: "Dropdown",
     descriptionKey: "gallery.componentMeta.dropdown",
   },
   "/components/drawer": {

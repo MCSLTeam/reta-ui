@@ -4,6 +4,7 @@ import { ref } from "vue";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 import GalleryExample from "../components/GalleryExample.vue";
 
+const basicTarget = ref<HTMLElement | null>(null);
 const target = ref<HTMLElement | null>(null);
 const menu = [
   { label: "Rename", icon: "fas fa-pen" },
@@ -16,10 +17,11 @@ const menu = [
   <GalleryDocPage>
     <template #effects>
       <GalleryExample :title="$t('gallery.sections.basic')">
-        <div class="context-target context-target--small">
+        <div ref="basicTarget" class="context-target context-target--small">
           <r-tag color="help">Right click</r-tag>
           <span>Scoped menu target</span>
         </div>
+        <r-contextmenu :parent="basicTarget as any" :menu="menu" />
       </GalleryExample>
     </template>
 

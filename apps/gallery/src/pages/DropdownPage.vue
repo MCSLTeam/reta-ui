@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RButton, RButtonGroup, RDropdownMenu } from "reta-ui";
+import { RButton, RButtonGroup, RDropdown } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 import GalleryExample from "../components/GalleryExample.vue";
 
@@ -29,16 +29,16 @@ const groupedMenu = [
     <template #effects>
       <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="overlay-row">
-          <r-dropdown-menu :menu="menu">
+          <r-dropdown :menu="menu">
             <template #triggerer="{ toggle }">
               <r-button icon="fas fa-ellipsis" @click="toggle">Default</r-button>
             </template>
-          </r-dropdown-menu>
-          <r-dropdown-menu :menu="groupedMenu" default-pos="top">
+          </r-dropdown>
+          <r-dropdown :menu="groupedMenu" default-pos="top">
             <template #triggerer="{ toggle }">
               <r-button icon="fas fa-arrow-up" @click="toggle">Top</r-button>
             </template>
-          </r-dropdown-menu>
+          </r-dropdown>
         </div>
       </GalleryExample>
     </template>
@@ -47,11 +47,11 @@ const groupedMenu = [
       <GalleryExample :title="$t('gallery.sections.example')">
         <r-button-group>
           <r-button type="primary" color="primary">Start</r-button>
-          <r-dropdown-menu :menu="groupedMenu">
+          <r-dropdown :menu="groupedMenu">
             <template #triggerer="{ toggle }">
               <r-button icon="fas fa-angle-down" squared @click="toggle" />
             </template>
-          </r-dropdown-menu>
+          </r-dropdown>
         </r-button-group>
       </GalleryExample>
     </template>

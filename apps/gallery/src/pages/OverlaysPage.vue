@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RButton, RDropdownMenu, RPopover, RTooltip } from "reta-ui";
+import { RButton, RDropdown, RPopover, RTooltip } from "reta-ui";
 import GalleryDocPage from "../components/GalleryDocPage.vue";
 import GalleryExample from "../components/GalleryExample.vue";
 
@@ -15,11 +15,11 @@ const menu = [
     <template #effects>
       <GalleryExample :title="$t('gallery.sections.basic')">
         <div class="overlay-demo">
-          <r-dropdown-menu :menu="menu">
+          <r-dropdown :menu="menu">
             <template #triggerer="{ toggle }">
               <r-button @click="toggle">Dropdown</r-button>
             </template>
-          </r-dropdown-menu>
+          </r-dropdown>
           <r-tooltip content="Fast inline hint.">
             <template #triggerer="{ open, close }">
               <r-button @mouseenter="open" @mouseleave="close">Tooltip</r-button>
@@ -38,11 +38,11 @@ const menu = [
     <template #demo>
       <GalleryExample :title="$t('gallery.sections.example')">
         <div class="overlay-demo">
-          <r-dropdown-menu :menu="menu">
+          <r-dropdown :menu="menu">
             <template #triggerer="{ toggle }">
               <r-button icon="fas fa-ellipsis" @click="toggle">Open Menu</r-button>
             </template>
-          </r-dropdown-menu>
+          </r-dropdown>
           <r-popover title="Instance">
             <template #triggerer="{ toggle }">
               <r-button icon="fas fa-circle-info" @click="toggle">Inspect</r-button>

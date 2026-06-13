@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from "vue";
+import { nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import { type MenuInfo } from "../panel/Menu.vue";
 import type { Size } from "../../utils/utils.ts";
 import { openContextmenu } from "../../utils/internal.ts";
@@ -24,8 +24,7 @@ const props = defineProps<{
 }>();
 
 const wrapperEl = ref();
-
-let listenedElement: HTMLElement;
+let listenedElement: HTMLElement | undefined;
 
 function handleContextmenu(event: MouseEvent) {
   openContextmenu(event, props);
@@ -33,20 +32,32 @@ function handleContextmenu(event: MouseEvent) {
   event.stopImmediatePropagation();
 }
 
-onMounted(() => {
+function resolveParent() {
   if (props.parent instanceof HTMLElement) {
-    listenedElement = props.parent;
-  } else if (props.parent) {
-    if (props.parent == "global") {
-      listenedElement = document.body;
-    } else {
-      listenedElement = document.querySelector(props.parent)!;
-    }
-  } else {
-    listenedElement = wrapperEl.value.parentElement;
+    return props.parent;
   }
-  listenedElement.addEventListener("contextmenu", handleContextmenu);
+  if (props.parent === "global") return document.body;
+  if (typeof props.parent === "string") {
+    return document.querySelector<HTMLElement>(props.parent) ?? undefined;
+  }
+  return wrapperEl.value?.parentElement;
+}
+
+function bindContextmenu() {
+  const nextElement = resolveParent();
+  if (!nextElement || nextElement === listenedElement) return;
+
+  listenedElement?.removeEventListener("contextmenu", handleContextmenu);
+  listenedElement = nextElement;
+  nextElement.addEventListener("contextmenu", handleContextmenu);
+}
+
+onMounted(async () => {
+  await nextTick();
+  bindContextmenu();
 });
+
+watch(() => props.parent, () => nextTick(bindContextmenu), { flush: "post" });
 
 onUnmounted(() => {
   listenedElement?.removeEventListener?.("contextmenu", handleContextmenu);
