@@ -6,10 +6,17 @@ import type { SelectionGroup, SelectionInfo, SelectionItem } from "../../../util
 import type { FormFieldData } from "../FormEntry.vue";
 import type { ColorType } from "../../../utils/css.ts";
 import type { Size } from "../../../utils/utils.ts";
+import type { TreeNode } from "../../../utils/tree.ts";
+
+type FlatTreeOption = {
+  node: TreeNode;
+  depth: number;
+  parentLabels: string[];
+};
 
 const props = withDefaults(
   defineProps<{
-    options: SelectionInfo;
+    options?: SelectionInfo;
     placeholder?: string;
     color?: ColorType;
     size?: Size;
@@ -19,6 +26,8 @@ const props = withDefaults(
     editable?: boolean;
     autocomplete?: boolean;
     multiple?: boolean;
+    tree?: boolean;
+    treeOptions?: TreeNode[];
     dropdownIcon?: string;
     prefix?: string;
     suffix?: string;
@@ -35,6 +44,8 @@ const props = withDefaults(
     editable: true,
     autocomplete: true,
     multiple: false,
+    tree: false,
+    treeOptions: () => [],
     dropdownIcon: "fa fa-angle-down",
     prefix: "",
     suffix: "",
@@ -56,22 +67,84 @@ const query = defineModel<string>("query", {
   default: "",
 });
 const dropdownRef = ref();
+const expandedTreeKeys = ref<string[]>([]);
 const formField = inject("mcsl-form-field", undefined) as
   | FormFieldData
   | undefined;
 
 const groupedOptions = computed(() => {
-  if (props.options.length === 0) return [];
-  const firstOption = props.options[0];
+  const options = props.options ?? [];
+  if (options.length === 0) return [];
+  const firstOption = options[0];
   if (firstOption && "group" in firstOption) {
-    return props.options as SelectionGroup[];
+    return options as SelectionGroup[];
   }
-  return [{ group: "", options: props.options as SelectionItem[] }];
+  return [{ group: "", options: options as SelectionItem[] }];
 });
 
 const flatOptions = computed(() =>
   groupedOptions.value.flatMap((group) => group.options),
 );
+
+const normalizedTreeOptions = computed<TreeNode[]>(() => {
+  if (props.treeOptions.length) return props.treeOptions;
+  return flatOptions.value.map((option) => ({
+    key: valueKey(option.value),
+    label: optionLabel(option),
+    icon: option.icon,
+    disabled: option.disabled,
+  }));
+});
+
+const flatTreeOptions = computed(() => {
+  const keyword = query.value.trim().toLowerCase();
+  const result: FlatTreeOption[] = [];
+
+  function matches(node: TreeNode, parentLabels: string[]) {
+    if (!keyword || !props.autocomplete) return true;
+    return [...parentLabels, node.label, node.key]
+      .join(" ")
+      .toLowerCase()
+      .includes(keyword);
+  }
+
+  function hasMatchingChild(node: TreeNode, parentLabels: string[]): boolean {
+    return Boolean(node.children?.some((child) =>
+      matches(child, [...parentLabels, node.label]) ||
+      hasMatchingChild(child, [...parentLabels, node.label]),
+    ));
+  }
+
+  function visit(nodes: TreeNode[], depth: number, parentLabels: string[]) {
+    for (const node of nodes) {
+      const childMatches = hasMatchingChild(node, parentLabels);
+      if (matches(node, parentLabels) || childMatches) {
+        result.push({ node, depth, parentLabels });
+      }
+      const shouldShowChildren = keyword
+        ? childMatches || matches(node, parentLabels)
+        : expandedTreeKeys.value.includes(node.key);
+      if (node.children?.length && shouldShowChildren) {
+        visit(node.children, depth + 1, [...parentLabels, node.label]);
+      }
+    }
+  }
+
+  visit(normalizedTreeOptions.value, 0, []);
+  return result;
+});
+
+const flatSelectableTreeOptions = computed(() => {
+  const result: FlatTreeOption[] = [];
+  function visit(nodes: TreeNode[], depth: number, parentLabels: string[]) {
+    for (const node of nodes) {
+      result.push({ node, depth, parentLabels });
+      if (node.children?.length) visit(node.children, depth + 1, [...parentLabels, node.label]);
+    }
+  }
+  visit(normalizedTreeOptions.value, 0, []);
+  return result;
+});
 
 const modelArray = computed<unknown[]>(() =>
   props.multiple ? (Array.isArray(model.value) ? model.value : []) : [],
@@ -80,6 +153,11 @@ const modelArray = computed<unknown[]>(() =>
 const selectedOptions = computed(() => {
   if (props.multiple) {
     const selectedKeys = new Set(modelArray.value.map(valueKey));
+    if (props.tree) {
+      return flatSelectableTreeOptions.value
+        .filter(({ node }) => selectedKeys.has(node.key))
+        .map(({ node }) => ({ label: node.label, value: node.key, icon: node.icon }));
+    }
     return flatOptions.value.filter((option) => selectedKeys.has(valueKey(option.value)));
   }
 
@@ -99,7 +177,9 @@ if (formField) {
 }
 
 const selectedOption = computed(() =>
-  flatOptions.value.find((option) => option.value === model.value),
+  props.tree
+    ? treeNodeToSelection(flatSelectableTreeOptions.value.find(({ node }) => node.key === model.value)?.node)
+    : flatOptions.value.find((option) => option.value === model.value),
 );
 
 watch(
@@ -136,7 +216,9 @@ const filteredOptions = computed(() => {
 });
 
 const filteredOptionCount = computed(() =>
-  filteredOptions.value.reduce((count, group) => count + group.options.length, 0),
+  props.tree
+    ? flatTreeOptions.value.length
+    : filteredOptions.value.reduce((count, group) => count + group.options.length, 0),
 );
 
 const displayValue = computed(() => {
@@ -163,6 +245,11 @@ function optionLabel(option: SelectionItem) {
   return String(option.label ?? option.value);
 }
 
+function treeNodeToSelection(node?: TreeNode): SelectionItem | undefined {
+  if (!node) return undefined;
+  return { label: node.label, value: node.key, icon: node.icon, disabled: node.disabled };
+}
+
 function valueKey(value: unknown) {
   return String(value);
 }
@@ -187,11 +274,64 @@ function selectOption(option: SelectionItem) {
   formField?.onInput(event);
 }
 
+function toggleTreeExpanded(node: TreeNode) {
+  if (!node.children?.length) return;
+  expandedTreeKeys.value = expandedTreeKeys.value.includes(node.key)
+    ? expandedTreeKeys.value.filter((key) => key !== node.key)
+    : [...expandedTreeKeys.value, node.key];
+}
+
+function findTreePathKeys(nodes: TreeNode[], key: string): string[] {
+  for (const node of nodes) {
+    if (node.key === key) return [node.key];
+    if (!node.children?.length) continue;
+    const childPath = findTreePathKeys(node.children, key);
+    if (childPath.length) return [node.key, ...childPath];
+  }
+  return [];
+}
+
+function openDropdown(open: () => void) {
+  if (props.disabled) return;
+  if (props.tree && !props.multiple && model.value !== undefined && model.value !== "") {
+    const path = findTreePathKeys(normalizedTreeOptions.value, valueKey(model.value));
+    expandedTreeKeys.value = Array.from(new Set([
+      ...expandedTreeKeys.value,
+      ...path.slice(0, -1),
+    ]));
+  }
+  open();
+}
+
+function selectTreeNode(node: TreeNode) {
+  if (node.disabled || node.selectable === false) return;
+  if (props.multiple) {
+    const next = [...modelArray.value];
+    const existingIndex = next.findIndex((value) => valueKey(value) === node.key);
+    if (existingIndex >= 0) next.splice(existingIndex, 1);
+    else next.push(node.key);
+    model.value = next;
+    query.value = "";
+  } else {
+    model.value = node.key;
+    query.value = node.label;
+    dropdownRef.value?.close();
+  }
+  const event = new Event("input");
+  emit("input", event);
+  formField?.onInput(event);
+}
+
 function isSelected(option: SelectionItem) {
   if (props.multiple) {
     return modelArray.value.some((value) => valueKey(value) === valueKey(option.value));
   }
   return option.value === model.value;
+}
+
+function isTreeSelected(node: TreeNode) {
+  if (props.multiple) return modelArray.value.some((value) => valueKey(value) === node.key);
+  return model.value === node.key;
 }
 
 function clearValue(event?: MouseEvent) {
@@ -228,7 +368,7 @@ function clearValue(event?: MouseEvent) {
           :size="size"
           @focus="
             (event) => {
-              open();
+              openDropdown(open);
               $emit('focus', event);
               formField?.onFocus(event);
             }
@@ -241,7 +381,7 @@ function clearValue(event?: MouseEvent) {
           "
           @input="
             (event) => {
-              open();
+              openDropdown(open);
               $emit('input', event);
             }
           "
@@ -258,7 +398,7 @@ function clearValue(event?: MouseEvent) {
               formField?.onBlur(event);
             }
           "
-          @click="open"
+          @click.prevent="openDropdown(open)"
           @focus="
             (event) => {
               $emit('focus', event);
@@ -274,7 +414,7 @@ function clearValue(event?: MouseEvent) {
           class="mcsl-combobox__action"
           :disabled="disabled"
           type="button"
-          @click="hasValue && clearable ? clearValue($event) : open()"
+          @click="hasValue && clearable ? clearValue($event) : openDropdown(open)"
         >
           <i
             :class="[
@@ -301,33 +441,76 @@ function clearValue(event?: MouseEvent) {
       <div v-if="$slots.header" class="mcsl-combobox__header">
         <slot name="header" />
       </div>
-      <section
-        v-for="group in filteredOptions"
-        :key="group.group || 'ungrouped'"
-        class="mcsl-combobox__group"
-      >
-        <div v-if="group.group" class="mcsl-combobox__group-title">
-          {{ group.group }}
-        </div>
-        <button
-          v-for="option in group.options"
-          :key="String(option.value)"
-          type="button"
-          class="mcsl-combobox__option"
-          :class="{ 'mcsl-combobox__option--selected': isSelected(option) }"
-          :disabled="option.disabled"
-          @click="selectOption(option)"
+      <div v-if="tree" class="mcsl-combobox__tree" role="tree">
+        <div
+          v-for="{ node, depth, parentLabels } in flatTreeOptions"
+          :key="node.key"
+          class="mcsl-combobox__tree-item"
+          :class="{
+            'mcsl-combobox__tree-item--selected': isTreeSelected(node),
+            'mcsl-combobox__tree-item--disabled': node.disabled,
+          }"
+          :style="{ '--mcsl-combobox__tree-depth': depth }"
+          role="treeitem"
+          :aria-expanded="node.children?.length ? expandedTreeKeys.includes(node.key) : undefined"
+          :aria-selected="isTreeSelected(node)"
         >
-          <i v-if="option.icon" :class="option.icon" />
-          <span>
-            {{ optionLabel(option) }}
-            <small v-if="isSelected(option) && (prefix || suffix)">
-              {{ displayValue }}
-            </small>
-          </span>
-          <i v-if="isSelected(option)" class="fas fa-check" />
-        </button>
-      </section>
+          <button
+            class="mcsl-combobox__tree-toggle"
+            type="button"
+            :disabled="!node.children?.length"
+            @click.stop="toggleTreeExpanded(node)"
+          >
+            <i
+              v-if="node.children?.length"
+              class="fa fa-angle-right"
+              :class="{ 'mcsl-combobox__tree-toggle--expanded': expandedTreeKeys.includes(node.key) }"
+            />
+          </button>
+          <button
+            class="mcsl-combobox__tree-label"
+            type="button"
+            :disabled="node.disabled || node.selectable === false"
+            @click="selectTreeNode(node)"
+          >
+            <i v-if="node.icon" :class="node.icon" />
+            <span>
+              {{ node.label }}
+              <small v-if="parentLabels.length">{{ parentLabels.join(' / ') }}</small>
+            </span>
+            <i v-if="isTreeSelected(node)" class="fas fa-check" />
+          </button>
+        </div>
+      </div>
+      <template v-else>
+        <section
+          v-for="group in filteredOptions"
+          :key="group.group || 'ungrouped'"
+          class="mcsl-combobox__group"
+        >
+          <div v-if="group.group" class="mcsl-combobox__group-title">
+            {{ group.group }}
+          </div>
+          <button
+            v-for="option in group.options"
+            :key="String(option.value)"
+            type="button"
+            class="mcsl-combobox__option"
+            :class="{ 'mcsl-combobox__option--selected': isSelected(option) }"
+            :disabled="option.disabled"
+            @click="selectOption(option)"
+          >
+            <i v-if="option.icon" :class="option.icon" />
+            <span>
+              {{ optionLabel(option) }}
+              <small v-if="isSelected(option) && (prefix || suffix)">
+                {{ displayValue }}
+              </small>
+            </span>
+            <i v-if="isSelected(option)" class="fas fa-check" />
+          </button>
+        </section>
+      </template>
       <div v-if="filteredOptionCount === 0" class="mcsl-combobox__empty">
         No matches
       </div>
@@ -552,6 +735,91 @@ function clearValue(event?: MouseEvent) {
 
 .mcsl-combobox__option:disabled {
   cursor: not-allowed;
+  opacity: 0.52;
+}
+
+.mcsl-combobox__tree {
+  display: grid;
+  gap: 2px;
+}
+
+.mcsl-combobox__tree-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  padding-left: calc(var(--mcsl-combobox__tree-depth) * 1rem);
+}
+
+.mcsl-combobox__tree-toggle,
+.mcsl-combobox__tree-label {
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.mcsl-combobox__tree-toggle {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.75rem;
+  border-radius: var(--mcsl-border-radius-sm);
+  color: var(--mcsl-text-color-secondary);
+  cursor: pointer;
+}
+
+.mcsl-combobox__tree-toggle:disabled {
+  cursor: default;
+}
+
+.mcsl-combobox__tree-toggle i {
+  transition: transform var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-standard);
+}
+
+.mcsl-combobox__tree-toggle--expanded {
+  transform: rotate(90deg);
+}
+
+.mcsl-combobox__tree-label {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  min-width: 0;
+  min-height: 2rem;
+  gap: var(--mcsl-spacing-2xs);
+  padding: 0 var(--mcsl-spacing-xs);
+  border-radius: var(--mcsl-border-radius-sm);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background-color var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-standard),
+    color var(--mcsl-motion-duration-fast) var(--mcsl-motion-ease-standard);
+}
+
+.mcsl-combobox__tree-label span {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+}
+
+.mcsl-combobox__tree-label small {
+  overflow: hidden;
+  color: var(--mcsl-text-color-secondary);
+  font-size: var(--mcsl-font-size-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mcsl-combobox__tree-label:hover:not(:disabled),
+.mcsl-combobox__tree-item--selected .mcsl-combobox__tree-label {
+  background: color-mix(in srgb, var(--mcsl-color-primary) 9%, var(--mcsl-bg-color-overlay));
+  color: var(--mcsl-text-color-primary);
+}
+
+.mcsl-combobox__tree-label:disabled {
+  cursor: not-allowed;
+}
+
+.mcsl-combobox__tree-item--disabled {
   opacity: 0.52;
 }
 

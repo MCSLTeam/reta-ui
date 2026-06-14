@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import Button from "../../button/Button.vue";
 import Checkbox from "./Checkbox.vue";
 import InputText from "./InputText.vue";
 import type { ColorType } from "../../../utils/css.ts";
@@ -132,27 +131,36 @@ function toggleAll(selection: "source" | "target", checked: boolean | null) {
   if (props.disabled) return;
   const options =
     selection === "source" ? filteredSourceOptions.value : filteredTargetOptions.value;
-  const target = selection === "source" ? selectedSource : selectedTarget;
-  const enabledKeys = options
-    .filter((option) => !option.disabled)
-    .map((option) => valueKey(option.value));
-  target.value = checked === true ? new Set(enabledKeys) : new Set();
+  if (checked !== true) return;
+  if (selection === "source") moveOptionsToTarget(options);
+  else moveOptionsToSource(options);
 }
 
-function moveToTarget() {
-  if (props.disabled || selectedSource.value.size === 0) return;
-  const moving = availableOptions.value
-    .filter((option) => selectedSource.value.has(valueKey(option.value)))
-    .map((option) => option.value);
-  model.value = [...model.value, ...moving];
-  selectedSource.value = new Set();
+function moveOptionsToTarget(options: SelectionItem[]) {
+  if (props.disabled) return;
+  const selected = new Set(model.value.map(valueKey));
+  const moving = options.filter((option) => !option.disabled && !selected.has(valueKey(option.value)));
+  if (moving.length === 0) return;
+  model.value = [...model.value, ...moving.map((option) => option.value)];
 }
 
-function moveToSource() {
-  if (props.disabled || selectedTarget.value.size === 0) return;
-  const removing = selectedTarget.value;
+function moveOptionsToSource(options: SelectionItem[]) {
+  if (props.disabled) return;
+  const removing = new Set(
+    options.filter((option) => !option.disabled).map((option) => valueKey(option.value)),
+  );
+  if (removing.size === 0) return;
   model.value = model.value.filter((value) => !removing.has(valueKey(value)));
-  selectedTarget.value = new Set();
+}
+
+function moveOptionToTarget(option: SelectionItem) {
+  if (props.disabled || option.disabled) return;
+  moveOptionsToTarget([option]);
+}
+
+function moveOptionToSource(option: SelectionItem) {
+  if (props.disabled || option.disabled) return;
+  moveOptionsToSource([option]);
 }
 </script>
 
@@ -191,17 +199,17 @@ function moveToSource() {
           :aria-disabled="disabled || option.disabled ? 'true' : undefined"
           role="button"
           :tabindex="disabled || option.disabled ? -1 : 0"
-          @click="toggleOption('source', option)"
-          @keydown.enter.prevent="toggleOption('source', option)"
-          @keydown.space.prevent="toggleOption('source', option)"
+          @click="moveOptionToTarget(option)"
+          @keydown.enter.prevent="moveOptionToTarget(option)"
+          @keydown.space.prevent="moveOptionToTarget(option)"
         >
           <Checkbox
-            :model-value="selectedSource.has(valueKey(option.value))"
+            :model-value="false"
             :disabled="disabled || option.disabled"
             :color="color"
             :size="size"
-            @click.stop
-            @update:model-value="setOptionChecked('source', option, $event)"
+            @click.stop="moveOptionToTarget(option)"
+            @update:model-value="moveOptionToTarget(option)"
           />
           <i v-if="option.icon" :class="option.icon" />
           <span>{{ optionLabel(option) }}</span>
@@ -211,25 +219,6 @@ function moveToSource() {
         </p>
       </div>
     </section>
-
-    <div class="mcsl-transfer__actions">
-      <Button
-        icon="fas fa-angle-right"
-        rounded
-        :disabled="disabled || selectedSource.size === 0"
-        :size="size"
-        type="default"
-        @click="moveToTarget"
-      />
-      <Button
-        icon="fas fa-angle-left"
-        rounded
-        :disabled="disabled || selectedTarget.size === 0"
-        :size="size"
-        type="default"
-        @click="moveToSource"
-      />
-    </div>
 
     <section class="mcsl-transfer__pane">
       <header class="mcsl-transfer__header">
@@ -261,17 +250,17 @@ function moveToSource() {
           :aria-disabled="disabled || option.disabled ? 'true' : undefined"
           role="button"
           :tabindex="disabled || option.disabled ? -1 : 0"
-          @click="toggleOption('target', option)"
-          @keydown.enter.prevent="toggleOption('target', option)"
-          @keydown.space.prevent="toggleOption('target', option)"
+          @click="moveOptionToSource(option)"
+          @keydown.enter.prevent="moveOptionToSource(option)"
+          @keydown.space.prevent="moveOptionToSource(option)"
         >
           <Checkbox
-            :model-value="selectedTarget.has(valueKey(option.value))"
+            :model-value="true"
             :disabled="disabled || option.disabled"
             :color="color"
             :size="size"
-            @click.stop
-            @update:model-value="setOptionChecked('target', option, $event)"
+            @click.stop="moveOptionToSource(option)"
+            @update:model-value="moveOptionToSource(option)"
           />
           <i v-if="option.icon" :class="option.icon" />
           <span>{{ optionLabel(option) }}</span>
@@ -287,7 +276,7 @@ function moveToSource() {
 <style scoped lang="scss">
 .mcsl-transfer {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: stretch;
   gap: var(--mcsl-spacing-sm);
   min-width: 0;
@@ -377,12 +366,6 @@ function moveToSource() {
   white-space: nowrap;
 }
 
-.mcsl-transfer__actions {
-  display: grid;
-  align-content: center;
-  gap: var(--mcsl-spacing-xs);
-}
-
 .mcsl-transfer__empty {
   margin: 0;
   padding: var(--mcsl-spacing-md);
@@ -398,19 +381,6 @@ function moveToSource() {
 @media (max-width: 720px) {
   .mcsl-transfer {
     grid-template-columns: 1fr;
-  }
-
-  .mcsl-transfer__actions {
-    grid-template-columns: repeat(2, auto);
-    justify-content: center;
-  }
-
-  .mcsl-transfer__actions :deep(.fa-angle-right) {
-    transform: rotate(90deg);
-  }
-
-  .mcsl-transfer__actions :deep(.fa-angle-left) {
-    transform: rotate(90deg);
   }
 }
 </style>

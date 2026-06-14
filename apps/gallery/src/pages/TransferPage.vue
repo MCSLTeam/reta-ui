@@ -34,6 +34,7 @@ const selectedServiceLabels = computed(() =>
   <GalleryDocPage>
     <template #effects>
       <GalleryExample :title="$t('gallery.sections.basic')">
+        <p class="transfer-note">Click an item to move it to the other side.</p>
         <r-transfer
           v-model="enabledServices"
           :options="serviceOptions"
@@ -77,6 +78,12 @@ const selectedServiceLabels = computed(() =>
 .transfer-demo {
   display: grid;
   gap: 16px;
+}
+
+.transfer-note {
+  margin: 0 0 12px;
+  color: var(--mcsl-text-color-secondary);
+  line-height: 1.6;
 }
 
 .transfer-tags {

@@ -9,6 +9,7 @@ const customCommand = ref("");
 const region = ref("sg");
 const readonlyRegion = ref("jp");
 const selectedCommands = ref(["restart", "backup"]);
+const treeTarget = ref("paper-eu");
 
 const commands = [
   { label: "Restart server", value: "restart", icon: "fas fa-rotate" },
@@ -22,6 +23,28 @@ const regions = [
   { label: "Frankfurt", value: "de", icon: "fas fa-location-dot" },
   { label: "Los Angeles", value: "us", icon: "fas fa-location-dot" },
   { label: "Tokyo", value: "jp", icon: "fas fa-location-dot" },
+];
+
+const treeOptions = [
+  {
+    key: "instances",
+    label: "Instances",
+    icon: "fas fa-server",
+    selectable: false,
+    children: [
+      { key: "paper-eu", label: "Paper EU-1", icon: "fas fa-cube" },
+      { key: "forge-us", label: "Forge US-2", icon: "fas fa-cube" },
+    ],
+  },
+  {
+    key: "configs",
+    label: "Configs",
+    icon: "fas fa-folder",
+    children: [
+      { key: "server-properties", label: "server.properties", icon: "fas fa-file-lines" },
+      { key: "permissions", label: "permissions.yml", icon: "fas fa-file-code" },
+    ],
+  },
 ];
 </script>
 
@@ -66,6 +89,17 @@ const regions = [
               placeholder="Select commands"
             />
           </label>
+          <label>
+            <span>Tree mode</span>
+            <r-combobox
+              v-model="treeTarget"
+              :options="[]"
+              :tree-options="treeOptions"
+              tree
+              clearable
+              placeholder="Choose node"
+            />
+          </label>
         </div>
       </GalleryExample>
     </template>
@@ -80,6 +114,7 @@ const regions = [
             <r-tag color="primary">Region: {{ region }}</r-tag>
             <r-tag color="success">Readonly: {{ readonlyRegion }}</r-tag>
             <r-tag color="warning">Multiple: {{ selectedCommands.join(", ") }}</r-tag>
+            <r-tag color="help">Tree: {{ treeTarget }}</r-tag>
           </div>
         </div>
       </GalleryExample>
