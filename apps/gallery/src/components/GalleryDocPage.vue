@@ -172,10 +172,30 @@ const pageMeta: Record<string, PageMeta> = {
     name: "Text",
     descriptionKey: "gallery.componentMeta.text",
   },
+  "/components/gradient-text": {
+    titleKey: "gallery.sidebar.gradientText",
+    name: "GradientText",
+    descriptionKey: "gallery.componentMeta.gradientText",
+  },
+  "/components/highlight-text": {
+    titleKey: "gallery.sidebar.highlightText",
+    name: "HighlightText",
+    descriptionKey: "gallery.componentMeta.highlightText",
+  },
   "/components/picture": {
     titleKey: "gallery.sidebar.picture",
     name: "Picture",
     descriptionKey: "gallery.componentMeta.picture",
+  },
+  "/components/carousel": {
+    titleKey: "gallery.sidebar.carousel",
+    name: "Carousel",
+    descriptionKey: "gallery.componentMeta.carousel",
+  },
+  "/components/countdown": {
+    titleKey: "gallery.sidebar.countdown",
+    name: "Countdown",
+    descriptionKey: "gallery.componentMeta.countdown",
   },
   "/components/code": {
     titleKey: "gallery.sidebar.code",

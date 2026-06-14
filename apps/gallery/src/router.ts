@@ -24,7 +24,11 @@ import EmptyPage from "./pages/EmptyPage.vue";
 import DividerPage from "./pages/DividerPage.vue";
 import CopyableTextPage from "./pages/CopyableTextPage.vue";
 import CodePage from "./pages/CodePage.vue";
+import CarouselPage from "./pages/CarouselPage.vue";
+import CountdownPage from "./pages/CountdownPage.vue";
 import TextPage from "./pages/TextPage.vue";
+import GradientTextPage from "./pages/GradientTextPage.vue";
+import HighlightTextPage from "./pages/HighlightTextPage.vue";
 import PicturePage from "./pages/PicturePage.vue";
 import SkeletonPage from "./pages/SkeletonPage.vue";
 import DisplayPage from "./pages/DisplayPage.vue";
@@ -86,7 +90,11 @@ export default createRouter({
     { path: "/components/divider", component: DividerPage },
     { path: "/components/copyable-text", component: CopyableTextPage },
     { path: "/components/code", component: CodePage },
+    { path: "/components/carousel", component: CarouselPage },
+    { path: "/components/countdown", component: CountdownPage },
     { path: "/components/text", component: TextPage },
+    { path: "/components/gradient-text", component: GradientTextPage },
+    { path: "/components/highlight-text", component: HighlightTextPage },
     { path: "/components/picture", component: PicturePage },
     { path: "/components/skeleton", component: SkeletonPage },
     { path: "/components/display", component: DisplayPage },

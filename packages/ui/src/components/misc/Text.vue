@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { ColorData, type ColorType, getColorVar } from "../../utils/css.ts";
+import { getColorVar } from "../../utils/css.ts";
 
 const props = withDefaults(
   defineProps<{
@@ -8,11 +8,6 @@ const props = withDefaults(
     type?: "default" | "secondary" | "tertiary" | "success" | "warning" | "danger" | "help";
     size?: "xs" | "sm" | "md" | "lg" | "xl";
     weight?: "regular" | "medium" | "semibold" | "bold";
-    gradient?: boolean;
-    gradientFrom?: ColorType;
-    gradientTo?: ColorType;
-    highlight?: boolean;
-    highlightColor?: ColorType;
     italic?: boolean;
     code?: boolean;
     delete?: boolean;
@@ -25,11 +20,6 @@ const props = withDefaults(
     type: "default",
     size: "md",
     weight: "regular",
-    gradient: false,
-    gradientFrom: "primary",
-    gradientTo: "help",
-    highlight: false,
-    highlightColor: "warning",
     italic: false,
     code: false,
     delete: false,
@@ -60,18 +50,12 @@ const textColor = computed(() => {
 
 const textStyle = computed(() => ({
   "--mcsl-text__color": textColor.value,
-  "--mcsl-text__gradient-from": getColorVar(props.gradientFrom),
-  "--mcsl-text__gradient-to": getColorVar(props.gradientTo),
-  "--mcsl-text__highlight": new ColorData(props.highlightColor, "default", 0.16).getCss(),
-  "--mcsl-text__highlight-border": new ColorData(props.highlightColor, "default", 0.32).getCss(),
 }));
 
 const textClass = computed(() => [
   `mcsl-text--${props.size}`,
   `mcsl-text--${props.weight}`,
   {
-    "mcsl-text--gradient": props.gradient,
-    "mcsl-text--highlight": props.highlight,
     "mcsl-text--italic": props.italic,
     "mcsl-text--code": props.code,
     "mcsl-text--delete": props.delete,
@@ -145,20 +129,6 @@ const textClass = computed(() => [
 
 .mcsl-text--bold {
   font-weight: var(--mcsl-font-weight-bold);
-}
-
-.mcsl-text--gradient {
-  background: linear-gradient(120deg, var(--mcsl-text__gradient-from), var(--mcsl-text__gradient-to));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.mcsl-text--highlight {
-  padding: 0 0.22em;
-  border-radius: var(--mcsl-border-radius-2xs);
-  background: var(--mcsl-text__highlight);
-  box-shadow: inset 0 -1px 0 var(--mcsl-text__highlight-border);
 }
 
 .mcsl-text--italic {

@@ -21,8 +21,6 @@ import GalleryExample from "../components/GalleryExample.vue";
     <template #demo>
       <GalleryExample :title="$t('gallery.sections.example')">
         <div class="text-grid">
-          <r-text gradient size="xl" weight="bold">Gradient status headline</r-text>
-          <r-text highlight highlight-color="warning">Highlighted maintenance window</r-text>
           <r-text code>java -Xmx4G -jar server.jar</r-text>
           <r-text type="success" weight="semibold">Deployment completed</r-text>
           <r-text type="danger" delete>Deprecated endpoint</r-text>
